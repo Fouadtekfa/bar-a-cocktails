@@ -1,13 +1,33 @@
-body {
-    background: rgba(218, 147, 16, 0.603);
-    color: aliceblue;
-}
 
 h1 {
     text-align: center;
+    color: black;
 }
 
-.tableContainer {
-    background-color: rgb(190, 190, 190);
-    margin: 100px;
+
+body {
+    background: rgba(233, 177, 72, 0.603);
+    color: aliceblue;
+}
+
+.contentContainer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.produit {
+    width: 30%;
+    height: 200px;
+    background-color: rgba(151, 151, 151, 0.349);
+    margin-bottom: 50px;
+    border-radius: 50px;
+    border: 2px solid black;
+}
+
+.produit:hover {
+    cursor: pointer;
+    background-color: rgba(71, 71, 71, 0.349);
+    transition: 0.6s;
 }

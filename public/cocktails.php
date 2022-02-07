@@ -10,30 +10,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cocktails.css">
     <title>Cocktail</title>
 </head>
 <body>
     <h1>Bar à Cocktail</h1>
 
-    <div class="contentContainer">
-        <div class="produit cocktailContainer">
+    <div class="tableContainer">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    for($i = 0 ; $i <= 5 ; $i++) { ?>
 
-        </div>
-        <div class="produit boissonContainer">
-
-        </div>
-        <div class="produit ingredientContainer">
-
-        </div>
-        <div class="produit commandeContainer">
-
-        </div>
-        <div class="produit utensilesContainer">
-
-        </div>
-        <div class="produit verreContainer">
-
-        </div>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                    
+                        <?php } ?>
+            </tbody>
+        </table>    
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
