@@ -2,4 +2,22 @@
 .tableContainer {
     background-color: rgb(190, 190, 190);
     margin: 100px;
+    margin-top: 30px;
+}
+
+td.td_buttons_actions{
+    width: 10px;
+}
+
+.retour {
+    height: 50px;
+    width: 50px;
+    margin-left: 20px;
+}
+
+.retour:hover{
+    cursor: pointer;
+    height: 52px;
+    width: 52px;
+    transition: 0.3s;
 }
