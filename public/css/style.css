@@ -1,0 +1,13 @@
+body {
+    background: rgba(218, 147, 16, 0.603);
+    color: aliceblue;
+}
+
+h1 {
+    text-align: center;
+}
+
+.tableContainer {
+    background-color: rgb(190, 190, 190);
+    margin: 100px;
+}
