@@ -1,12 +1,18 @@
 
 h1 {
     text-align: center;
-    color: black;
+    color: white;
+    background-color: rgba(2, 2, 2, 0.575);
+    margin-top: 25px;
+    padding: 10px;
 }
 
 
 body {
     background: rgba(233, 177, 72, 0.603);
+    background-image: url('../images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
     color: aliceblue;
 }
 
@@ -24,10 +30,57 @@ body {
     margin-bottom: 50px;
     border-radius: 50px;
     border: 2px solid black;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    justify-content: center;
 }
 
 .produit:hover {
     cursor: pointer;
     background-color: rgba(71, 71, 71, 0.349);
     transition: 0.6s;
+}
+
+.imageContainer, .titleContainer {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    justify-content: flex-end;
+}
+
+.imageMenu {
+    width: 120px;
+    height: 120px;
+}
+
+.imgBoisson {
+    background-image: url('../images/boisson.png');
+}
+
+.imgCocktail {
+    background-image: url('../images/cocktail.png');
+}
+
+.imgIngredient {
+    background-image: url('../images/ingredients.png');
+}
+
+.imgCommande {
+    background-image: url('../images/commande.png');
+}
+
+.imgUtensiles {
+    background-image: url('../images/utensiles.png');
+}
+
+.imgVerre {
+    background-image: url('../images/verre.png');
+}
+
+.imageContainer {
+    width: 100px;
+    height: 150px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }

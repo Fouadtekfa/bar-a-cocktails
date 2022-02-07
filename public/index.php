@@ -17,22 +17,46 @@
 
     <div class="contentContainer">
         <div class="produit cocktailContainer">
-
+            <div class="imageContainer imgCocktail">
+            </div>
+            <div class="titleContainer">
+                <h2>Cocktails</h2>
+            </div>
         </div>
         <div class="produit boissonContainer">
-
+            <div class="imageContainer imgBoisson">
+            </div>
+            <div class="titleContainer">
+                <h2>Boissons</h2>
+            </div>
         </div>
         <div class="produit ingredientContainer">
-
+            <div class="imageContainer imgIngredient">
+            </div>
+            <div class="titleContainer">
+                <h2>Ingredients</h2>
+            </div>
         </div>
         <div class="produit commandeContainer">
-
+            <div class="imageContainer imgCommande">
+            </div>
+            <div class="titleContainer">
+                <h2>Commande</h2>
+            </div>
         </div>
         <div class="produit utensilesContainer">
-
+            <div class="imageContainer imgUtensiles">
+            </div>
+            <div class="titleContainer">
+                <h2>Utensiles</h2>
+            </div>
         </div>
         <div class="produit verreContainer">
-
+            <div class="imageContainer imgVerre">
+            </div>
+            <div class="titleContainer">
+                <h2>Verres</h2>
+            </div>
         </div>
     </div>
 
