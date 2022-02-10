@@ -1,5 +1,7 @@
-<?php 
-
+<?php
+require_once "classes/MyPDO.php";
+require_once "classes/connexion.php";
+require_once "classes/Session.php";
 ?>
 
 <!DOCTYPE html>
