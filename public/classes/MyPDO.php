@@ -15,7 +15,6 @@ class MyPDO {
     }
 
     public function initPDOS_selectAll() {
-        echo 'hhhh';
         $this->pdos_selectAll = $this->pdo->prepare('SELECT * FROM '.$this->nomTable);
     }
 
@@ -25,9 +24,8 @@ class MyPDO {
             $this->initPDOS_selectAll();
         $this->getPdosSelectAll()->execute();
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
-            "bar\EntiteEtape");
+            "bar\Entite".ucfirst($this->getNomTable()));
     }
-
 
     /**
      * @return PDO

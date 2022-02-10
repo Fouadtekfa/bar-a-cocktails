@@ -1,4 +1,17 @@
-<?php 
+<?php
+require_once "classes/EntiteCocktail.php";
+require_once "classes/MyPDO.php";
+require_once "classes/connexion.php";
+require_once "classes/Session.php";
+
+$myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd']);
+$myPDO->setNomTable('Cocktail');
+$myPDO->initPDOS_selectAll();
+$va =  $myPDO->getAll();
+
+foreach ($va as $valeur){
+    echo $valeur->getCNom();
+}
 
 ?>
 
@@ -31,12 +44,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    for($i = 0 ; $i <= 5 ; $i++) { ?>
+                <?php
+                foreach ($va as $valeur){  ?>
 
                         <tr>
                             <th scope="row">1</th>
-                            <td>Mark</td>
+                            <td><?php echo $valeur->getCNom(); ?></td>
                             <td>Otto</td>
                             <td>@mdo</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>

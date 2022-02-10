@@ -24,9 +24,11 @@ require_once "classes/Session.php";
         <div class="produit cocktailContainer" id="cocktails">
             <div class="imageContainer imgCocktail">
             </div>
+            <a href="cocktails.php?action=selectionnerTable&table_name=G07_Cocktail">
             <div class="titleContainer">
                 <h2>Cocktails</h2>
             </div>
+            </a>
         </div>
         <div class="produit boissonContainer" id="boissons">
             <div class="imageContainer imgBoisson">
