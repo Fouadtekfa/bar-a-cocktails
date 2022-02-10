@@ -1,4 +1,5 @@
 <?php
+namespace bar;
 
 class EntiteUtensiles {
 

@@ -1,4 +1,6 @@
 <?php
+namespace bar;
+
 class EntiteCocktail{
 protected int $c_id;
 protected string $c_nom;

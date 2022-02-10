@@ -2,6 +2,9 @@
 require_once "classes/MyPDO.php";
 require_once "classes/connexion.php";
 require_once "classes/Session.php";
+require_once "classes/EntiteEtape.php";
+require_once "classes/EntiteBoissons.php";
+
 ?>
 
 <!DOCTYPE html>
