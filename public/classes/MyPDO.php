@@ -25,7 +25,7 @@ class MyPDO {
             $this->initPDOS_selectAll();
         $this->getPdosSelectAll()->execute();
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
-            "bar\Entite".ucfirst('Etape'));
+            "bar\EntiteEtape");
     }
 
 

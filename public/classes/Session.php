@@ -9,5 +9,8 @@ $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_E
 $myPDO->setNomTable('g07_etape');
 echo 'hola';
 $myPDO->initPDOS_selectAll();
-echo $myPDO->getAll();
+$va =  $myPDO->getAll();
 
+foreach ($va as $valeur){
+    echo $valeur->getEDesc();
+}
