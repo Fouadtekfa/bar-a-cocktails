@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     
     document.getElementById('cocktails').addEventListener('click', function(){
-        document.location.href = './cocktails.php';
+        document.location.href = './Vue/cocktails.php?action=selectionnerTable&table_name=Cocktail"';
     });
 
     document.getElementById('boissons').addEventListener('click', function(){
