@@ -28,21 +28,16 @@ $va =  $myPDO->getAll();
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">id</th>
-                    <th scope="col">col1</th>
-                    <th scope="col">col2</th>
-                    <th scope="col">col3</th>
+                    <th scope="col">Nom</th>
                     <th scope="col" colspan="3" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    for($i = 0 ; $i <= 5 ; $i++) { ?>
-
+            <?php
+            foreach ($va as $valeur){  ?>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row"><?php echo $valeur->getUId() ?></th>
+                            <td><?php echo $valeur->getUNom() ?></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
