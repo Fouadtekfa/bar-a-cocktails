@@ -1,5 +1,6 @@
 <?php
 require_once "../imports.php";
+require_once "../Modele/EntiteCocktail.php";
 $myPDO = $_ENV['myPdo'];
 $myPDO->setNomTable('Cocktail');
 $myPDO->initPDOS_selectAll();
