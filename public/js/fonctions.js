@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('commandes').addEventListener('click', function(){
-        document.location.href = './commandes.php';
+        document.location.href = './Vue/commandes.php?action=selectionnerTable&table_name=Commande"';
     });
 
     document.getElementById('utensiles').addEventListener('click', function(){
