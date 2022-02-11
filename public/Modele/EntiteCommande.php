@@ -5,6 +5,7 @@ class EntiteCommande{
     protected  $com_id;
     protected  $com_numTable;
 
+
     /**
      * @return int
      */
@@ -23,6 +24,21 @@ class EntiteCommande{
 
 
 
+    /**
+     * @return mixed
+     */
+    public function getComNumTable()
+    {
+        return $this->com_numTable;
+    }
+
+    /**
+     * @param mixed $com_numTable
+     */
+    public function setComNumTable($com_numTable): void
+    {
+        $this->com_numTable = $com_numTable;
+    }
 
 }
 ?>

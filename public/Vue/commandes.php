@@ -2,7 +2,7 @@
 require_once "../imports.php";
 require_once "../Modele/EntiteCommande.php";
 $myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('Commandes');
+$myPDO->setNomTable('Commande');
 $myPDO->initPDOS_selectAll();
 $va =  $myPDO->getAll();
 ?>
@@ -31,21 +31,20 @@ $va =  $myPDO->getAll();
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">id</th>
-                    <th scope="col">col1</th>
-                    <th scope="col">col2</th>
-                    <th scope="col">col3</th>
+                    <th scope="col">Numéro de la table</th>
+
                     <th scope="col" colspan="3" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    for($i = 0 ; $i <= 5 ; $i++) { ?>
+                <?php
+                foreach ($va as $valeur){  ?>
 
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td><?php echo $valeur->getComId(); ?></td>
+                            <td><?php echo $valeur->getComNumTable(); ?></td>
+
+
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
