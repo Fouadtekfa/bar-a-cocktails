@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     document.getElementById('cocktails').addEventListener('click', function(){
         document.location.href = './Vue/cocktails.php?action=selectionnerTable&table_name=Cocktail"';
     });
