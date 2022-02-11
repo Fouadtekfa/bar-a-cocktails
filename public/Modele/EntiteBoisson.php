@@ -1,12 +1,12 @@
 <?php
 namespace bar;
 
-class EntiteBoissons{
+class EntiteBoisson{
     protected $b_id;
     protected  $b_nom;
     protected  $b_type;
-    protected  $b_estAlicolise;
-    protected  $qteStockee;
+    protected  $b_estAlcoolise;
+    protected  $b_qteStockee;
 
     /**
      * @return int
@@ -59,33 +59,33 @@ class EntiteBoissons{
     /**
      * @return int
      */
-    public function getBEstAlicolise(): int
+    public function getBEstAlcoolise(): int
     {
-        return $this->b_estAlicolise;
+        return $this->b_estAlcoolise;
     }
 
     /**
-     * @param int $b_estAlicolise
+     * @param int $b_estAlcoolise
      */
-    public function setBEstAlicolise(int $b_estAlicolise): void
+    public function setBEstAlicolise(int $b_estAlcoolise): void
     {
-        $this->b_estAlicolise = $b_estAlicolise;
+        $this->b_estAlcoolise = $b_estAlcoolise;
     }
 
     /**
      * @return int
      */
-    public function getQteStockee(): int
+    public function getBQteStockee(): int
     {
-        return $this->qteStockee;
+        return $this->b_qteStockee;
     }
 
     /**
-     * @param int $qteStockee
+     * @param int $b_qteStockee
      */
-    public function setQteStockee(int $qteStockee): void
+    public function setBQteStockee(int $b_qteStockee): void
     {
-        $this->qteStockee = $qteStockee;
+        $this->b_qteStockee = $b_qteStockee;
     }
 
 

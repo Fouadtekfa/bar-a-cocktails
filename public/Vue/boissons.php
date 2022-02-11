@@ -1,6 +1,11 @@
-<?php 
-
+<?php
+require_once "../imports.php";
+require_once "../Modele/EntiteBoisson.php";
+$myPDO = $_ENV['myPdo'];
+$myPDO->setNomTable('Boisson');
+$va =  $myPDO->getAll();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,21 +29,24 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">id</th>
-                    <th scope="col">col1</th>
-                    <th scope="col">col2</th>
-                    <th scope="col">col3</th>
-                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
+                    <th scope="col">La boisson</th>
+                    <th scope="col">Type de la boisson</th>
+                    <th scope="col">Avec ou sans Alcool</th>
+                    <th scope="col">Quantité staockée</th>
+                    <th scope="col" colspan="4" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    for($i = 0 ; $i <= 5 ; $i++) { ?>
+                <?php
+                foreach ($va as $valeur){  ?>
 
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td><?php echo $valeur->getBId(); ?></td>
+                            <td><?php echo $valeur->getBNom(); ?></td>
+                            <td><?php echo $valeur->getBType(); ?></td>
+                            <td><?php echo $valeur->getBEstAlcoolise(); ?></td>
+                            <td><?php  echo $valeur->getBQteStockee(); ?></td>
+
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
