@@ -1,7 +1,11 @@
-<?php 
-
+<?php
+require_once "../imports.php";
+require_once "../Modele/EntiteUtensile.php";
+$myPDO = $_ENV['myPdo'];
+$myPDO->setNomTable('Utensile');
+$myPDO->initPDOS_selectAll();
+$va =  $myPDO->getAll();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
