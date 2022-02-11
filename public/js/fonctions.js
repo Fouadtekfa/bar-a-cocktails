@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('boissons').addEventListener('click', function(){
-        document.location.href = './boissons.php';
+        document.location.href = './Vue/boissons.php?action=selectionnerTable&table_name=Boisson"';
     });
 
     document.getElementById('ingredients').addEventListener('click', function(){
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('utensiles').addEventListener('click', function(){
-        document.location.href = './utensiles.php';
+        document.location.href = './Vue/utensiles.php?action=selectionnerTable&table_name=Utensile"';
     });
 
     document.getElementById('verres').addEventListener('click', function(){

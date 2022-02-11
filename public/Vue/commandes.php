@@ -1,5 +1,10 @@
-<?php 
-
+<?php
+require_once "../imports.php";
+require_once "../Modele/EntiteCommande.php";
+$myPDO = $_ENV['myPdo'];
+$myPDO->setNomTable('Commandes');
+$myPDO->initPDOS_selectAll();
+$va =  $myPDO->getAll();
 ?>
 
 <!DOCTYPE html>

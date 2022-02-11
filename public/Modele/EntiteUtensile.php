@@ -1,9 +1,9 @@
 <?php
 namespace bar;
 
-class EntiteUtensiles {
+class EntiteUtensile {
 
-    protected int $d_id;
+    protected int $u_id;
     protected string $u_nom;
 
     /**
@@ -25,16 +25,16 @@ class EntiteUtensiles {
     /**
      * @return int
      */
-    public function getDId(): int
+    public function getUId(): int
     {
-        return $this->d_id;
+        return $this->u_id;
     }
 
     /**
-     * @param int $d_id
+     * @param int $u_id
      */
-    public function setDId(int $d_id): void
+    public function setUId(int $u_id): void
     {
-        $this->d_id = $d_id;
+        $this->u_id = $u_id;
     }
 }
