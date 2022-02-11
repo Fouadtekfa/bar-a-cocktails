@@ -1,18 +1,9 @@
 <?php
-require_once "../Modele/EntiteCocktail.php";
-require_once "../Controlleur/MyPDO.php";
-require_once "../Controlleur/connexion.php";
-require_once "../Controlleur/Session.php";
-
-$myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd']);
+require_once "../imports.php";
+$myPDO = $_ENV['myPdo'];
 $myPDO->setNomTable('Cocktail');
 $myPDO->initPDOS_selectAll();
 $va =  $myPDO->getAll();
-
-foreach ($va as $valeur){
-    echo $valeur->getCNom();
-}
-
 ?>
 
 <!DOCTYPE html>

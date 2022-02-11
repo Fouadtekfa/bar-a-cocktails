@@ -1,10 +1,5 @@
 <?php
-require_once "Controlleur/MyPDO.php";
-require_once "Controlleur/connexion.php";
-require_once "Modele/EntiteEtape.php";
-require_once "Modele/EntiteBoissons.php";
-require_once "Controlleur/Session.php";
-
+require_once "imports.php";
 ?>
 
 <!DOCTYPE html>
