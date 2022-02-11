@@ -19,12 +19,24 @@ class MyPDO {
     }
 
 
+
     public function getAll(): array {
         if (!isset($this->pdos_selectAll))
             $this->initPDOS_selectAll();
         $this->getPdosSelectAll()->execute();
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
+    }
+    public function initPDOS_select(int $id): void
+    {
+        $requete = "SELECT * FROM ".$this->nomTable ." WHERE ";
+        /*foreach($id as $key=>$val){
+            $requete .= "" . $key ."= :" .$key." AND ";
+        * a corriger apres
+         * /
+        $requete = "SELECT * FROM ".$this->nomTable ." WHERE " ;
+        $requete = substr($requete,0, strlen($requete)-4);
+        $this->pdos_select = $this->pdo->prepare($requete);
     }
 
     /**
