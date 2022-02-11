@@ -32,7 +32,8 @@ $va =  $myPDO->getAll();
                     <th scope="col">Nous Cocktail </th>
                     <th scope="col"> Catégorie du cocktail</th>
                     <th scope="col">Prix</th>
-                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
+
+                    <th scope="col" colspan="4" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,7 @@ $va =  $myPDO->getAll();
                             <td><?php echo $valeur->getCNom(); ?></td>
                             <td><?php echo $valeur->getCCat(); ?></td>
                             <td><?php echo $valeur->getCprix(); ?> €</td>
+                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Etapes</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
