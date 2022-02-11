@@ -29,9 +29,9 @@ $va =  $myPDO->getAll();
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">id</th>
-                    <th scope="col">col1</th>
-                    <th scope="col">col2</th>
-                    <th scope="col">col3</th>
+                    <th scope="col">Nous Cocktail </th>
+                    <th scope="col"> Catégorie du cocktail</th>
+                    <th scope="col">Prix</th>
                     <th scope="col" colspan="3" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
@@ -40,10 +40,10 @@ $va =  $myPDO->getAll();
                 foreach ($va as $valeur){  ?>
 
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row"><?php echo $valeur->getCId() ?></th>
                             <td><?php echo $valeur->getCNom(); ?></td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td><?php echo $valeur->getCCat(); ?></td>
+                            <td><?php echo $valeur->getCprix(); ?> €</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
