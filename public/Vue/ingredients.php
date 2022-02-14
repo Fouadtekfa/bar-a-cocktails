@@ -1,5 +1,8 @@
 <?php 
-
+ini_set('display_errors','on');
+include "connexion.php";
+include "MyPDO.php";
+include "Session.php";
 ?>
 
 <!DOCTYPE html>
