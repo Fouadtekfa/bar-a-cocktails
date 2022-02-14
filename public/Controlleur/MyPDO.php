@@ -42,7 +42,7 @@ class MyPDO {
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
     }
-    public function initPDOS_select(string $nomColID  = "code"): void
+    public function initPDOS_select(string $nomColID): void
     {
         $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID = :$nomColID";
         $this->pdos_select = $this->pdo->prepare($requete);
@@ -53,7 +53,7 @@ class MyPDO {
         $this->getPdosSelect()->bindValue(":".$key,$val);
         $this->getPdosSelect()->execute();
        return $this->getPdosSelect()
-                     ->fetchObject("lmsf\Entite".ucfirst($this->getNomTable()));
+                     ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
    }
 
    public function initPDOS_update(string $nomColId, array $colNames): void {
@@ -95,7 +95,7 @@ public function insert(array $assoc): void {
     $this->getPdosInsert()->execute();
 }
 
-public function initPDOS_delete(string $nomColId = "Code"): void {
+public function initPDOS_delete(string $nomColId): void {
     $this->pdos_delete = $this->pdo->prepare("DELETE FROM ". $this->nomTable
                                                   ." WHERE $nomColId=:".$nomColId);
 }
