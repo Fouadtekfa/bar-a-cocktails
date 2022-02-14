@@ -42,6 +42,29 @@ class MyPDO {
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
     }
+    public function initPDOS_select(string $nomColID  = "code"): void
+    {
+        $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID = :$nomColID";
+        $this->pdos_select = $this->pdo->prepare($requete);
+    }
+    public function get($key, $val) {
+        if (!isset($this->pdos_select))
+            $this->initPDOS_select($key);
+        $this->getPdosSelect()->bindValue(":".$key,$val);
+        $this->getPdosSelect()->execute();
+       return $this->getPdosSelect()
+                     ->fetchObject("lmsf\Entite".ucfirst($this->getNomTable()));
+   }
+
+   public function initPDOS_update(string $nomColId, array $colNames): void {
+    $query = "UPDATE ".$this->nomTable." SET ";
+    foreach ($colNames as $colName) {
+        $query .= $colName."=:".$colName.", ";
+    }
+    $query = substr($query,0, strlen($query)-2);
+    $query .= " WHERE ".$nomColId."=:".$nomColId;
+    $this->pdos_update =  $this->pdo->prepare($query);
+}
 
 }
 
