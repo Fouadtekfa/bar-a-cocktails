@@ -28,7 +28,20 @@ class MyPDO {
         $this->nomTable = $nomTable;
 
     }
+    public function initPDOS_selectAll() {
+        $this->pdos_selectAll = $this->pdo->prepare('SELECT DISTINCT * FROM '.$this->nomTable);
+    }
 
+
+
+
+    public function getAll(): array {
+        if (!isset($this->pdos_selectAll))
+            $this->initPDOS_selectAll();
+        $this->getPdosSelectAll()->execute();
+        return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
+            "bar\Entite".ucfirst($this->getNomTable()));
+    }
 
 }
 
