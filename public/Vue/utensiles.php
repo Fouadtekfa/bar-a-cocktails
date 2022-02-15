@@ -25,7 +25,9 @@ $va =  $myPDO->getAll();
     </div>
 
     <div id="informationEntite">
-    <button type="button" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+        <div class="buttonContainer">
+            <button type="button" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+        </div>
     <div class="tableContainer">
         <table class="table">
             <thead class="thead-dark">
