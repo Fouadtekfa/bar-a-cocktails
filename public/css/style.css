@@ -96,3 +96,12 @@ body {
     margin-left: 50px;
     margin-right: 50px;
 }
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row-reverse ;
+}
+
+.buttonContainer button {
+    margin-right: 100px;
+}
