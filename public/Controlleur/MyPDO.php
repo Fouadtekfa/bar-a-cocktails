@@ -27,12 +27,16 @@ class MyPDO {
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
     }
+<<<<<<< HEAD
 
     public function initPDOS_select(string $nomColID = "id"): void
+=======
+    /*public function initPDOS_select(int $id): void
+>>>>>>> 4bb27f1f12fedf415c5f865cf0c1a3b48c959245
     {
         $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID = :$nomColID";
         $this->pdos_select = $this->pdo->prepare($requete);
-    }
+    }*/
 
 
     public function get($key, $val) {
