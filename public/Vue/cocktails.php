@@ -45,7 +45,7 @@ $va =  $myPDO->getAll();
                             <td><?php echo $valeur->getCNom(); ?></td>
                             <td><?php echo $valeur->getCCat(); ?></td>
                             <td><?php echo $valeur->getCprix(); ?> €</td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Etapes</button></td>
+                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary etapes-btn">Etapes</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
