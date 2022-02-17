@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let elements = document.getElementsByClassName("etapes-btn");
 
     let functionEtapes = function() {
-        document.location.href = '../';
+        document.location.href = '../Vue/etapes.php';
     };
 
     for (let i = 0; i < elements.length; i++) {
-        console.log(elements[i]);
         elements[i].addEventListener('click', functionEtapes, false);
     }
+
 });
