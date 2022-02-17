@@ -4,6 +4,7 @@ require_once "../Modele/EntiteBoisson.php";
 $myPDO = $_ENV['myPdo'];
 $myPDO->setNomTable('Boisson');
 $va =  $myPDO->getAll();
+
 ?>
 
 
