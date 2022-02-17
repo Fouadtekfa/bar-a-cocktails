@@ -1,7 +1,6 @@
 <?php
 require_once "../imports.php";
 require_once "../Modele/EntiteUtensile.php";
-require_once "../Controlleur/CRUD/CRUD_Utensiles.php";
 $myPDO = $_ENV['myPdo'];
 $myPDO->setNomTable('Utensile');
 $myPDO->initPDOS_selectAll();
@@ -55,10 +54,11 @@ $va =  $myPDO->getAll();
     </div>
 
     <div class="insertContainer" style="display: none" id="insertContainer">
-        <form id="addUtensileForm"  method="POST" action="../Controlleur/CRUD/CRUD_Utensiles.php?action='insererUtensile'" name="action" value="2" >
+        <form id="addUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_Utensiles.php" name="action" value="2" >
+            <input type="text" name="action" value="insererUtensile" hidden>
             <div class="form-group">
                 <label for="name">Nom de l'utensile</label>
-                <input type="text" class="form-control" id="name" placeholder="Nom de l'utensile">
+                <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de l'utensile">
             </div>
             <button type="submit" class="btn btn-primary">Ajout</button>
         </form>

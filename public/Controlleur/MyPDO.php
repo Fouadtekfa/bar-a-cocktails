@@ -44,6 +44,65 @@ class MyPDO {
             ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
     }
 
+    /**
+     * execute de la requête SELECT COUNT(*) FROM livre
+     * instantiation de self::$_pdos_count
+     */
+    public function count() {
+        if (!isset($this->pdos_count)) {
+            $this->initPDOS_count();
+        }
+        return $this->pdos_count->execute();
+    }
+
+    public function getCountValue() : int {
+        $this->count();
+        return $this->pdos_count->fetch(PDO::FETCH_NUM)[0];
+    }
+
+    /**
+     * préparation de la requête SELECT COUNT(*)
+     * instantiation de self::$_pdos_count
+     */
+    public function initPDOS_count() {
+        $this->pdos_count = $this->pdo->prepare('SELECT COUNT(*) FROM '.$this->nomTable);
+    
+    }
+
+    /**
+     * @param array $assoc
+     */
+    public function insert(array $assoc): void
+    {
+        if (!isset($this->pdos_insert))
+            $this->initPDOS_insert(array_keys($assoc));
+        foreach ($assoc as $key => $value) {
+            $this->getPdosInsert()->bindValue(":" . $key, $value);
+        }
+        $this->getPdosInsert()->execute();
+    }
+
+     /**
+     * @param array
+     */
+    public function initPDOS_insert(array $colNames): void
+    {
+        $query = "INSERT INTO " . $this->nomTable . " VALUES(";
+        foreach ($colNames as $colName) {
+            $query .= ":" . $colName . ", ";
+        }
+        $query = substr($query, 0, strlen($query) - 2);
+        $query .= ')';
+        $this->pdos_insert = $this->pdo->prepare($query);
+    }
+
+    /**
+     * @return PDOStatement
+     */
+    public function getPdosInsert(): PDOStatement
+    {
+        return $this->pdos_insert;
+    }
 
     /**
      * @return PDO
@@ -99,13 +158,6 @@ class MyPDO {
         return $this;
     }
 
-    /**
-     * @return PDOStatement
-     */
-    public function getPdosInsert(): PDOStatement
-    {
-        return $this->pdos_insert;
-    }
 
     /**
      * @param PDOStatement $pdos_insert
