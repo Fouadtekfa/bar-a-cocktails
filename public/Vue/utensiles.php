@@ -38,16 +38,17 @@ $va =  $myPDO->getAll();
                 </tr>
             </thead>
             <tbody>
-            <?php
-            foreach ($va as $valeur){  ?>
-                        <tr>
-                            <th scope="row"><?php echo $valeur->getUId() ?></th>
-                            <td><?php echo $valeur->getUNom() ?></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
-                        </tr>
-                    
-                        <?php } ?>
+                <?php
+                foreach ($va as $valeur){  ?>
+                            <tr>
+                                <form id="utensileForm" method="get" action="../Controlleur/CRUD/CRUD_Utensiles.php" name="action" value="2" >
+                                    <th scope="row"><?php echo $valeur->getUId() ?></th>
+                                    <td><?php echo $valeur->getUNom() ?></td>
+                                </form>
+                                <td class="td_buttons_actions"><button type="button" class="btn btn-warning etapes-btn">Editer</button></td>
+                                <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
+                            </tr>
+                        <?php } ?>    
             </tbody>
         </table>    
     </div>
