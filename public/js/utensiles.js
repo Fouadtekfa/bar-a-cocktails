@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
+    var queryString = window.location.search;
+    var params = new URLSearchParams(queryString);
+
+    if(params.get('id')) {
+        
+    }
+    
     document.getElementById('retour').addEventListener('click', function(){
         if(document.getElementById('insertContainer').style.display == 'block'){
             document.getElementById('informationEntite').style.display = 'block';
@@ -14,12 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     let elements = document.getElementsByClassName("etapes-btn");
+    
 
     let functionEtapes = function() {
-        document.getElementById("")
+        
     };
 
     for (let i = 0; i < elements.length; i++) {
         elements[i].addEventListener('click', functionEtapes, false);
     }
+
+
+
 });
