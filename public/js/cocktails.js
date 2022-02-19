@@ -13,5 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
     for (let i = 0; i < elements.length; i++) {
         elements[i].addEventListener('click', functionEtapes, false);
     }
+    document.getElementById('btn_ajouter').addEventListener('click', function(){
+        document.getElementById('informationEntite').style.display = 'none';
+        document.getElementById('insertContainer').style.display = 'block';
+    });
 
 });
