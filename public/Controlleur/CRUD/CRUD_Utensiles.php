@@ -30,13 +30,6 @@ if (isset($_GET['action'])){
                 "u_id" => $_GET['u_id'],
                 "u_nom" => $_GET['u_nom']
             );
-
-            ?>            
-                <p><?php foreach($contenu as $value) {
-                    echo $value;
-                }
-
-                echo $etat?></p> <?php
             $_SESSION['etat'] = 'modification';
             break;        
         }
@@ -56,7 +49,7 @@ if (isset($_SESSION['etat'])) {
         case 'modification': {
             $etat.="modification";
             $myPDO->update($idElem, $contenu);
-            //$_SESSION['etat'] = 'modifie';
+            $_SESSION['etat'] = 'modifie';
             ?> <script>  document.location.href = '../../Vue/utensiles.php';  </script> <?php
             break;
         }
