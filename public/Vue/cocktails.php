@@ -24,6 +24,11 @@ $va =  $myPDO->getAll();
     <img src="../images/retour.png" alt="retour" class="retour">
     </i>
     </div>
+    <div class="buttonContainer">
+        <button type="button" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+    </div>
+    <div id="informationEntite">
+
     <div class="tableContainer">
         <table class="table">
             <thead class="thead-dark">
@@ -46,7 +51,6 @@ $va =  $myPDO->getAll();
                             <td><?php echo $valeur->getCCat(); ?></td>
                             <td><?php echo $valeur->getCprix(); ?> €</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary etapes-btn">Etapes</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
                         </tr>
@@ -54,6 +58,27 @@ $va =  $myPDO->getAll();
                         <?php } ?>
             </tbody>
         </table>    
+    </div>
+    </div>
+    <div class="insertContainer" style="display: none" id="insertContainer">
+        <form id="addUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_Cocktails.php" name="action" >
+            <input type="text" name="action" value="insererCocktail" hidden>
+            <div class="form-group">
+                <label for="name">Nom de Cocktail </label>
+                <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail">
+                <label for="cat">catégorie de Cocktail</label>
+                <select id="cat" name="cat" class="form-control">
+                        <option value="SD">SD</option>
+                        <option value="LD">LD</option>
+                        <option value="AD">AD</option>
+                </select>
+                <label for="prix">Prix de Cocktail </label>
+                <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">
+
+            </div>
+            <button type="submit" class="btn btn-primary">Ajout</button>
+        </form>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
