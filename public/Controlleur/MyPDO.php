@@ -223,7 +223,37 @@ class MyPDO {
         return $this;
     }
 
+     /**
+     * @param string $id
+     * @param array $assoc
+     */
+    public function update(string $id, array $assoc): void {
+       if (!isset($this->pdos_update)){
+        $this->initPDOS_update($id, array_keys($assoc));
+       }
+        foreach ($assoc as $key => $value) {
+            ?> <p> <?php echo $value ?> </p>  <?php
+            $this->getPdosUpdate()->bindValue(":".$key, $value);
+        }
+        $this->getPdosUpdate()->execute();
+    }
 
+      /**
+     * @param string $nomColId
+     * @param array $colNames
+     */
+    public function initPDOS_update(string $nomColId, array $colNames): void {
+        $query = "UPDATE ".$this->nomTable." SET ";
+        foreach ($colNames as $colName) {
+            echo "col";
+            echo $colName;
+            $query .= $colName."=:".$colName.", ";
+        }
+        $query = substr($query,0, strlen($query)-2);
+        $query .= " WHERE ".$nomColId."=:".$nomColId;
+        ?><p><?php echo "iohoi" .   $query ?></p><?php
+        $this->pdos_update =  $this->pdo->prepare($query);
+    }
 }
 
 ?>
