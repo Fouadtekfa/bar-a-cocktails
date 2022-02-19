@@ -18,7 +18,17 @@ if (isset($_GET['action'])){
                 "u_nom" => $_GET['nom']
             );
 
-            $_SESSION['etat'] = 'création';
+            $_SESSION['etat'] = 'creation';
+            break;        
+        }
+        case 'modifierUtensile': {
+            $nbUtensiles = $myPDO->getCountValue();
+            $contenu = array(
+                "u_id" => $_GET['nom'],
+                "u_nom" => $_GET['nom']
+            );
+
+            $_SESSION['etat'] = 'modification';
             break;        
         }
     }
@@ -26,7 +36,7 @@ if (isset($_GET['action'])){
 
 if (isset($_SESSION['etat'])) {
     switch ($_SESSION['etat']) {
-        case 'création':
+        case 'creation':
             $etat.="creation";
             $myPDO->insert($contenu);
             $_SESSION['etat'] = 'créé';
