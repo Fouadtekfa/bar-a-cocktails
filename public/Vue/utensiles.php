@@ -62,7 +62,7 @@ if (isset($_GET['u_id'])){
                                 <th scope="row"><?php echo $valeur->getUId() ?></th>
                                     <td class="rowsInformation"><?php echo $valeur->getUNom()?></input></td>
                                 <td class="td_buttons_actions"><a href="?u_id=<?php echo $valeur->getUId()?>"><button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
-                                <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
+                                <td class="td_buttons_actions"><a href="../Controlleur//CRUD/CRUD_Utensiles.php?action=suppression&u_id=<?php echo $valeur->getUId()?>"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
                             </tr>
                         <?php } ?>    
             </tbody>

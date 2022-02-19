@@ -254,6 +254,36 @@ class MyPDO {
         ?><p><?php echo "iohoi" .   $query ?></p><?php
         $this->pdos_update =  $this->pdo->prepare($query);
     }
+
+     /**
+     * @param array $assoc
+     */
+    public function delete(array $assoc) {
+        try {
+            if (! isset($this->pdos_delete)) {
+                $keys = array_keys($assoc);
+                if(count($keys) == 1)
+                    $this->initPDOS_delete($keys[0]);
+                else
+                    $this->initPDOS_delete($keys[0],$keys[1]);
+            }
+            foreach ($assoc as $key => $value) {
+                $this->getPdosDelete()->bindValue(":".$key, $value);
+            }
+            $this->getPdosDelete()->execute();
+        } catch (Exception $e) {
+            $_SESSION['message'] = "Erreur: ".$e->getMessage();
+        }
+    }
+
+     /**
+     * @param string
+     */
+
+    public function initPDOS_delete(string $nomColId = "id"): void {
+        $statement = "DELETE FROM ". $this->nomTable." WHERE $nomColId=:".$nomColId;
+        $this->pdos_delete = $this->pdo->prepare($statement);
+    }
 }
 
 ?>

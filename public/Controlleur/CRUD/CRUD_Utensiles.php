@@ -7,7 +7,7 @@ $myPDO->setNomTable('Utensile');
 $contenu = "";
 $idElem = "";
 $etat="";
-
+?> <p> <?php $_GET['u_id']  ?> </p> <?php
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
         case 'insererUtensile': {
@@ -33,6 +33,15 @@ if (isset($_GET['action'])){
             $_SESSION['etat'] = 'modification';
             break;        
         }
+        case 'suppression': {
+            ?><p> <?php echo $_GET['u_id'] ?></p> <?php
+            $idElem = array(
+                "u_id" => $_GET['u_id']
+            );
+            
+            $_SESSION['etat'] = 'supprimer';
+            break;        
+        }
     }
 } 
 
@@ -51,6 +60,14 @@ if (isset($_SESSION['etat'])) {
             $myPDO->update($idElem, $contenu);
             $_SESSION['etat'] = 'modifie';
             ?> <script>  document.location.href = '../../Vue/utensiles.php';  </script> <?php
+            break;
+        }
+
+        case 'supprimer': {
+            $etat.="modification";
+            $myPDO->delete($idElem);
+            $_SESSION['etat'] = 'supprime';
+            ?> <script>  document.location.href = '../../../Vue/utensiles.php';  </script> <?php
             break;
         }
 
