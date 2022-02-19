@@ -18,7 +18,7 @@ $va =  $myPDO->getAll();
     <title>Cocktail</title>
 </head>
 <body>
-    <h1>Utensiles</h1>
+    <h1>Ustensiles</h1>
     <div class="arrow" id="retour">
     <img src="../images/retour.png" alt="retour" class="retour">
     </i>

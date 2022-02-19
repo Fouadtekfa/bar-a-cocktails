@@ -50,7 +50,7 @@ require_once "imports.php";
             <div class="imageContainer imgUtensiles">
             </div>
             <div class="titleContainer">
-                <h2>Utensiles</h2>
+                <h2>Ustensiles</h2>
             </div>
         </div>
         <div class="produit verreContainer" id="verres">
