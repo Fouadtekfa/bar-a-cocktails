@@ -13,5 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('insertContainer').style.display = 'block';
     });
 
+    let elements = document.getElementsByClassName("etapes-btn");
 
+    let functionEtapes = function() {
+        document.getElementById("")
+    };
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', functionEtapes, false);
+    }
 });
