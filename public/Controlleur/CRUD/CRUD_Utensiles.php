@@ -7,18 +7,16 @@ $myPDO->setNomTable('Utensile');
 $contenu = "";
 $idElem = "";
 $etat="";
-?> <p> <?php $_GET['u_id']  ?> </p> <?php
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
         case 'insererUtensile': {
             $nbUtensiles = $myPDO->getCountValue();
-            echo $nbUtensiles;
-            echo  $_GET['nom'];
-                        
+
             $contenu = array(
+                "u_id" => 'null',
                 "u_nom" => $_GET['nom']
             );
-
+            
             $_SESSION['etat'] = 'creation';
             break;        
         }
@@ -34,7 +32,6 @@ if (isset($_GET['action'])){
             break;        
         }
         case 'suppression': {
-            ?><p> <?php echo $_GET['u_id'] ?></p> <?php
             $idElem = array(
                 "u_id" => $_GET['u_id']
             );
