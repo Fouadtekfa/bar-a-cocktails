@@ -6,7 +6,7 @@ include "../../Vue/utensiles.php";
 //Initialisation de connexion
 try {
     $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'Utensile');
-    echo "CONNEXION!" ;
+    //echo "CONNEXION!" ;
 }catch (PDOException $e){
     echo "Il y a eu une erreur : " .$e->getMessage() ;
 }
@@ -20,7 +20,7 @@ $contenu = "";
 $idElem = "";
 $etat="";
 
-if (isset($_GET['action']))
+if (isset($_GET['action'])) 
     switch ($_GET['action']) {
         case 'viewUtensile': {
             $myPDO->initPDOS_selectAll();
@@ -38,32 +38,17 @@ if (isset($_GET['action']))
         }
 
         case 'modifierUtensile': {
-            /*$nbUtensiles = $myPDO->getCountValue();
-            $idElem = 'u_id';
-            $contenu = array(
-                "u_id" => $_GET['u_id'],
-                "u_nom" => $_GET['u_nom']
-            );
-            $_SESSION['etat'] = 'modification';*/
             $utensile = $myPDO->get('u_id', $_GET['u_id']);
             $contenu.=$vue->getDebutHTML();
             $contenu.= $vue->getHTMLUpdate($utensile);
+            $_SESSION['etat'] = 'modification';
             break;        
         }
         case 'suppression': {
-            /*$idElem = array(
-                "u_id" => $_GET['u_id']
-            );*/
-            
-            $myPDO->initPDOS_selectAll();
-            $va =  $myPDO->getAll();
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLTable($va);
-
-            //$_SESSION['etat'] = 'supprimer';
+            $_SESSION['etat'] = 'supprimer';
             break;        
         }
-    } 
+} 
 
 if (isset($_SESSION['etat']))
         switch ($_SESSION['etat']) {
@@ -75,6 +60,7 @@ if (isset($_SESSION['etat']))
                         "u_id" => 'null',
                         "u_nom" => $_GET['nom']
                     );
+                    
                     $myPDO->insert($insert);
                     $myPDO->initPDOS_selectAll();
                     $va =  $myPDO->getAll();
@@ -91,17 +77,44 @@ if (isset($_SESSION['etat']))
 
             case 'modification': {
                 $etat.="modification";
-                //$myPDO->update($idElem, $contenu);
+                $nbUtensiles = $myPDO->getCountValue();
+                
+                $idElem = 'u_id';
+                if(isset($_GET['u_id']) && isset($_GET['u_nom'])) {
+                    $update = array(
+                        "u_id" => $_GET['u_id'],
+                        "u_nom" => $_GET['u_nom']
+                    );
+
+                    $myPDO->update($idElem, $update);
+
+                    $myPDO->initPDOS_selectAll();
+                    $va =  $myPDO->getAll();
+                    $contenu="";
+                    $contenu.=$vue->getDebutHTML();
+                    $contenu.= $vue->getHTMLTable($va);
+                }
+                
                 $_SESSION['etat'] = 'modifie';
-                ?> <script>  document.location.href = '../../Vue/utensiles.php';  </script> <?php
                 break;
             }
 
             case 'supprimer': {
                 $etat.="modification";
-                //$myPDO->delete($idElem);
+                
+                $idElem = array(
+                    "u_id" => $_GET['u_id']
+                );
+                $myPDO->delete($idElem);
                 $_SESSION['etat'] = 'supprime';
-                ?> <script>  document.location.href = '../../../Vue/utensiles.php';  </script> <?php
+                
+                $myPDO->initPDOS_selectAll();
+                $va =  $myPDO->getAll();
+                $contenu="";
+                $contenu.=$vue->getDebutHTML();
+                $contenu.= $vue->getHTMLTable($va);
+                $_SESSION['etat'] = 'supprime';
+
                 break;
             }
             case 'créé': 

@@ -15,13 +15,18 @@ class vueUtensiles {
                             <link rel="stylesheet" href="../../css/utensiles.css">
                             <title>Cocktail</title>
                         </head>
+                        <h1>Ustensiles</h1>
+                        <div class="arrow" id="retour">
+                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                        </i>
+                        </div>                
                     <body>';
         return $corps;
     }
 
     public function getHTMLUpdate(EntiteUtensile  $utensile) : string {
         $corps =    '<div class="insertContainer" id="insertUpdateContainer">'.
-                        '<form id="updateUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_Utensiles.php" name="action" >'.
+                        '<form id="updateUtensileForm"  method="get" name="action" >'.
                             '<input type="text" name="action" value="modifierUtensile" hidden>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="u_id" name="u_id" hidden placeholder="Nom de lutensile" value="'.$utensile->getUId().'" >
