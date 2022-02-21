@@ -37,7 +37,9 @@ class vueUtensiles {
     public function getHTMLTable($va) : string {
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
-                        <button type="button" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+                        <form id="insererUtensileFormButton"  method="post" action="?action=insererUtensile">
+                        <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+                        </form>
                     </div>
                     <div class="tableContainer">
                         <table class="table">
@@ -54,10 +56,10 @@ class vueUtensiles {
             $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getUId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getUNom() . '</input></td>
-                                    <td class="td_buttons_actions"><a href="?u_id='.$valeur->getUId().'">
+                                    <td class="td_buttons_actions"><a href="?action=modifierUtensile&u_id='.$valeur->getUId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
-                                    <a href="../Controlleur//CRUD/CRUD_Utensiles.php?action=suppression&u_id='.$valeur->getUId().'">
+                                    <a href="?action=suppression&u_id='.$valeur->getUId().'">
                                     <button type="button" class="btn btn-danger">Supprimer</button></a></td>
                                 </tr>';
         }
@@ -69,4 +71,19 @@ class vueUtensiles {
         return $corps;
     }
 
+    public function getHTMLInsert() : string {
+        $corps = '<div class="insertContainer" id="insertContainer">
+                    <form id="addUtensileForm"  method="get" action="CRUD_Utensiles.php" name="action" value="2" >
+                        <input type="text" name="action" value="insererUtensile" hidden>
+                        <div class="form-group">
+                            <label for="name" class="rowsInformation">Nom de lutensile</label>
+                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de lutensile">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajout</button>
+                    </form>
+                </div>';
+
+        return $corps;
+   }
+    
 }
