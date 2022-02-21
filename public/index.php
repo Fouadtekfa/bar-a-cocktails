@@ -37,7 +37,7 @@ require_once "getDebutHtml.html";
             </div>
         </div>
         <div class="produit utensilesContainer" id="utensiles">
-            <a class="prin" href="../public/Controlleur/CRUD/CRUD_Utensiles.php?action=viewUtensile">
+            <a class="prin" href="../public/Controlleur/CRUD/CRUD_Utensiles.php?action=read">
                 <div class="imageContainer imgUtensiles">
                 </div>
                 <div class="titleContainer">

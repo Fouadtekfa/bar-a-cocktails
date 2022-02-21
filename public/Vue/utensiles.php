@@ -24,18 +24,28 @@ class vueUtensiles {
         return $corps;
     }
 
-    public function getHTMLUpdate(EntiteUtensile  $utensile) : string {
-        $corps =    '<div class="insertContainer" id="insertUpdateContainer">'.
-                        '<form id="updateUtensileForm"  method="get" name="action" >'.
-                            '<input type="text" name="action" value="modifierUtensile" hidden>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="u_id" name="u_id" hidden placeholder="Nom de lutensile" value="'.$utensile->getUId().'" >
-                                    <label for="name" class="rowsInformation">Nom de lutensile</label>
-                                <input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$utensile->getUNom().'">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Modifier</button>
-                        </form>
-                    </div>';
+    public function getHTMLUpdate(array  $utensile) : string {
+        $corps = "";
+        
+                $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
+                                '<form id="updateUtensileForm"  method="get" name="action" >'.
+                                    '<input type="text" name="action" value="modifierUtensile" hidden>
+                                    <div class="form-group">';
+                foreach ($utensile as $col => $val) {
+                     if (is_array($val)) {
+                         $hide = "";
+                         if($col == 'u_id') $hide = 'hidden';
+                         $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="u_id" name="'.$col.'" placeholder="Nom de lutensile" value="'.$val['default'].'" >';
+                                        
+                                        //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
+                      }
+                }
+                        $corps.='            </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                            </div>';
+            
         return $corps;
     }
 
@@ -58,6 +68,8 @@ class vueUtensiles {
                             <tbody>';
     
         foreach ($va as $valeur){  
+            if ($valeur instanceof EntiteUtensile) {
+
             $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getUId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getUNom() . '</input></td>
@@ -67,6 +79,7 @@ class vueUtensiles {
                                     <a href="?action=suppression&u_id='.$valeur->getUId().'">
                                     <button type="button" class="btn btn-danger">Supprimer</button></a></td>
                                 </tr>';
+            }
         }
         
         $corps.= '      </tbody>

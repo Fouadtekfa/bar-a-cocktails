@@ -22,7 +22,7 @@ $etat="";
 
 if (isset($_GET['action'])) 
     switch ($_GET['action']) {
-        case 'viewUtensile': {
+        case 'read': {
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
             $contenu.=$vue->getDebutHTML();
@@ -40,7 +40,14 @@ if (isset($_GET['action']))
         case 'modifierUtensile': {
             $utensile = $myPDO->get('u_id', $_GET['u_id']);
             $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLUpdate($utensile);
+            
+            
+            $contenu .= $vue->getHTMLUpdate(array(
+            'u_id'=>array('type'=>'text','default'=> $utensile->getUId(), 'titre' => 'id'),
+            'u_nom'=>array('type'=>'text','default'=>$utensile->getUNom(), 'titre' => 'Nom de l utensile'),
+            ));
+
+            //$contenu.= $vue->getHTMLUpdate($utensile);
             $_SESSION['etat'] = 'modification';
             break;        
         }
