@@ -1,4 +1,26 @@
 <?php
+
+namespace bar;
+class vueUtensiles {
+
+    public function getHTMLUpdate(EntiteUtensile  $utensile) : string {
+        $corps =    `<div class="insertContainer" id="insertUpdateContainer">
+                        <form id="updateUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_Utensiles.php" name="action" >
+                            <input type="text" name="action" value="modifierUtensile" hidden>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="u_id" name="u_id" hidden placeholder="Nom de l'utensile" value="<?php echo $utensile->getUId() ?>" >
+                                    <label for="name" class="rowsInformation">Nom de l'utensile</label>
+                                <input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de l'utensile" value="<?php echo $utensile->getUNom() ?>">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        </form>
+                    </div>`;
+        return $corps;
+    }
+
+}
+
+
 require_once "../imports.php";
 require_once "../Modele/EntiteUtensile.php";
 $myPDO = $_ENV['myPdo'];
