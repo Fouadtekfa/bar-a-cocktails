@@ -56,7 +56,7 @@ public function getHTMLUpdate(array  $cocktaile) : string {
         $res='
         
                  <div class="buttonContainer">
-          <form id="insererCocktailFormButton"  method="post" action="?action=insererCocktail">
+          <form id="insererCocktailFormButton"  method="post" action="?action=create">
         <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
         </form>
     </div>
@@ -84,7 +84,9 @@ public function getHTMLUpdate(array  $cocktaile) : string {
                             <td>'. $valeur->getCprix().' €</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary etapes-btn">Etapes</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
+                             <td class="td_buttons_actions">
+                              <a href="?action=delete&c_id='.$valeur->getCId().'">
+                              <button type="button" class="btn btn-danger">Supprimer</button></a></td>
                         </tr> ';
 
                         }
@@ -98,7 +100,7 @@ public function getHTMLUpdate(array  $cocktaile) : string {
     public function getHTMLInsert() : string {
         $res=' <div class="insertContainer"  id="insertContainer">
         <form id="addUtensileForm"  method="get" name="action" >
-            <input type="text" name="action" value="insererCocktail" hidden>
+            <input type="text" name="action" value="create" hidden>
             <div class="form-group">
                 <label for="name">Nom de Cocktail </label>
                 <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail">

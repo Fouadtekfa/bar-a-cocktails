@@ -32,7 +32,9 @@ if (isset($_GET['action'])){
             $contenu.= $vue->getHTMLAll($va);
             break;
         }
-        case 'insererCocktail': {
+        case 'create': {
+
+            //insererCocktail
             $contenu.=$vue->getDebutHTML();
             $contenu.= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
@@ -41,14 +43,20 @@ if (isset($_GET['action'])){
 
             break;
         }
-        case 'modifierUtensile': {
-            $nbUtensiles = $myPDO->getCountValue();
+        /*case '': {
+            $nb = $myPDO->getCountValue();
             $contenu = array(
-                "u_id" => $_GET['nom'],
-                "u_nom" => $_GET['nom']
+                "C_id" => $_GET['nom'],
+                "C_nom" => $_GET['nom']
             );
 
             $_SESSION['etat'] = 'modification';
+
+            break;
+        }
+        */
+        case 'delete': {
+            $_SESSION['etat'] = 'supprimer';
             break;
         }
     }
@@ -78,6 +86,25 @@ if (isset($_SESSION['etat'])) {
             $_SESSION['etat'] = 'créé';
 
             break;
+        case 'supprimer': {
+            $etat.="modification";
+
+            $idElem = array(
+                "c_id" => $_GET['c_id']
+            );
+            $myPDO->delete($idElem);
+            $_SESSION['etat'] = 'supprime';
+
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu="";
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLAll($va);
+            $_SESSION['etat'] = 'supprime';
+
+            break;
+        }case 'créé':
+        break;
 
     }
 }
