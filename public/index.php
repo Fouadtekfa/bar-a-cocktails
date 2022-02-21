@@ -1,4 +1,6 @@
 <?php
+session_start();
+session_unset();
 require_once "imports.php";
 require_once "getDebutHtml.html";
 ?>
