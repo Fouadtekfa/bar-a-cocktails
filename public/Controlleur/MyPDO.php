@@ -9,9 +9,11 @@ class MyPDO {
     private PDOStatement $pdos_selectAll;
     private string $nomTable;
 
-    public function __construct($sgbd, $host, $db, $user, $password){
+    public function __construct($sgbd, $host, $db, $user, $password, $table){
         $this->pdo = new PDO("mysql:host=".$host.";dbname=".$db, $user, $password);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $this->setNomTable($table);
     }
 
     public function initPDOS_selectAll() {

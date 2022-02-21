@@ -1,14 +1,38 @@
 <?php 
-
 require_once "../../imports.php";
 require_once "../../Modele/EntiteUtensile.php";
-$myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('Utensile');
+include "../../Vue/utensiles.php";
+
+//Initialisation de connexion
+try {
+    $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'Utensile');
+    echo "CONNEXION!" ;
+}catch (PDOException $e){
+    echo "Il y a eu une erreur : " .$e->getMessage() ;
+}
+
+
+// Initialisation de notre vue Utensiles
+$vue = new  bar\vueUtensiles();
+
+//$myPDO->initPDOS_selectAll();
+//$va =  $myPDO->getAll();
+
+// Initialisation de chaines
 $contenu = "";
 $idElem = "";
 $etat="";
+
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
+        case 'viewUtensile': {
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
+            break;        
+        }
+
         case 'insererUtensile': {
             $nbUtensiles = $myPDO->getCountValue();
 
@@ -70,6 +94,9 @@ if (isset($_SESSION['etat'])) {
 
     }
 }
+
+echo $contenu;
+require "../../getFinHtml.html";
     
 
 ?>

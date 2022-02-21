@@ -37,12 +37,15 @@ require_once "getDebutHtml.html";
             </div>
         </div>
         <div class="produit utensilesContainer" id="utensiles">
-            <div class="imageContainer imgUtensiles">
-            </div>
-            <div class="titleContainer">
-                <h2>Ustensiles</h2>
-            </div>
+            <a class="prin" href="../public/Controlleur/CRUD/CRUD_Utensiles.php?action=viewUtensile">
+                <div class="imageContainer imgUtensiles">
+                </div>
+                <div class="titleContainer">
+                    <h2>Ustensiles</h2>
+                </div>
+            </a>
         </div>
+        
         <div class="produit verreContainer" id="verres">
             <div class="imageContainer imgVerre">
             </div>
