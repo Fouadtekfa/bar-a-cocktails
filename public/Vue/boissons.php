@@ -25,6 +25,11 @@ $va =  $myPDO->getAll();
     <img src="../images/retour.png" alt="retour" class="retour">
     </i>
     </div>
+    <div id="informationEntite">
+        <div class="buttonContainer">
+
+        <button type="button" class="btn btn-primary" id="btnAjouter">Ajouter</button>
+     </div>
     <div class="tableContainer">
         <table class="table">
             <thead class="thead-dark">
@@ -42,26 +47,69 @@ $va =  $myPDO->getAll();
                 foreach ($va as $valeur){  ?>
 
                         <tr>
-                            <td><?php echo $valeur->getBId(); ?></td>
+                            <th scope="row"><?php echo $valeur->getBId() ?></th>
+
                             <td><?php echo $valeur->getBNom(); ?></td>
                             <td><?php echo $valeur->getBType(); ?></td>
                             <td><?php echo $valeur->getBEstAlcoolise(); ?></td>
                             <td><?php  echo $valeur->getBQteStockee(); ?></td>
 
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
                         </tr>
                     
                         <?php } ?>
+
             </tbody>
         </table>    
+    </div>
+    </div>
+
+    <div class="insertContainer" style="display: none" id="insertContainer">
+        <form id="addUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_boissons.php" name="action" value="2" >
+            <input type="text" name="action" value="insererBoisson" hidden>
+
+            <div class="form-group">
+                <label for="name">Nom de la boisson</label>
+                <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de la boisson">
+
+                <label for="name">Type</label>
+                <input type="text" class="form-control" id="name" name="type" placeholder="Type de la boisson">
+
+                <div class="form-check">
+                    <label for="name">Alcolisée ou non</label></br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="estAlcoolise" id="name">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Default checkbox
+                        </label>
+                    </div>
+
+
+                </div>
+
+
+
+                <label for="name">Quantité stockée</label>
+                <input type="text" class="form-control" id="name" name="qteStockee" placeholder="La quantité stockée de la boisson">
+
+
+
+
+            </div>
+            <button type="submit" class="btn btn-primary">Ajout</button>
+        </form>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/boissons.js"></script>
+
+
+
+
 
 </body>
 </html>
