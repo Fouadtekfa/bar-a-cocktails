@@ -1,5 +1,8 @@
 <?php 
-require_once "../../imports.php";
+session_start();
+
+require_once "../MyPDO.php";
+require_once "../connexion.php";
 require_once "../../Modele/EntiteUtensile.php";
 include "../../Vue/utensiles.php";
 
@@ -19,6 +22,10 @@ $vue = new  bar\vueUtensiles();
 $contenu = "";
 $idElem = "";
 $etat="";
+
+if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
+    $_GET['action'] = 'read';
+}
 
 if (isset($_GET['action'])) 
     switch ($_GET['action']) {
@@ -40,8 +47,6 @@ if (isset($_GET['action']))
         case 'modifierUtensile': {
             $utensile = $myPDO->get('u_id', $_GET['u_id']);
             $contenu.=$vue->getDebutHTML();
-            
-            
             $contenu .= $vue->getHTMLUpdate(array(
             'u_id'=>array('type'=>'text','default'=> $utensile->getUId(), 'titre' => 'id'),
             'u_nom'=>array('type'=>'text','default'=>$utensile->getUNom(), 'titre' => 'Nom de l utensile'),
@@ -52,12 +57,24 @@ if (isset($_GET['action']))
             break;        
         }
         case 'suppression': {
+            $etat.="modification";
+                
+            $idElem = array(
+                    "u_id" => $_GET['u_id']
+                );
+            
+            $myPDO->delete($idElem);
+            $_SESSION['etat'] = 'supprime';
+                
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu="";
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
             $_SESSION['etat'] = 'supprimer';
             break;        
         }
-} 
-
-if (isset($_SESSION['etat']))
+} else if (isset($_SESSION['etat']))
         switch ($_SESSION['etat']) {
             case 'creation': {
                 $etat.="creation";
@@ -107,25 +124,17 @@ if (isset($_SESSION['etat']))
             }
 
             case 'supprimer': {
-                $etat.="modification";
-                
-                $idElem = array(
-                    "u_id" => $_GET['u_id']
-                );
-                $myPDO->delete($idElem);
                 $_SESSION['etat'] = 'supprime';
-                
-                $myPDO->initPDOS_selectAll();
-                $va =  $myPDO->getAll();
-                $contenu="";
-                $contenu.=$vue->getDebutHTML();
-                $contenu.= $vue->getHTMLTable($va);
-                $_SESSION['etat'] = 'supprime';
-
                 break;
             }
             case 'créé': 
-                        break;
+            case 'modifie' :
+            case 'supprime' :
+                $myPDO->initPDOS_selectAll();
+                $va =  $myPDO->getAll();
+                $contenu.=$vue->getDebutHTML();
+                $contenu.= $vue->getHTMLTable($va);
+                break;
 
     }
 echo $contenu;

@@ -28,9 +28,8 @@ class vueUtensiles {
         $corps = "";
         
                 $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-                                '<form id="updateUtensileForm"  method="get" name="action" >'.
-                                    '<input type="text" name="action" value="modifierUtensile" hidden>
-                                    <div class="form-group">';
+                                '<form id="updateUtensileForm"  method="get">'.
+                                    '<div class="form-group">';
                 foreach ($utensile as $col => $val) {
                      if (is_array($val)) {
                          $hide = "";
@@ -91,8 +90,7 @@ class vueUtensiles {
 
     public function getHTMLInsert() : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addUtensileForm"  method="get" action="CRUD_Utensiles.php" name="action" value="2" >
-                        <input type="text" name="action" value="insererUtensile" hidden>
+                    <form id="addUtensileForm"  method="get" action="CRUD_Utensiles.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">Nom de lutensile</label>
                             <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de lutensile">
