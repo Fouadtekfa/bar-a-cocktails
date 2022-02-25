@@ -1,31 +1,64 @@
 <?php
-require_once "../imports.php";
-require_once "../Modele/EntiteCocktail.php";
-$myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('Cocktail');
-$myPDO->initPDOS_selectAll();
-$va =  $myPDO->getAll();
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/cocktails.css">
-    <title>Cocktail</title>
-</head>
-<body>
-    <h1>Cocktails</h1>
-    <div class="arrow" id="retour">
-    <img src="../images/retour.png" alt="retour" class="retour">
-    </i>
-    </div>
-    <div class="buttonContainer">
-        <button type="button" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+namespace bar;
+
+class VueCocktail
+{
+
+    public function getDebutHTML(): string
+    {
+        $res = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                    <link rel="stylesheet" href="../../css/style.css">
+                    <link rel="stylesheet" href="../../css/cocktails.css">
+                    <title>Cocktail</title>
+                </head>
+                 <h1>Cocktails</h1>
+                    <div class="arrow" id="retour">
+                    <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                    </i>
+                    </div>
+                <body>';
+        return $res;
+}
+public function getHTMLUpdate(array  $cocktaile) : string {
+    $res=   '    <div class="insertContainer" id="insertUpdateCocktail">
+            <form id="updateCocktailForm"  method="get" action="../Controlleur/CRUD/CRUD_Cocktails.php" name="action" >
+                <input type="text" name="action" value="modifierCocktail" hidden>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="c_id" name="c_id" hidden placeholder="Nom de Cocktail" value="'. $cocktaile->getCId() .'" >
+                    <label for="name" class="rowsInformation">Nom de lutensile</label>
+                    <input type="text" class="form-control" id="c_nom" name="c_nom" placeholder="Nom de Cocktail" value="'.$cocktaile->getCNom() .'">
+                    <label for="cat">catégorie de Cocktail</label>
+                    <select id="cat" name="cat" class="form-control">
+                        <option value="'.$cocktaile->getCCat().'">SD</option>
+                        <option value="'.$cocktaile->getCCat() .'">LD</option>
+                        <option value="'.$cocktaile->getCCat().'">AD</option>
+                    </select>
+                    <label for="prix">Prix de Cocktail </label>
+                    <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail"value="'. $cocktaile->getCPrix().' " >
+
+                </div>
+                <button type="submit" class="btn btn-primary">Modifier</button>
+            </form>
+
+        </div>';
+
+
+    return $res;
+}
+    public function getHTMLAll($va) : string {
+        $res='
+        
+                 <div class="buttonContainer">
+          <form id="insererCocktailFormButton"  method="post" action="?action=create">
+        <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+        </form>
     </div>
     <div id="informationEntite">
 
@@ -41,28 +74,33 @@ $va =  $myPDO->getAll();
                     <th scope="col" colspan="4" style="text-align: center;">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php
-                foreach ($va as $valeur){  ?>
-
+            <tbody>';
+        foreach ($va as $valeur){
+            $res.='
                         <tr>
-                            <th scope="row"><?php echo $valeur->getCId() ?></th>
-                            <td><?php echo $valeur->getCNom(); ?></td>
-                            <td><?php echo $valeur->getCCat(); ?></td>
-                            <td><?php echo $valeur->getCprix(); ?> €</td>
+                            <th scope="row">'. $valeur->getCId().' </th>
+                            <td>'.$valeur->getCNom() .'</td>
+                            <td>'. $valeur->getCCat().'</td>
+                            <td>'. $valeur->getCprix().' €</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary etapes-btn">Etapes</button></td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
-                        </tr>
-                    
-                        <?php } ?>
-            </tbody>
+                             <td class="td_buttons_actions">
+                              <a href="?action=delete&c_id='.$valeur->getCId().'">
+                              <button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                        </tr> ';
+
+                        }
+    $res .='        </tbody>
         </table>    
     </div>
     </div>
-    <div class="insertContainer" style="display: none" id="insertContainer">
-        <form id="addUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_Cocktails.php" name="action" >
-            <input type="text" name="action" value="insererCocktail" hidden>
+        ';
+        return $res;
+    }
+    public function getHTMLInsert() : string {
+        $res=' <div class="insertContainer"  id="insertContainer">
+        <form id="addUtensileForm"  method="get" name="action" >
+            <input type="text" name="action" value="create" hidden>
             <div class="form-group">
                 <label for="name">Nom de Cocktail </label>
                 <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail">
@@ -80,11 +118,14 @@ $va =  $myPDO->getAll();
         </form>
 
     </div>
+        ';
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="../js/cocktails.js"></script>
 
-</body>
-</html>
+        return $res;
+    }
+
+
+}
+
+?>
+

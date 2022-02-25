@@ -2,35 +2,61 @@
 
 require_once "../../imports.php";
 require_once "../../Modele/EntiteCocktail.php";
-$myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('Cocktail');
+include "../../Vue/cocktails.php";
+
+
+try {
+    $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'cocktail');
+    //echo "CONNEXION!" ;
+}catch (PDOException $e){
+    echo "Il y a eu une erreur : " .$e->getMessage() ;
+}
+// Initialisation de notre vue Cocktail
+$vue = new  bar\VueCocktail();
+
+// Initialisation de chaines
 $contenu = "";
+$idElem = "";
 $etat="";
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
-        case 'insererCocktail': {
-            $nbCocktail = $myPDO->getCountValue();
-            echo $nbCocktail;
-            echo  $_GET['nom'];
-
-            $contenu = array(
-                "c_id" => "null",
-                "c_nom" => $_GET['nom'],
-                "c_cat"=>$_GET['cat'],
-                "c_prix"=>$_GET['prix']
-            );
-
-            $_SESSION['etat'] = 'creation';
+        case 'read': {
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            /*
+            foreach ($va as $var){
+                echo $var->getCNom();
+            }
+            */
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLAll($va);
             break;
         }
-        case 'modifierUtensile': {
-            $nbUtensiles = $myPDO->getCountValue();
+        case 'create': {
+
+            //insererCocktail
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLInsert();
+            $_SESSION['etat'] = 'creation';
+
+
+
+            break;
+        }
+        /*case '': {
+            $nb = $myPDO->getCountValue();
             $contenu = array(
-                "u_id" => $_GET['nom'],
-                "u_nom" => $_GET['nom']
+                "C_id" => $_GET['nom'],
+                "C_nom" => $_GET['nom']
             );
 
             $_SESSION['etat'] = 'modification';
+
+            break;
+        }
+        */
+        case 'delete': {
+            $_SESSION['etat'] = 'supprimer';
             break;
         }
     }
@@ -40,18 +66,50 @@ if (isset($_SESSION['etat'])) {
     switch ($_SESSION['etat']) {
         case 'creation':
             $etat.="creation";
-            $myPDO->insert($contenu);
+
+            if(isset($_GET['nom'])&&isset($_GET['cat'])&&isset($_GET['prix'])){
+                $insert = array(
+                    "c_id" => "null",
+                    "c_nom" => $_GET['nom'],
+                    "c_cat"=>$_GET['cat'],
+                    "c_prix"=>$_GET['prix']
+                );
+                $myPDO->insert($insert);
+                $myPDO->initPDOS_selectAll();
+                $va =  $myPDO->getAll();
+                $contenu='';
+                $contenu.=$vue->getDebutHTML();
+                $contenu.= $vue->getHTMLAll($va);
+
+            }
+
             $_SESSION['etat'] = 'créé';
-            ?> <script>  document.location.href = '../../Vue/cocktails.php';  </script> <?php
+
             break;
+        case 'supprimer': {
+            $etat.="modification";
+
+            $idElem = array(
+                "c_id" => $_GET['c_id']
+            );
+            $myPDO->delete($idElem);
+            $_SESSION['etat'] = 'supprime';
+
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu="";
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLAll($va);
+            $_SESSION['etat'] = 'supprime';
+
+            break;
+        }case 'créé':
+        break;
 
     }
 }
-
+echo $contenu;
+require "../../getFinHtml.html";
 
 ?>
-<p><?php foreach($contenu as $value) {
-        echo $value;
-    }
 
-    echo $etat?></p>

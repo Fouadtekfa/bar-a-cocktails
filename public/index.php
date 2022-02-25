@@ -7,13 +7,14 @@ require_once "getDebutHtml.html";
 
     <div class="contentContainer">
         <div class="produit cocktailContainer" id="cocktails">
+            <a class="prin" href="../public/Controlleur/CRUD/CRUD_Cocktails.php?action=read">
             <div class="imageContainer imgCocktail">
             </div>
             <!--<a href="Vue/ho.php?action=selectionnerTable&table_name=Cocktail"> -->
             <div class="titleContainer">
                 <h2>Cocktails</h2>
             </div>
-            <!-- </a> -->
+            </a>
         </div>
         <div class="produit boissonContainer" id="boissons">
             <div class="imageContainer imgBoisson">
