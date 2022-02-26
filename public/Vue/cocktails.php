@@ -26,32 +26,40 @@ class VueCocktail
                 <body>';
         return $res;
 }
-public function getHTMLUpdate(array  $cocktaile) : string {
-    $res=   '    <div class="insertContainer" id="insertUpdateCocktail">
-            <form id="updateCocktailForm"  method="get" action="../Controlleur/CRUD/CRUD_Cocktails.php" name="action" >
-                <input type="text" name="action" value="modifierCocktail" hidden>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="c_id" name="c_id" hidden placeholder="Nom de Cocktail" value="'. $cocktaile->getCId() .'" >
-                    <label for="name" class="rowsInformation">Nom de lutensile</label>
-                    <input type="text" class="form-control" id="c_nom" name="c_nom" placeholder="Nom de Cocktail" value="'.$cocktaile->getCNom() .'">
-                    <label for="cat">catégorie de Cocktail</label>
-                    <select id="cat" name="cat" class="form-control">
-                        <option value="'.$cocktaile->getCCat().'">SD</option>
-                        <option value="'.$cocktaile->getCCat() .'">LD</option>
-                        <option value="'.$cocktaile->getCCat().'">AD</option>
-                    </select>
-                    <label for="prix">Prix de Cocktail </label>
-                    <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail"value="'. $cocktaile->getCPrix().' " >
+    public function getHTMLUpdate(array  $cocktaile) : string {
+    $corps = "";
 
-                </div>
-                <button type="submit" class="btn btn-primary">Modifier</button>
-            </form>
+    $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
+        '<form id="updateCocktailForm"  method="get"  >'.
 
-        </div>';
+                                    '<div class="form-group">';
+    foreach ($cocktaile as $col => $val) {
+       if (is_array($val)) {
+            $hide = "c_id";
+            if($col == 'c_id') $hide = 'hidden';
+            if($val['balise'] == "select") {
+                $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                           <'.$val['balise'].'  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" >
+                                <option value="SD" selected>SD</option>
+                                <option value="LD">LD</option>
+                                <option value="AD">AD</option> 
+                            </select>';
+            } else {
+                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+       
+                                        <'.$val['balise'].'  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" >';
 
+            }
 
-    return $res;
-}
+       }
+    }
+    $corps.='            </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                            </div>';
+
+    return $corps;
+   }
     public function getHTMLAll($va) : string {
         $res='
         
@@ -83,7 +91,11 @@ public function getHTMLUpdate(array  $cocktaile) : string {
                             <td>'. $valeur->getCCat().'</td>
                             <td>'. $valeur->getCprix().' €</td>
                             <td class="td_buttons_actions"><button type="button" class="btn btn-primary etapes-btn">Etapes</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
+                            
+                            
+                              <td class="td_buttons_actions"><a href="?action=update&c_id='.$valeur->getCId().'">
+                                    <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                            
                              <td class="td_buttons_actions">
                               <a href="?action=delete&c_id='.$valeur->getCId().'">
                               <button type="button" class="btn btn-danger">Supprimer</button></a></td>
@@ -99,13 +111,13 @@ public function getHTMLUpdate(array  $cocktaile) : string {
     }
     public function getHTMLInsert() : string {
         $res=' <div class="insertContainer"  id="insertContainer">
-        <form id="addUtensileForm"  method="get" name="action" >
-            <input type="text" name="action" value="create" hidden>
+        <form id="addUtensileForm"  method="get"  >
+            
             <div class="form-group">
                 <label for="name">Nom de Cocktail </label>
                 <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail">
                 <label for="cat">catégorie de Cocktail</label>
-                <select id="cat" name="cat" class="form-control">
+                <select type="text" id="cat" name="cat" class="form-control">
                         <option value="SD">SD</option>
                         <option value="LD">LD</option>
                         <option value="AD">AD</option>
