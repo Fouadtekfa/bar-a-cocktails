@@ -1,0 +1,192 @@
+
+   
+    .box{
+        font-size:16px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: aqua;
+        text-align: center;
+        background-color:unset;
+    
+    }
+    .bg-img4{
+        background-image: url("../images/background.jpg") ;
+        background-position: center center;
+        background-repeat:  no-repeat;
+        background-attachment: fixed;
+        background-size:  cover;
+        font-size: larger;
+    }
+    
+    .conteneur1{
+        overflow: hidden;
+        max-width: 2000px;
+        margin: 50px auto;
+        
+        box-shadow: 0px 15px 10px -5px #777;
+    }
+    .d2{
+        width: 1000px;
+        height: 500px;
+        margin-top: 30px;
+        background-color: #EDEDED;
+        background-size: contain;
+        animation: defilement2 20s linear infinite;
+    }
+    @keyframes defilement2{
+        0%{
+            transform: translate(0,0);
+            background-image: url("../images/ingredients/Ingredient1.jpg");
+        }
+        100%{
+            background-image: url("../images/ingredients/Ingredient2.jpg");
+            transform: translate(0,0);
+        }
+        40%{background-image: url("../images/ingredients/Ingredient3.jpg");
+            transform: translate(0,0);
+        }
+        60%{
+            background-image: url("../images/ingredients/Ingrédient4.jpg");
+            transform: translate(0,0);
+        }
+        80%{
+            background-image: url("../images/ingredients/Ingredient5.jpg");
+            transform: translate(0,0);
+        }
+        100%{
+            background-image: url("../images/ingredients/Ingredient6.jpg");
+            transform: translate(0,0);
+        }
+    }
+
+
+
+
+    .d1{
+        width: 1000px;
+        height: 500px;
+        margin-top: 30px;
+        background-color: #EDEDED;
+        background-size: contain;
+        animation: defilement1 20s linear infinite;
+    }
+    @keyframes defilement1{
+        0%{
+            transform: translate(0,0);
+            background-image: url("../images/verres/Verre.jpeg");
+        }
+        100%{
+            background-image: url("../images/verres/Verre2.jpeg");
+            transform: translate(0,0);
+        }
+        40%{background-image: url("../images/verres/Verre3.jpeg");
+            transform: translate(0,0);
+        }
+        60%{
+            background-image: url("../images/verres/Verre4.jpeg");
+            transform: translate(0,0);
+        }
+        80%{
+            background-image: url("../images/verres/Verre5.jpeg");
+            transform: translate(0,0);
+        }
+        100%{
+            background-image: url("../images/verres/Verre6.jpeg");
+            transform: translate(0,0);
+        }
+    }
+    #box4{
+        display:inline-block;
+        width: 500px;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        background-color: rgba(2, 2, 2, 0.5);
+
+        -webkit-border-radius:10%;
+        -moz-border-radius:10%;
+        margin-left:60px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: large;
+    }
+    
+    #ronger{
+        border-radius:20%;
+    } 
+
+   
+    .bg-img div #ulou{
+        background-color: black;
+        border-radius:20%;
+        opacity:0.8;
+    }
+    
+    .bg-img div #ulou li a{
+        color: red;
+        font-size: larger;
+    }
+    .rond{
+        overflow:hidden;
+        -webkit-border-radius:100%;
+        -moz-border-radius:100%;
+        border-radius:100%;
+        margin-left: 250px;
+    
+    }
+    .footer{
+        display:-webkit-flex;
+        display:-moz-flex;
+        display:-ms-flex;
+        display:-o-flex;
+        background-color: #021b39;
+        display:flex;
+        flex-flow: row wrap;
+    }
+    .footer > *{
+        flex:1 100%;
+    }
+    
+    .footer-left{
+        margin-right:1.25em;
+        margin-bottom: 2em;
+    }
+    .footer-left img{
+        width:50%;
+    }
+    #titre{
+        font-weight:600;
+        font-size:40px;
+        color: red;
+        text-align: center;
+    
+    }
+    #titre2{
+        font-weight:bold;
+        font-size:20px;
+        color: darkviolet;
+        text-align: center;
+    
+    }
+    #formulaire{
+        font-size:20px;
+        color:springgreen ;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        background-color:unset;
+    
+    }
+    #titr:hover{
+        background-color:red ;
+    }
+    #titr{
+        font-weight:400;
+        font-size:20px;
+        color: black;
+        background-color: aqua;
+        opacity: 50%;
+        text-align: center;
+    }
+  
