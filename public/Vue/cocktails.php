@@ -20,7 +20,7 @@ class VueCocktail
                 </head>
                  <h1>Cocktails</h1>
                     <div class="arrow" id="retour">
-                    <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                    <a href="../../"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                     </i>
                     </div>
                 <body>';
