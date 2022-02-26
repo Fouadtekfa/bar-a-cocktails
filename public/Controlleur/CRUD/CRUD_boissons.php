@@ -63,6 +63,17 @@ if (isset($_GET['action'])) {
         }
         case 'suppression':
         {
+            $etat.="suppression";
+            $idElem = array(
+                "b_id" => $_GET['b_id']
+            );
+            $myPDO->delete($idElem);
+
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu="";
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
             $_SESSION['etat'] = 'supprimer';
             break;
         }
@@ -135,21 +146,7 @@ if (isset($_GET['action'])) {
         }
 
         case 'supprimer': {
-            $etat.="modification";
-
-            $idElem = array(
-                "b_id" => $_GET['b_id']
-            );
-            $myPDO->delete($idElem);
             $_SESSION['etat'] = 'supprime';
-
-            $myPDO->initPDOS_selectAll();
-            $va =  $myPDO->getAll();
-            $contenu="";
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLTable($va);
-            $_SESSION['etat'] = 'supprime';
-
             break;
         }
         case 'cree':
