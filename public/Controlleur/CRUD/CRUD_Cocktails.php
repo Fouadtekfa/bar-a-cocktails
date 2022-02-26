@@ -96,6 +96,33 @@ if (isset($_GET['action'])){
             $_SESSION['etat'] = 'supprimer';
             break;
         }
+        case 'details':
+
+            $cocktail = $myPDO->get('c_id', $_GET['c_id']);
+            $contenu.=$vue->getDebutHTML();
+
+            // == BOISSON CONTENU ==
+            $myPDO_Change->setNomTable('boisson');
+            $myPDO_Change->initPDOS_selectAll();
+            $boissons =  $myPDO_Change->getAll();
+            $myPDO_Change->setNomTable('liencocktailboisson');
+            $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_GET['c_id']);
+
+            // ===================
+
+            $contenu.=$vue->getHTMLDetails(array(
+                'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
+                'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
+                "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
+                "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
+            ), $boissons, $lienCockBoisson);
+            $_SESSION['etat'] = 'modification';
+
+            break;
+
+
+
+        
     }
 }else if (isset($_SESSION['etat'])) {
     switch ($_SESSION['etat']) {
