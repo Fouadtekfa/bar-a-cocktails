@@ -71,7 +71,7 @@ class vueUtensiles {
 
             $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getUId() .'</th>
-                                    <td class="rowsInformation">'. $valeur->getUNom() . '</input></td>
+                                    <td class="rowsInformation">'. $valeur->getUNom() . '</td>
                                     <td class="td_buttons_actions"><a href="?action=modifierUtensile&u_id='.$valeur->getUId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
