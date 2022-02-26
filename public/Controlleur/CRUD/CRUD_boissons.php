@@ -25,7 +25,6 @@ $etat="";
 if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
     $_GET['action'] = 'read';
 }
-echo $_SESSION['etat'];
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'read':
@@ -73,16 +72,20 @@ if (isset($_GET['action'])) {
 } else if (isset($_SESSION['etat']))
     switch ($_SESSION['etat']) {
         case 'creation': {
-            echo 'aqui';
             $etat.="creation";
             $insert = "";
-            if(isset($_GET['nom'])) {
+            $alcool = 0;
+            if(isset($_GET['b_estAlcoolise'])){
+                $alcool = 1;
+            }
+
+            if(isset($_GET['b_nom']) && isset($_GET['b_type']) && isset($_GET['b_qteStockee'])) {
                 $insert = array(
                     "b_id" => 'null',
-                    "b_nom" => $_GET['nom'],
-                    'b_type' =>$_GET['type'],
-                    'b_estAlcoolise'=>$_GET['Avec ou sans alcool'],
-                    'b_qteStockee'=>$_GET['Quantité']
+                    "b_nom" => $_GET['b_nom'],
+                    'b_type' =>$_GET['b_type'],
+                    'b_estAlcoolise'=>$alcool,
+                    'b_qteStockee'=>$_GET['b_qteStockee']
 
                 );
 
@@ -148,7 +151,6 @@ if (isset($_GET['action'])) {
         case 'cree':
         case 'modifie' :
         case 'supprime' :
-            echo "holi";
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
             $contenu.=$vue->getDebutHTML();

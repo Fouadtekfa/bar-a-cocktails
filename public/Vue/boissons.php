@@ -104,8 +104,8 @@ class vueBoissons {
         $corps = '<div class="insertContainer" id="insertContainer">
                     <form id="addBoissonForm"  method="get" action="CRUD_boissons.php">
                         <div class="form-group">
-                            <label for="name" class="rowsInformation">Nom de la boisson</label>
-                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de la boisson">
+                            <label for="b_nom" class="rowsInformation">Nom de la boisson</label>
+                            <input type="text" class="form-control" id="b_nom" name="b_nom" placeholder="Nom de la boisson">
                             <label for="name" class="rowsInformation">Type de la boisson</label>
                             <select type="text" id="b_type" name="b_type" class="form-control" >
                                 <option value="Eau">Eau</option>
@@ -117,7 +117,7 @@ class vueBoissons {
                                 <option value="Soda">Soda</option>
                             </select>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="1" checked/>
+                              <input class="form-check-input" type="checkbox" value="true" name="b_estAlcoolise" checked/>
                               <label class="form-check-label" for="flexCheckChecked">Est Alcoolise</label>
                             </div>
                             <label for="b_qteStockee" class="rowsInformation">Quantité stocké</label>
