@@ -1,63 +1,105 @@
 <?php
-require_once "../imports.php";
-require_once "../Modele/EntiteEtape.php";
-$myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('etape');
-$myPDO->initPDOS_selectAll();
-$va =  $myPDO->getAll();
 
-?>
+namespace bar;
+class vueEtapes {
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/cocktails.css">
-    <title> Etapes </title>
-</head>
-<body>
-<h1>Etapes</h1>
-<div class="arrow" id="retour">
-    <img src="../images/retour.png" alt="retour" class="retour">
-    </i>
-</div>
-<div class="tableContainer">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col"> ID de notre  Cocktail </th>
-            <th scope="col"> ID de  notre etape  </th>
-            <th scope="col"> les etapes </th>
+    public function getDebutHTML() : string {
+        $corps =    '<!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                            <link rel="stylesheet" href="../../css/style.css">
+                            <link rel="stylesheet" href="../../css/utensiles.css">
+                            <title>etapes</title>
+                        </head>
+                        <h1>ETEAPES</h1>
+                        <div class="arrow" id="retour">
+                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                        </i>
+                        </div>                
+                    <body>';
+        return $corps;
+    }
 
-            <th scope="col" colspan="4" style="text-align: center;">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($va as $valeur){  ?>
+    public function getHTMLUpdate(array  $utensile) : string {
+        $corps = "";
 
-            <tr>
-                <th scope="row"><?php echo $valeur->getCId() ?></th>
-                <td><?php echo $valeur->getENum(); ?></td>
-                <td><?php echo $valeur->getEDesc(); ?></td>
-                <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
-                <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
-            </tr>
+        $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
+            '<form id="updateUtensileForm"  method="get">'.
+            '<div class="form-group">';
+        foreach ($utensile as $col => $val) {
+            if (is_array($val)) {
+                $hide = "";
+                if($col == 'u_id') $hide = 'hidden';
+                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="u_id" name="'.$col.'" placeholder="Nom de lutensile" value="'.$val['default'].'" >';
 
-        <?php } ?>
-        </tbody>
-    </table>
-</div>
+                //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
+            }
+        }
+        $corps.='            </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                            </div>';
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="../js/etapes.js"></script>
+        return $corps;
+    }
 
-</body>
-</html>
+    public function getHTMLTable($va) : string {
+        $corps = '<div id="informationEntite">
+                    <div class="buttonContainer">
+                        <form id="insererUtensileFormButton"  method="post" action="?action=create">
+                        <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+                        </form>
+                    </div>
+                    <div class="tableContainer">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">etape numero</th>
+                                    <th scope="col">etape numero</th>
+                                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+        foreach ($va as $valeur){
+            if ($valeur instanceof EntiteEtape) {
+                $corps.= '          <tr>
+                                    <th scope="row">'. $valeur->getCId() .'</th>
+                                    <td class="rowsInformation">'. $valeur->getENum() . '</td>
+                                      <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
+                                    <td class="td_buttons_actions"><a href="?action=modifierUtensile&u_id='.$valeur->getCId().'">
+                                    <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                                    <td class="td_buttons_actions">
+                                    <a href="?action=suppression&c_id='.$valeur->getCId().'">
+                                    <button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                </tr>';
+            }
+        }
+
+        $corps.= '      </tbody>
+                       </table>    
+                    </div>
+                </div> ';
+        return $corps;
+    }
+
+    public function getHTMLInsert() : string {
+        $corps = '<div class="insertContainer" id="insertContainer">
+                    <form id="addUtensileForm"  method="get" action="CRUD.php">
+                        <div class="form-group">
+                            <label for="name" class="rowsInformation">étape num</label>
+                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de lutensile">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajout</button>
+                    </form>
+                </div>';
+
+        return $corps;
+    }
+
+}

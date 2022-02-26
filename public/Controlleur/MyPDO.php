@@ -20,7 +20,10 @@ class MyPDO {
         $this->pdos_selectAll = $this->pdo->prepare('SELECT * FROM '.$this->nomTable);
     }
 
-
+    public function initPDOS_selectAllById($nomId, $valeur) {
+        $this->pdos_selectAll = $this->pdo->prepare('SELECT * FROM '
+            .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur);
+    }
 
     public function getAll(): array {
         if (!isset($this->pdos_selectAll))
@@ -30,7 +33,30 @@ class MyPDO {
             "bar\Entite".ucfirst($this->getNomTable()));
     }
 
+    public function getAllById($nomId, $valeur): array
+    {
+        if (!isset($this->pdos_selectAll))
+            $this->initPDOS_selectAllById($nomId, $valeur);
+        $this->getPdosSelectAll()->execute();
+        return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
+            "bar\Entite".ucfirst($this->getNomTable()));
+    }
+
+    public function getSpecific($nomId, $valeur): array {
+        if (!isset($this->pdos_selectAll))
+            $this->initPDOS_selectAllById($nomId, $valeur);
+        $this->getPdosSelectAll()->execute();
+        return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
+            "bar\Entite".ucfirst($this->getNomTable()));
+    }
+
     public function initPDOS_select(string $nomColID = "id"): void
+    {
+        $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID = :$nomColID";
+        $this->pdos_select = $this->pdo->prepare($requete);
+    }
+
+    public function initPDOS_selectById(string $nomColID = "id", $val): void
     {
         $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID = :$nomColID";
         $this->pdos_select = $this->pdo->prepare($requete);
@@ -45,6 +71,16 @@ class MyPDO {
         return $this->getPdosSelect()
             ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
     }
+
+    public function getById($key, $val) {
+        if (!isset($this->pdos_select))
+            $this->initPDOS_selectById($key, $val);
+        $this->getPdosSelect()->bindValue(":".$key,$val);
+        $this->getPdosSelect()->execute();
+        return $this->getPdosSelect()
+            ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
+    }
+
 
     /**
      * execute de la requête SELECT COUNT(*) FROM livre
