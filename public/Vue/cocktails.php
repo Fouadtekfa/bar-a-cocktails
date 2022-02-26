@@ -26,17 +26,20 @@ class VueCocktail
                 <body>';
         return $res;
 }
-    public function getHTMLUpdate(array  $cocktaile) : string {
+    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson) : string {
     $corps = "";
-
+    $idCocktail = '';
     $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-        '<form id="updateCocktailForm"  method="get"  >'.
+        '<form id="updateCocktailForm"  method="post" action="./CRUD_Cocktails.php" >'.
 
                                     '<div class="form-group">';
     foreach ($cocktaile as $col => $val) {
        if (is_array($val)) {
             $hide = "c_id";
-            if($col == 'c_id') $hide = 'hidden';
+            if($col == 'c_id') {
+                $idCocktail = $val['default'];
+                $hide = 'hidden';
+            }
             if($val['balise'] == "select") {
                 $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
                            <'.$val['balise'].'  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" >
@@ -53,6 +56,24 @@ class VueCocktail
 
        }
     }
+
+    $corps.='<label for="boissons">Boissons Utilisées</label>';
+    $corps .= '<div class="selectionLiaison"> ';
+            for($i = 0; $i < count($boissons) ; $i++){
+                $qteBoisson = '';
+                for($j = 0; $j < count($lienCockBoisson) ; $j++){
+                    if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
+                        $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();    
+                }
+                
+                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                        <label class="form-check-label" for="b_qteBoisson">
+                                '.$boissons[$i]->getBNom() .'
+                        </label> <br>
+                        <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
+                        <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'" placeholder="'.$boissons[$i]->getBNom().'">
+                        </div>';
+            }
     $corps.='            </div>
                                     <button type="submit" class="btn btn-primary">Modifier</button>
                                 </form>
@@ -110,9 +131,9 @@ class VueCocktail
         ';
         return $res;
     }
-    public function getHTMLInsert() : string {
+    public function getHTMLInsert($boissons) : string {
         $res=' <div class="insertContainer"  id="insertContainer">
-        <form id="addUtensileForm"  method="get"  >
+        <form id="addUtensileForm"  method="post" action="./CRUD_Cocktails.php" >
             
             <div class="form-group">
                 <label for="name">Nom de Cocktail </label>
@@ -125,12 +146,30 @@ class VueCocktail
                 </select>
                 <label for="prix">Prix de Cocktail </label>
                 <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">
+                <label for="boissons">Boissons Utilisées</label>
+                
+                <div class="selectionLiaison"> ';
+                    
+                foreach($boissons as $boisson){
+                        /*$res.='<div class="form-check form-check_Entitiy col-4" hidden>
+                                <input class="form-check-input" id="'.$boisson->getBId() .'" onChange="fun()" name="checkBoissons[]" type="checkbox" value="'.$boisson->getBId() .'">
+                                </div>*/
+                        $res.='<div class="form-check form-check_Entitiy col-4">   
+                                <label class="form-check-label" for="b_qteBoisson">
+                                        '.$boisson->getBNom() .'
+                                </label> <br>
+                                <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
+                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" placeholder="'.$boisson->getBNom().'">
+                                </div>';
+                    }
+                    
+                    
+                    $res.='</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ajout</button>
+                        </form>
 
-            </div>
-            <button type="submit" class="btn btn-primary">Ajout</button>
-        </form>
-
-    </div>
+                    </div>
         ';
 
 

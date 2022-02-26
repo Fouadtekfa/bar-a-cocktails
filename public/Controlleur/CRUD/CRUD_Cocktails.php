@@ -3,15 +3,20 @@ session_start();
 require_once "../MyPDO.php";
 require_once "../connexion.php";
 require_once "../../Modele/EntiteCocktail.php";
+require_once "../../Modele/EntiteBoisson.php";
+require_once "../../Modele/EntiteLienCocktailBoisson.php";
 include "../../Vue/cocktails.php";
+
 
 
 try {
     $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'cocktail');
+    $myPDO_Change = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd']);
     //echo "CONNEXION!" ;
 }catch (PDOException $e){
     echo "Il y a eu une erreur : " .$e->getMessage() ;
 }
+
 // Initialisation de notre vue Cocktail
 $vue = new  bar\VueCocktail();
 
@@ -30,36 +35,44 @@ if (isset($_GET['action'])){
         case 'read': {
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
-            /*
-            foreach ($va as $var){
-                echo $var->getCNom();
-            }
-            */
             $contenu.=$vue->getDebutHTML();
             $contenu.= $vue->getHTMLAll($va);
             break;
         }
         case 'create': {
-
-            //insererCocktail
             $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLInsert();
+            
+            // == BOISSON CONTENU ==
+                $myPDO_Change->setNomTable('boisson');
+                $myPDO_Change->initPDOS_selectAll();
+                $boissons =  $myPDO_Change->getAll();
+            // ===================
+
+
+            $contenu.= $vue->getHTMLInsert($boissons);
             $_SESSION['etat'] = 'creation';
-
-
-
             break;
         }
         case 'update':
 
             $cocktail = $myPDO->get('c_id', $_GET['c_id']);
             $contenu.=$vue->getDebutHTML();
+
+            // == BOISSON CONTENU ==
+            $myPDO_Change->setNomTable('boisson');
+            $myPDO_Change->initPDOS_selectAll();
+            $boissons =  $myPDO_Change->getAll();
+            $myPDO_Change->setNomTable('liencocktailboisson');
+            $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_GET['c_id']);
+
+            // ===================
+
             $contenu.=$vue->getHTMLUpdate(array(
                 'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
                 'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
                 "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
-            ));
+            ), $boissons, $lienCockBoisson);
             $_SESSION['etat'] = 'modification';
 
             break;
@@ -71,6 +84,7 @@ if (isset($_GET['action'])){
             $idElem = array(
                 "c_id" => $_GET['c_id']
             );
+
             $myPDO->delete($idElem);
             $_SESSION['etat'] = 'supprime';
 
@@ -87,15 +101,40 @@ if (isset($_GET['action'])){
     switch ($_SESSION['etat']) {
         case 'creation':
             $etat .= "creation";
-
-            if (isset($_GET['nom']) && isset($_GET['cat']) && isset($_GET['prix'])) {
+            
+            if (isset($_POST['nom']) && isset($_POST['cat']) && isset($_POST['prix'])) {
                 $insert = array(
                     "c_id" => "null",
-                    "c_nom" => $_GET['nom'],
-                    "c_cat" => $_GET['cat'],
-                    "c_prix" => $_GET['prix']
+                    "c_nom" => $_POST['nom'],
+                    "c_cat" => $_POST['cat'],
+                    "c_prix" => $_POST['prix']
                 );
+
                 $myPDO->insert($insert);
+                $idMaxCocktails = $myPDO->getIdMax('c_id');
+                
+                // Recuperer les boissons (s'il y en a)
+                if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
+                    $nomBoissons = $_POST['checkBoissons'];
+                    $boissonsId = $_POST['checkBoissonsId'];
+                    
+                    // Etablir la table de cocktail liaison boisson
+                    $myPDO_Change->setNomTable('liencocktailboisson');
+                    for ($i=0; $i < $idMaxCocktails; $i++) { 
+                        if($nomBoissons[$i] > 0){
+                            //echo 'c_id : ' . $idMaxCocktails . ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
+                            //echo '<br>';
+                            $insert = array(
+                                "c_id" => $idMaxCocktails,
+                                "b_id" => $boissonsId[$i],
+                                "qteBoisson" => $nomBoissons[$i]
+                            );
+                            $myPDO_Change->insert($insert);
+                        }
+                    }
+
+                }
+       
                 $myPDO->initPDOS_selectAll();
                 $va = $myPDO->getAll();
                 $contenu = '';
@@ -103,7 +142,6 @@ if (isset($_GET['action'])){
                 $contenu .= $vue->getHTMLAll($va);
 
             }
-
             $_SESSION['etat'] = 'créé';
 
             break;
@@ -112,13 +150,58 @@ if (isset($_GET['action'])){
             $etat .= "modification";
             $idElem = 'c_id';
             //echo $_GET['c_nom'];
-            if (isset( $_GET['c_id']) && isset($_GET['c_nom']) && isset($_GET['c_cat']) && isset($_GET['c_prix'])) {
+
+            // ====== POUR BOISSONS =========
+             // Recuperer les boissons (s'il y en a)
+             if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
+                $nomBoissons = $_POST['checkBoissons'];
+                $boissonsId = $_POST['checkBoissonsId'];
+                
+                // Etablir la table de cocktail liaison boisson
+                $myPDO_Change->setNomTable('liencocktailboisson');
+                $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $idElem);
+                for ($i=0; $i < count($nomBoissons); $i++) { 
+                    if($nomBoissons[$i] > 0){
+                        // Si l'element existe dans la table 
+                        $exist = true;
+                        for ($j=0; $j < count($lienCockBoisson); $j++) {
+                            if($boissonsId[$i] == $lienCockBoisson[$j]) $exist = true;
+                            else $exist = false;
+                        } 
+
+                        if($exist == true ) {
+                            $update = array(
+                                "c_id" => $_POST['c_id'],
+                                "b_id" => $boissonsId[$i],
+                                "qteBoisson" => $nomBoissons[$i]
+                            );
+                            $myPDO_Change->updateRelation($idElem, $update);
+
+                        } else {
+                             //   echo 'c_id : ' . $_POST['c_id']. ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
+                            //echo '<br>';
+                            $insert = array(
+                                "c_id" => $_POST['c_id'],
+                                "b_id" => $boissonsId[$i],
+                                "qteBoisson" => $nomBoissons[$i]
+                            );
+                            $myPDO_Change->insert($insert);
+                        }
+                        
+                        
+                    }
+                }
+
+            }
+            // ==============================
+
+            if (isset( $_POST['c_id']) && isset($_POST['c_nom']) && isset($_POST['c_cat']) && isset($_POST['c_prix'])) {
 
                 $update = array(
-                    "c_id" => $_GET['c_id'],
-                    "c_nom" => $_GET['c_nom'],
-                    "c_cat" => $_GET['c_cat'],
-                    "c_prix" => $_GET['c_prix']
+                    "c_id" => $_POST['c_id'],
+                    "c_nom" => $_POST['c_nom'],
+                    "c_cat" => $_POST['c_cat'],
+                    "c_prix" => $_POST['c_prix']
 
                 );
 

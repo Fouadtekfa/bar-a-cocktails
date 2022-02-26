@@ -4,12 +4,14 @@ class MyPDO {
     private PDO $pdo;
     private PDOStatement $pdos_select;
     private PDOStatement $pdos_update;
+    private PDOStatement $pdos_updateRelation;
     private PDOStatement $pdos_insert;
     private PDOStatement $pdos_delete;
     private PDOStatement $pdos_selectAll;
+    private PDOStatement $pdos_selectAllById;
     private string $nomTable;
 
-    public function __construct($sgbd, $host, $db, $user, $password, $table){
+    public function __construct($sgbd, $host, $db, $user, $password, $table='null'){
         $this->pdo = new PDO("mysql:host=".$host.";dbname=".$db, $user, $password);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -21,7 +23,7 @@ class MyPDO {
     }
 
     public function initPDOS_selectAllById($nomId, $valeur) {
-        $this->pdos_selectAll = $this->pdo->prepare('SELECT * FROM '
+        $this->pdos_selectAllById = $this->pdo->prepare('SELECT * FROM '
             .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur);
     }
 
@@ -43,10 +45,13 @@ class MyPDO {
     }
 
     public function getSpecific($nomId, $valeur): array {
-        if (!isset($this->pdos_selectAll))
+        if (!isset($this->pdos_selectAllById)){
             $this->initPDOS_selectAllById($nomId, $valeur);
-        $this->getPdosSelectAll()->execute();
-        return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
+            
+        }
+        
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
     }
 
@@ -83,7 +88,7 @@ class MyPDO {
 
 
     /**
-     * execute de la requête SELECT COUNT(*) FROM livre
+     * execute de la requête SELECT COUNT(*)
      * instantiation de self::$_pdos_count
      */
     public function count() {
@@ -104,6 +109,32 @@ class MyPDO {
      */
     public function initPDOS_count() {
         $this->pdos_count = $this->pdo->prepare('SELECT COUNT(*) FROM '.$this->nomTable);
+    
+    }
+
+    /**
+     * execute de la requête SELECT MAX(*)
+     * instantiation de self::$_pdos_count
+     */
+    public function max($id) {
+        if (!isset($this->pdos_max)) {
+            $this->initPDOS_max($id);
+        }
+        return $this->pdos_max->execute();
+    }
+
+    public function getIdMax($id) : int {
+        $this->max($id);
+        return $this->pdos_max->fetch(PDO::FETCH_NUM)[0];
+    }
+
+
+    /**
+     * préparation de la requête SELECT MAX(*)
+     * instantiation de self::$_pdos_count
+     */
+    public function initPDOS_max($id) {
+        $this->pdos_max = $this->pdo->prepare('SELECT MAX('.$id.') FROM '.$this->nomTable);
     
     }
 
@@ -131,6 +162,7 @@ class MyPDO {
         }
         $query = substr($query, 0, strlen($query) - 2);
         $query .= ')';
+        echo $query;
         $this->pdos_insert = $this->pdo->prepare($query);
     }
 
@@ -187,6 +219,14 @@ class MyPDO {
     }
 
     /**
+     * @return PDOStatement
+     */
+    public function getPdosUpdateRelation(): PDOStatement
+    {
+        return $this->pdos_updateRelation;
+    }
+
+    /**
      * @param PDOStatement $pdos_update
      * @return MyPDO
      */
@@ -234,6 +274,14 @@ class MyPDO {
     }
 
     /**
+     * @return PDOStatement
+     */
+    public function getPdosSelectAllById(): PDOStatement
+    {
+        return $this->pdos_selectAllById;
+    }
+
+    /**
      * @param PDOStatement $pdos_selectAll
      * @return MyPDO
      */
@@ -275,6 +323,7 @@ class MyPDO {
         $this->getPdosUpdate()->execute();
     }
 
+
       /**
      * @param string $nomColId
      * @param array $colNames
@@ -287,6 +336,34 @@ class MyPDO {
         $query = substr($query,0, strlen($query)-2);
         $query .= " WHERE ".$nomColId."=:".$nomColId;
         $this->pdos_update =  $this->pdo->prepare($query);
+    }
+
+      /**
+     * @param string $id
+     * @param array $assoc
+     */
+    public function updateRelation(string $id, array $assoc): void {
+        if (!isset($this->pdos_updateRelation)){
+         $this->initPDOS_updateRelation($id, array_keys($assoc));
+        }
+         foreach ($assoc as $key => $value) {
+             $this->getPdosUpdateRelation()->bindValue(":".$key, $value);
+         }
+         $this->getPdosUpdateRelation()->execute();
+     }
+
+       /**
+     * @param string $nomColId
+     * @param array $colNames
+     */
+    public function initPDOS_updateRelation(string $nomColId, string $nomColId2, array $colNames): void {
+        $query = "UPDATE ".$this->nomTable." SET ";
+        foreach ($colNames as $colName) {
+            $query .= $colName."=:".$colName.", ";
+        }
+        $query = substr($query,0, strlen($query)-2);
+        $query .= " WHERE ".$nomColId."=:".$nomColId. " AND  ".$nomColId2."=:".$nomColId2;
+        $this->pdos_updateRelation =  $this->pdo->prepare($query);
     }
 
      /**
