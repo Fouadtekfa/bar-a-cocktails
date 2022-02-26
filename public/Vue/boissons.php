@@ -52,7 +52,7 @@ class vueBoissons {
     public function getHTMLTable($va) : string {
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
-                        <form id="insererBoissonFormButton"  method="post" action="?action=insererBoisson">
+                        <form id="insererBoissonFormButton"  method="post" action="?action=inserer">
                         <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
                         </form>
                     </div>
@@ -102,11 +102,27 @@ class vueBoissons {
 
     public function getHTMLInsert() : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addBoissonForm"  method="get" action="CRUD_boissons.php" name="action" value="2" >
-                        <input type="text" name="action" value="insererBoisson" hidden>
+                    <form id="addBoissonForm"  method="get" action="CRUD_boissons.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">Nom de la boisson</label>
                             <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de la boisson">
+                            <label for="name" class="rowsInformation">Type de la boisson</label>
+                            <select type="text" id="b_type" name="b_type" class="form-control" >
+                                <option value="Eau">Eau</option>
+                                <option value="Jus">Jus</option>
+                                <option value="Alcool">Alcool</option>
+                                <option value="Liqueur">Liqueur</option>
+                                <option value="Sirop">Sirop</option>
+                                <option value="Lait">Lait</option>
+                                <option value="Soda">Soda</option>
+                            </select>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="1" checked/>
+                              <label class="form-check-label" for="flexCheckChecked">Est Alcoolise</label>
+                            </div>
+                            <label for="b_qteStockee" class="rowsInformation">Quantité stocké</label>
+                            <input type="number" class="form-control" id="b_qteStockee" name="b_qteStockee" placeholder="Quantité">
+                            
                         </div>
                         <button type="submit" class="btn btn-primary">Ajout</button>
                     </form>

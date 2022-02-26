@@ -1,6 +1,7 @@
 <?php
-
-require_once "../../imports.php";
+session_start();
+require_once "../MyPDO.php";
+require_once "../connexion.php";
 require_once "../../Modele/EntiteBoisson.php";
 include "../../Vue/boissons.php";
 
@@ -21,49 +22,58 @@ $contenu = "";
 $idElem = "";
 $etat="";
 
-if (isset($_GET['action']))
+if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
+    $_GET['action'] = 'read';
+}
+echo $_SESSION['etat'];
+if (isset($_GET['action'])) {
     switch ($_GET['action']) {
-        case 'read': {
+        case 'read':
+        {
             $myPDO->initPDOS_selectAll();
-            $va =  $myPDO->getAll();
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLTable($va);
+            $va = $myPDO->getAll();
+            $contenu .= $vue->getDebutHTML();
+            $contenu .= $vue->getHTMLTable($va);
             break;
         }
 
-        case 'inserer': {
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLInsert();
+        case 'inserer':
+        {
+            $contenu .= $vue->getDebutHTML();
+            $contenu .= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
         }
 
-        case 'modifier': {
+        case 'modifier':
+        {
             $boisson = $myPDO->get('b_id', $_GET['b_id']);
-            $contenu.=$vue->getDebutHTML();
+            $contenu .= $vue->getDebutHTML();
 
 
             $contenu .= $vue->getHTMLUpdate(array(
-                'b_id'=>array('type'=>'text','default'=> $boisson->getBId(), 'titre' => 'id'),
-                'b_nom'=>array('type'=>'text','default'=>$boisson->getBNom(), 'titre' => 'Nom de la boisson'),
-                'b_type'=>array('type'=>'text','default'=>$boisson->getBType(), 'titre' => 'type de la boisson'),
-                'b_estAlcoolise'=>array('type'=>'text','default'=>$boisson->getBEstAlcoolise(), 'titre' => 'Avec ou sans alcool'),
-                'b_qteStockee'=>array('type'=>'text','default'=>$boisson->getBQteStockee(), 'titre' => 'quantité des boissons stockée'),
+                'b_id' => array('type' => 'text', 'default' => $boisson->getBId(), 'titre' => 'id'),
+                'b_nom' => array('type' => 'text', 'default' => $boisson->getBNom(), 'titre' => 'Nom de la boisson'),
+                'b_type' => array('type' => 'text', 'default' => $boisson->getBType(), 'titre' => 'type de la boisson'),
+                'b_estAlcoolise' => array('type' => 'text', 'default' => $boisson->getBEstAlcoolise(), 'titre' => 'Avec ou sans alcool'),
+                'b_qteStockee' => array('type' => 'text', 'default' => $boisson->getBQteStockee(), 'titre' => 'quantité des boissons stockée'),
 
             ));
 
             $_SESSION['etat'] = 'modification';
             break;
         }
-        case 'suppression': {
+        case 'suppression':
+        {
             $_SESSION['etat'] = 'supprimer';
             break;
         }
-    }
 
-if (isset($_SESSION['etat']))
+    }
+} else if (isset($_SESSION['etat']))
     switch ($_SESSION['etat']) {
         case 'creation': {
+            echo 'aqui';
             $etat.="creation";
             $insert = "";
             if(isset($_GET['nom'])) {
@@ -86,7 +96,7 @@ if (isset($_SESSION['etat']))
                 $_SESSION['Action'] = 'read' ;
             }
 
-            $_SESSION['etat'] = 'créé';
+            $_SESSION['etat'] = 'cree';
             break;
         }
 
@@ -135,7 +145,14 @@ if (isset($_SESSION['etat']))
 
             break;
         }
-        case 'créé':
+        case 'cree':
+        case 'modifie' :
+        case 'supprime' :
+            echo "holi";
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
             break;
 
     }
