@@ -75,7 +75,7 @@ class VueCocktail {
                                     '.$boissons[$i]->getBNom() .'
                             </label> <br>
                             <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
-                            <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'" placeholder="'.$boissons[$i]->getBNom().'">
+                            <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'">
                             </div>';
                 }
         $corps.='            </div>
@@ -198,7 +198,7 @@ class VueCocktail {
                                         '.$boisson->getBNom() .'
                                 </label> <br>
                                 <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
-                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" placeholder="'.$boisson->getBNom().'">
+                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]">
                                 </div>';
                             }
                     
