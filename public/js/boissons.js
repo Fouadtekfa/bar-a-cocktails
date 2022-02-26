@@ -15,4 +15,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    let elements = document.getElementsByClassName("etapes-btn");
+
+
+    let functionEtapes = function() {
+
+    };
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', functionEtapes, false);
+    }
+
+
 });

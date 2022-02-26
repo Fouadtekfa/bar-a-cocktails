@@ -16,13 +16,19 @@ require_once "getDebutHtml.html";
             </div>
             </a>
         </div>
+
+
         <div class="produit boissonContainer" id="boissons">
-            <div class="imageContainer imgBoisson">
-            </div>
-            <div class="titleContainer">
-                <h2>Boissons</h2>
-            </div>
+            <a class="prin" href="../public/Controlleur/CRUD/CRUD_boissons.php?action=read">
+                <div class="imageContainer imgBoisson">
+                </div>
+                <div class="titleContainer">
+                    <h2>Boissons</h2>
+                </div>
+            </a>
         </div>
+
+
         <div class="produit ingredientContainer" id="ingredients">
             <div class="imageContainer imgIngredient">
             </div>
@@ -30,6 +36,9 @@ require_once "getDebutHtml.html";
                 <h2>Ingredients</h2>
             </div>
         </div>
+
+
+
         <div class="produit commandeContainer" id="commandes">
             <div class="imageContainer imgCommande">
             </div>
@@ -37,6 +46,9 @@ require_once "getDebutHtml.html";
                 <h2>Commande</h2>
             </div>
         </div>
+
+
+
         <div class="produit utensilesContainer" id="utensiles">
             <a class="prin" href="../public/Controlleur/CRUD/CRUD_Utensiles.php?action=read">
                 <div class="imageContainer imgUtensiles">
@@ -46,7 +58,9 @@ require_once "getDebutHtml.html";
                 </div>
             </a>
         </div>
-        
+
+
+
         <div class="produit verreContainer" id="verres">
             <div class="imageContainer imgVerre">
             </div>

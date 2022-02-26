@@ -1,115 +1,111 @@
 <?php
-require_once "../imports.php";
-require_once "../Modele/EntiteBoisson.php";
-$myPDO = $_ENV['myPdo'];
-$myPDO->setNomTable('Boisson');
-$va =  $myPDO->getAll();
 
-?>
+namespace bar;
+class vueBoissons {
 
+    public function getDebutHTML() : string {
+        $corps =    '<!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                            <link rel="stylesheet" href="../../css/style.css">
+                            <link rel="stylesheet" href="../../css/boissons.css">
+                            <title>Cocktail</title>
+                        </head>
+                        <h1>Boissons</h1>
+                        <div class="arrow" id="retour">
+                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                        </i>
+                        </div>                
+                    <body>';
+        return $corps;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/cocktails.css">
-    <title>Cocktail</title>
-</head>
-<body>
-    <h1>Boissons</h1>
-    <div class="arrow" id="retour">
-    <img src="../images/retour.png" alt="retour" class="retour">
-    </i>
-    </div>
-    <div id="informationEntite">
-        <div class="buttonContainer">
+    public function getHTMLUpdate(array  $boisson) : string {
+        $corps = "";
 
-        <button type="button" class="btn btn-primary" id="btnAjouter">Ajouter</button>
-     </div>
-    <div class="tableContainer">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">La boisson</th>
-                    <th scope="col">Type de la boisson</th>
-                    <th scope="col">Avec ou sans Alcool</th>
-                    <th scope="col">Quantité staockée</th>
-                    <th scope="col" colspan="4" style="text-align: center;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($va as $valeur){  ?>
+        $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
+            '<form id="updateBoissonForm"  method="get" name="action" >'.
+            '<input type="text" name="action" value="modifier" hidden>
+                                    <div class="form-group">';
+        foreach ($boisson as $col => $val) {
+            if (is_array($val)) {
+                $hide = "";
+                if($col == 'b_id') $hide = 'hidden';
+                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="b_id" name="'.$col.'" placeholder="Nom de la boisson" value="'.$val['default'].'" >';
 
-                        <tr>
-                            <th scope="row"><?php echo $valeur->getBId() ?></th>
+                //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
+            }
+        }
+        $corps.='            </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                            </div>';
 
-                            <td><?php echo $valeur->getBNom(); ?></td>
-                            <td><?php echo $valeur->getBType(); ?></td>
-                            <td><?php echo $valeur->getBEstAlcoolise(); ?></td>
-                            <td><?php  echo $valeur->getBQteStockee(); ?></td>
+        return $corps;
+    }
 
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
-                        </tr>
-                    
-                        <?php } ?>
-
-            </tbody>
-        </table>    
-    </div>
-    </div>
-
-    <div class="insertContainer" style="display: none" id="insertContainer">
-        <form id="addUtensileForm"  method="get" action="../Controlleur/CRUD/CRUD_boissons.php" name="action" value="2" >
-            <input type="text" name="action" value="insererBoisson" hidden>
-
-            <div class="form-group">
-                <label for="name">Nom de la boisson</label>
-                <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de la boisson">
-
-                <label for="name">Type</label>
-                <input type="text" class="form-control" id="name" name="type" placeholder="Type de la boisson">
-
-                <div class="form-check">
-                    <label for="name">Alcolisée ou non</label></br>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="estAlcoolise" id="name">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+    public function getHTMLTable($va) : string {
+        $corps = '<div id="informationEntite">
+                    <div class="buttonContainer">
+                        <form id="insererBoissonFormButton"  method="post" action="?action=insererBoisson">
+                        <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+                        </form>
                     </div>
+                    <div class="tableContainer">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Avec ou sans Alcool</th>
+                                    <th scope="col">Quantité stockee</th>
 
+                                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
 
-                </div>
+        foreach ($va as $valeur){
+            if ($valeur instanceof EntiteBoisson) {
 
+                $corps.= '          <tr>
+                                    <th scope="row">'. $valeur->getBId() .'</th>
+                                    <td class="rowsInformation">'. $valeur->getBNom() . '</input></td>
+                                    <td class="td_buttons_actions"><a href="?action=modifierBoisson&b_id='.$valeur->getBId().'">
+                                    <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                                    <td class="td_buttons_actions">
+                                    <a href="?action=suppression&b_id='.$valeur->getBId().'">
+                                    <button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                </tr>';
+            }
+        }
 
+        $corps.= '      </tbody>
+                       </table>    
+                    </div>
+                </div> ';
+        return $corps;
+    }
 
-                <label for="name">Quantité stockée</label>
-                <input type="text" class="form-control" id="name" name="qteStockee" placeholder="La quantité stockée de la boisson">
+    public function getHTMLInsert() : string {
+        $corps = '<div class="insertContainer" id="insertContainer">
+                    <form id="addBoissonForm"  method="get" action="CRUD_boissons.php" name="action" value="2" >
+                        <input type="text" name="action" value="insererBoisson" hidden>
+                        <div class="form-group">
+                            <label for="name" class="rowsInformation">Nom de la boisson</label>
+                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de la boisson">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajout</button>
+                    </form>
+                </div>';
 
+        return $corps;
+    }
 
-
-
-            </div>
-            <button type="submit" class="btn btn-primary">Ajout</button>
-        </form>
-
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="../js/boissons.js"></script>
-
-
-
-
-
-</body>
-</html>
+}
