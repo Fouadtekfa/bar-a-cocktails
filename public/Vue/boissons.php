@@ -28,10 +28,9 @@ class vueBoissons {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-            '<form id="updateBoissonForm"  method="get" name="action" >'.
-            '<input type="text" name="action" value="modifier" hidden>
-                                    <div class="form-group">';
-        foreach ($boisson as $col => $val) {
+            '<form id="updateBoissonForm"  method="get" >'.
+            '<div class="form-group">';
+            foreach ($boisson as $col => $val) {
             if (is_array($val)) {
                 $hide = "";
                 if($col == 'b_id') $hide = 'hidden';
@@ -47,8 +46,12 @@ class vueBoissons {
                                 <option value="Soda">Soda</option> 
                             </select>';
                 } else if($val['balise'] == 'checkbox') {
+                    $check = '';
+                    if($val['default'] == 1) {
+                      $check = 'checked';
+                    }
                     $corps.='<div class="form-check">
-                              <input class="form-check-input" type='.$val['type'].' value="true" name="ssssb_estAlcoolise" checked/>
+                              <input class="form-check-input" type='.$val['type'].' value="true" name="' . $col . '" '. $check .'/>
                               <label class="form-check-label" for="flexCheckChecked">'.$val['titre'].'</label>
                             </div>';
                 }else{

@@ -107,12 +107,17 @@ if (isset($_GET['action'])) {
             $nbUtensiles = $myPDO->getCountValue();
 
             $idElem = 'b_id';
-            if(isset($_GET['b_id']) && isset($_GET['b_nom']) && isset($_GET['b_type']) && isset($_GET['b_estAlcoolise']) && isset($_GET['b_qteStockee'])) {
+            $alcool = 0;
+            if(isset($_GET['b_estAlcoolise'])){
+                $alcool = 1;
+            }
+
+            if(isset($_GET['b_id']) && isset($_GET['b_nom']) && isset($_GET['b_type']) && isset($_GET['b_qteStockee'])) {
                 $update = array(
                     "b_id" => $_GET['b_id'],
                     "b_nom" => $_GET['b_nom'],
                     'b_type' =>$_GET['b_type'],
-                    'b_estAlcoolise'=>$_GET['b_estAlcoolise'],
+                    'b_estAlcoolise'=>$alcool,
                     'b_qteStockee'=>$_GET['b_qteStockee']
                 );
 
