@@ -17,7 +17,7 @@ class vueUtensiles {
                         </head>
                         <h1>Ustensiles</h1>
                         <div class="arrow" id="retour">
-                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                        <a href="../../"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
                         </div>                
                     <body>';
