@@ -73,10 +73,17 @@ class vueBoissons {
 
         foreach ($va as $valeur){
             if ($valeur instanceof EntiteBoisson) {
-
+                $alcool = 'oui';
+                if($valeur->getBEstAlcoolise() == '0'){
+                    $alcool = 'non';
+                }
                 $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getBId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getBNom() . '</input></td>
+                                    <td class="rowsInformation">'. $valeur->getBType() . '</input></td>
+                                    <td class="rowsInformation">'. $alcool . '</input></td>
+                                    <td class="rowsInformation">'. $valeur->getBQteStockee() . '</input></td>
+
                                     <td class="td_buttons_actions"><a href="?action=modifierBoisson&b_id='.$valeur->getBId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
