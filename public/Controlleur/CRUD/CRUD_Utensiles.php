@@ -120,7 +120,7 @@ if (isset($_GET['action']))
                 }
                 
                 $_SESSION['etat'] = 'modifie';
-                break;
+        
             }
 
             case 'supprimer': {
