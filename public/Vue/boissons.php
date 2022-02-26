@@ -35,9 +35,26 @@ class vueBoissons {
             if (is_array($val)) {
                 $hide = "";
                 if($col == 'b_id') $hide = 'hidden';
-                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
-                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="b_id" name="'.$col.'" placeholder="Nom de la boisson" value="'.$val['default'].'" >';
-
+                if($val['balise'] == "select") {
+                    $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                           <'.$val['balise'].'  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" >
+                                <option value="Eau">Eau</option>
+                                <option value="Jus">Jus</option>
+                                <option value="Alcool">Alcool</option>
+                                <option value="Liqueur">Liqueur</option>
+                                <option value="Sirop">Sirop</option>
+                                <option value="Lait">Lait</option>
+                                <option value="Soda">Soda</option> 
+                            </select>';
+                } else if($val['balise'] == 'checkbox') {
+                    $corps.='<div class="form-check">
+                              <input class="form-check-input" type='.$val['type'].' value="true" name="ssssb_estAlcoolise" checked/>
+                              <label class="form-check-label" for="flexCheckChecked">'.$val['titre'].'</label>
+                            </div>';
+                }else{
+                    $corps .= '       <label for="name" class="rowsInformation" ' . $hide . '>' . $val['titre'] . '</label>
+                                        <input type=' . $val['type'] . ' class="form-control" ' . $hide . '  id="b_id" name="' . $col . '" placeholder="Nom de la boisson" value="' . $val['default'] . '" >';
+                }
                 //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
             }
         }
@@ -84,7 +101,7 @@ class vueBoissons {
                                     <td class="rowsInformation">'. $alcool . '</input></td>
                                     <td class="rowsInformation">'. $valeur->getBQteStockee() . '</input></td>
 
-                                    <td class="td_buttons_actions"><a href="?action=modifierBoisson&b_id='.$valeur->getBId().'">
+                                    <td class="td_buttons_actions"><a href="?action=modifier&b_id='.$valeur->getBId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
                                     <a href="?action=suppression&b_id='.$valeur->getBId().'">

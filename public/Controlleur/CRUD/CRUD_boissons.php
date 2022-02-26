@@ -25,6 +25,7 @@ $etat="";
 if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
     $_GET['action'] = 'read';
 }
+
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'read':
@@ -48,14 +49,12 @@ if (isset($_GET['action'])) {
         {
             $boisson = $myPDO->get('b_id', $_GET['b_id']);
             $contenu .= $vue->getDebutHTML();
-
-
             $contenu .= $vue->getHTMLUpdate(array(
-                'b_id' => array('type' => 'text', 'default' => $boisson->getBId(), 'titre' => 'id'),
-                'b_nom' => array('type' => 'text', 'default' => $boisson->getBNom(), 'titre' => 'Nom de la boisson'),
-                'b_type' => array('type' => 'text', 'default' => $boisson->getBType(), 'titre' => 'type de la boisson'),
-                'b_estAlcoolise' => array('type' => 'text', 'default' => $boisson->getBEstAlcoolise(), 'titre' => 'Avec ou sans alcool'),
-                'b_qteStockee' => array('type' => 'text', 'default' => $boisson->getBQteStockee(), 'titre' => 'quantité des boissons stockée'),
+                'b_id' => array('balise'=>'input', 'type' => 'text', 'default' => $boisson->getBId(), 'titre' => 'id'),
+                'b_nom' => array('balise'=>'input', 'type' => 'text', 'default' => $boisson->getBNom(), 'titre' => 'Nom de la boisson'),
+                'b_type' => array('balise'=>'select', 'type' => 'text', 'default' => $boisson->getBType(), 'titre' => 'type de la boisson'),
+                'b_estAlcoolise' => array('balise'=>'checkbox', 'type' => 'checkbox', 'default' => $boisson->getBEstAlcoolise(), 'titre' => 'Est alcoolise'),
+                'b_qteStockee' => array('balise'=>'input', 'type' => 'number', 'default' => $boisson->getBQteStockee(), 'titre' => 'quantité des boissons stockée'),
 
             ));
 
