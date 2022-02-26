@@ -17,7 +17,7 @@ class vueUtensiles {
                         </head>
                         <h1>Ustensiles</h1>
                         <div class="arrow" id="retour">
-                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
+                        <a href="../../"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
                         </div>                
                     <body>';
@@ -71,7 +71,7 @@ class vueUtensiles {
 
             $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getUId() .'</th>
-                                    <td class="rowsInformation">'. $valeur->getUNom() . '</input></td>
+                                    <td class="rowsInformation">'. $valeur->getUNom() . '</td>
                                     <td class="td_buttons_actions"><a href="?action=modifierUtensile&u_id='.$valeur->getUId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
