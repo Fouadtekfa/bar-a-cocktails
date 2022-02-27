@@ -37,7 +37,8 @@ if (isset($_GET['action'])){
             $myPDO_Change->setNomTable('cocktail');
             $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
             $titre = "ETAPES DU " . $cocktail->getCNom(); 
-            $contenu.=$vue->getDebutHTML($titre);
+            $lienRetour = "CRUD_Cocktails.php?action=read";
+            $contenu.=$vue->getDebutHTML($titre, $lienRetour);
             $contenu.= $vue->getHTMLTable($etapesForCocktail);
             break;
         }
@@ -46,10 +47,11 @@ if (isset($_GET['action'])){
                 $myPDO_Change->setNomTable('cocktail');
                 $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
                 $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
-
-            $contenu.=$vue->getDebutHTML($titre);
-            $contenu.= $vue->getHTMLInsert();
-            $_SESSION['etat'] = 'creation';
+                
+                $lienRetour = 'CRUD_etape.php?action=read&c_id='.$_GET['c_id'];
+                $contenu.=$vue->getDebutHTML($titre, $lienRetour);
+                $contenu.= $vue->getHTMLInsert($cocktail);
+                $_SESSION['etat'] = 'creation';
             break;
         }
 
@@ -57,7 +59,9 @@ if (isset($_GET['action'])){
             $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
             $myPDO_Change->setNomTable('cocktail');
             $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
-            $contenu.=$vue->getDebutHTML($cocktail);
+            $titre = "ETAPES DU " . $cocktail->getCNom();
+            $lienRetour = "CRUD_Cocktails.php?action=read";
+            $contenu.=$vue->getDebutHTML($titre, $lienRetour);
             $contenu.= $vue->getHTMLTable($etapesForCocktail);
             break;
         }
@@ -67,39 +71,48 @@ if (isset($_GET['action'])){
     
         switch ($_SESSION['etat']) {
             case 'creation': {
-                /*$etat.="creation";
+                $etat.="creation";
+                
                 $insert = "";
-                $max=$myPDO->initPDOS_max($e_num);
-                echo $max;
-                $max++;*/
-            
-                if(isset($_GET['e_desc'])) {
-                    /*$insert = array(
-                        "c_id"=>"null",
-                        "e_num" =>$max,
-                        "e_desc" => $_GET['e_desc']
+                $max = $myPDO->getIdMaxENumFromCocktail('e_num', $_POST['c_id']);
+                $max++;
+                if(isset($_POST['e_desc'])) {
+                    $insert = array(
+                        "c_id"=>  $_POST['c_id'],
+                        "e_num" => $max,
+                        "e_desc" => $_POST['e_desc']
                     );
-            
+                    
                     $myPDO->insert($insert);
-                    $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-                    $contenu="";
-                    $contenu.=$vue->getDebutHTML();
-                    $contenu.= $vue->getHTMLTable($va)*/;
+                    
+                    $myPDO_Change->setNomTable('cocktail');
                 } else {
                     $_SESSION['Action'] = 'read' ;
                 }
-                $_SESSION['etat'] = 'créé';
-
+                 
+                 $_SESSION['etat'] = 'créé';
+                 
+                 
+                 $myPDO_Change->setNomTable('cocktail');
+                 $cocktail = $myPDO_Change->get('c_id', $_POST['c_id']);
+                 $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
+                 $lienRetour = 'CRUD_etape.php?action=read&c_id='.$_POST['c_id'];
+                 $contenu=$vue->getDebutHTML($titre, $lienRetour);
+                 $msg = "Etape ajouté";
+                 $contenu.= $vue->getHTMLInsert($cocktail, $msg);
+                 $_SESSION['etat'] = 'creation';
                 break;
             }
             
             case 'créé':
-                    $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-                    $myPDO_Change->setNomTable('cocktail');
-                    $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
-                    $contenu.=$vue->getDebutHTML($cocktail);
-                    $contenu.= $vue->getHTMLTable($etapesForCocktail);
-                    break;
+                /*$myPDO_Change->setNomTable('cocktail');
+                $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
+                $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
+
+                $contenu.=$vue->getDebutHTML($titre);
+                $contenu.= $vue->getHTMLInsert($cocktail);
+                $_SESSION['etat'] = 'creation';*/
+                break;
         }
 }
 

@@ -3,7 +3,7 @@
 namespace bar;
 class vueEtapes {
 
-    public function getDebutHTML($titre) : string {
+    public function getDebutHTML($titre, $lienRetour) : string {
         $corps =    '<!DOCTYPE html>
                         <html lang="en">
                         <head>
@@ -17,7 +17,7 @@ class vueEtapes {
                         </head>
                         <h1>'.$titre.'</h1>
                         <div class="arrow" id="retour">
-                            <a href="CRUD_Cocktails.php?action=read"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                            <a href="'.$lienRetour.'"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
                         </div>                
                     <body>';
@@ -93,13 +93,15 @@ class vueEtapes {
         return $corps;
     }
 
-    public function getHTMLInsert() : string {
+    public function getHTMLInsert($cocktail, $msg = "") : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addUtensileForm"  method="get" action="./CRUD_etape.php">
+                    <form id="addUtensileForm"  method="post" action="./CRUD_etape.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">ajouter une etape </label>
+                            <input type="text" class="form-control" id="c_id" name="c_id" value="'.$cocktail->getCId().'" hidden>
                             <input type="text" class="form-control" id="name" name="e_desc" placeholder="description de l etape ">
                         </div>
+                        <h3>'.$msg.'</h3>
                         <button type="submit" class="btn btn-primary">Ajouter</button>
                     </form>
                 </div>';

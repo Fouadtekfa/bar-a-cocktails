@@ -128,6 +128,21 @@ class MyPDO {
         return $this->pdos_max->fetch(PDO::FETCH_NUM)[0];
     }
 
+    public function getIdMaxENumFromCocktail($id, $cocktailId) : int {
+        $this->max($id, $cocktailId);
+        return $this->pdos_max->fetch(PDO::FETCH_NUM)[0];
+    }
+
+    public function maxWithCocktailId($id, $cocktailId) {
+        if (!isset($this->pdos_max)) {
+            $this->initPDOS_max_cocktailId($id, $cocktailId);
+        }
+        return $this->pdos_max->execute();
+    }
+
+    public function initPDOS_max_cocktailId($id, $cocktailId) {
+        $this->pdos_max = $this->pdo->prepare('SELECT MAX('.$id.') FROM '.$this->nomTable. 'WHERE c_id = '. $cocktailId);
+    }
 
     /**
      * préparation de la requête SELECT MAX(*)
@@ -135,7 +150,6 @@ class MyPDO {
      */
     public function initPDOS_max($id) {
         $this->pdos_max = $this->pdo->prepare('SELECT MAX('.$id.') FROM '.$this->nomTable);
-    
     }
 
     /**
@@ -162,7 +176,7 @@ class MyPDO {
         }
         $query = substr($query, 0, strlen($query) - 2);
         $query .= ')';
-        echo $query;
+        //echo $query;
         $this->pdos_insert = $this->pdo->prepare($query);
     }
 
