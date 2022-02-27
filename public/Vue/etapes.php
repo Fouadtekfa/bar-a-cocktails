@@ -3,7 +3,7 @@
 namespace bar;
 class vueEtapes {
 
-    public function getDebutHTML($cocktail) : string {
+    public function getDebutHTML($titre) : string {
         $corps =    '<!DOCTYPE html>
                         <html lang="en">
                         <head>
@@ -15,7 +15,7 @@ class vueEtapes {
                             <link rel="stylesheet" href="../../css/utensiles.css">
                             <title>etapes</title>
                         </head>
-                        <h1>ETAPES DU '.$cocktail->getCNom().'</h1>
+                        <h1>'.$titre.'</h1>
                         <div class="arrow" id="retour">
                             <a href="CRUD_Cocktails.php?action=read"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
@@ -50,7 +50,7 @@ class vueEtapes {
     public function getHTMLTable($va) : string {
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
-                        <form id="insererUtensileFormButton"  method="post" action="?action=create">
+                        <form id="insererUtensileFormButton"  method="post" action="?action=create&c_id='.$va[0]->getCId().'">
                         <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
                         </form>
                     </div>

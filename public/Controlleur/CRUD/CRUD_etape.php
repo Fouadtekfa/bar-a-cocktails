@@ -36,21 +36,29 @@ if (isset($_GET['action'])){
             $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
             $myPDO_Change->setNomTable('cocktail');
             $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
-            $contenu.=$vue->getDebutHTML($cocktail);
+            $titre = "ETAPES DU " . $cocktail->getCNom(); 
+            $contenu.=$vue->getDebutHTML($titre);
             $contenu.= $vue->getHTMLTable($etapesForCocktail);
             break;
         }
         case 'create': {
-            $contenu.=$vue->getDebutHTML();
+                // Obtenir le cocktail de l'etape
+                $myPDO_Change->setNomTable('cocktail');
+                $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
+                $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
+
+            $contenu.=$vue->getDebutHTML($titre);
             $contenu.= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
         }
 
         default: {
-            //$va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-            //$contenu.=$vue->getDebutHTML();
-            //$contenu.= $vue->getHTMLTable($va);
+            $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+            $myPDO_Change->setNomTable('cocktail');
+            $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
+            $contenu.=$vue->getDebutHTML($cocktail);
+            $contenu.= $vue->getHTMLTable($etapesForCocktail);
             break;
         }
 
@@ -86,10 +94,11 @@ if (isset($_GET['action'])){
             }
             
             case 'créé':
-                    $va =$myPDO->getSpecific('c_id', $_GET['c_id']);
-                    $contenu="";
-                    $contenu.=$vue->getDebutHTML();
-                    $contenu.= $vue->getHTMLTable($va);
+                    $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+                    $myPDO_Change->setNomTable('cocktail');
+                    $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
+                    $contenu.=$vue->getDebutHTML($cocktail);
+                    $contenu.= $vue->getHTMLTable($etapesForCocktail);
                     break;
         }
 }
