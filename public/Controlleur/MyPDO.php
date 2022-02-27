@@ -410,7 +410,7 @@ class MyPDO {
                 if(count($keys) == 1)
                     $this->initPDOS_delete($keys[0]);
                 else
-                    $this->initPDOS_delete($keys[0],$keys[1]);
+                    $this->initPDOS_deleteFromRelation($keys[0],$keys[1]);
             }
             foreach ($assoc as $key => $value) {
                 $this->getPdosDelete()->bindValue(":".$key, $value);
@@ -421,6 +421,7 @@ class MyPDO {
         }
     }
 
+
      /**
      * @param string
      */
@@ -428,6 +429,17 @@ class MyPDO {
     public function initPDOS_delete(string $nomColId = "id"): void {
         $statement = "DELETE FROM ". $this->nomTable." WHERE $nomColId=:".$nomColId;
         $this->pdos_delete = $this->pdo->prepare($statement);
+        // echo $statement;
+    }
+
+     /**
+     * @param string
+     */
+
+    public function initPDOS_deleteFromRelation(string $nomColId1 = "id1", string $nomColId2 = "id2"): void {
+        $statement = "DELETE FROM ". $this->nomTable." WHERE $nomColId1=:".$nomColId1 . " AND $nomColId2=:".$nomColId2;
+        $this->pdos_delete = $this->pdo->prepare($statement);
+        //echo $statement;
     }
 }
 

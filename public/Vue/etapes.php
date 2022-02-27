@@ -79,7 +79,7 @@ class vueEtapes {
                                     </td>
                                     
                                     <td class="td_buttons_actions">
-                                        <a href="?action=suppression&c_id='.$valeur->getCId().'">
+                                        <a href="?action=suppression&c_id='.$valeur->getCId().'&e_num='.$valeur->getENum().'">
                                             <button type="button" class="btn btn-danger">Supprimer</button>
                                         </a>
                                     </td>
@@ -100,7 +100,7 @@ class vueEtapes {
                         <div class="form-group">
                             <label for="name" class="rowsInformation">ajouter une etape </label>
                             <input type="text" class="form-control" id="c_id" name="c_id" value="'.$cocktail->getCId().'" hidden>
-                            <input type="text" class="form-control" id="name" name="e_desc" placeholder="description de l etape ">
+                            <input required type="text" class="form-control" id="name" name="e_desc" placeholder="description de l etape ">
                         </div>
                         <h3>'.$msg.'</h3>
                         <button type="submit" class="btn btn-primary">Ajouter</button>

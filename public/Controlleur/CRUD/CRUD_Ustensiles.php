@@ -57,7 +57,7 @@ if (isset($_GET['action']))
             break;        
         }
         case 'suppression': {
-            $etat.="modification";
+            $etat.="suppression";
                 
             $idElem = array(
                     "u_id" => $_GET['u_id']

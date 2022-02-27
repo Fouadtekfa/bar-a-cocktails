@@ -32,16 +32,7 @@ if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
 //echo $_SESSION['etat'];
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
-        case 'read': {
-            $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-            $myPDO_Change->setNomTable('cocktail');
-            $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
-            $titre = "ETAPES DU " . $cocktail->getCNom(); 
-            $lienRetour = "CRUD_Cocktails.php?action=read";
-            $contenu.=$vue->getDebutHTML($titre, $lienRetour);
-            $contenu.= $vue->getHTMLTable($etapesForCocktail);
-            break;
-        }
+        
         case 'create': {
                 // Obtenir le cocktail de l'etape
                 $myPDO_Change->setNomTable('cocktail');
@@ -83,6 +74,18 @@ if (isset($_GET['action'])){
              break;
         }
         
+        case 'suppression' : {
+            $etat.="suppression";
+                
+            $idElem = array(
+                    "c_id" => $_GET['c_id'],
+                    "e_num" => $_GET['e_num']
+                );
+            
+            $myPDO->delete($idElem);
+
+        }
+
         default: {
             $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
             $myPDO_Change->setNomTable('cocktail');
@@ -166,15 +169,6 @@ if (isset($_GET['action'])){
                 $contenu .= $vue->getHTMLUpdate($etapeArray, $msg);
             }
             
-            case 'créé':
-                /*$myPDO_Change->setNomTable('cocktail');
-                $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
-                $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
-
-                $contenu.=$vue->getDebutHTML($titre);
-                $contenu.= $vue->getHTMLInsert($cocktail);
-                $_SESSION['etat'] = 'creation';*/
-                break;
         }
 }
 
