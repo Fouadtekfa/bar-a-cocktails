@@ -159,14 +159,18 @@ class VueCocktail {
                                         <td><a href="?action=details&c_id='.$valeur->getCId().'">Voir plus...</a></td>
                                         
                                         <td class="td_buttons_actions">
-                                            <button type="button" class="btn btn-primary etapes-btn">
-                                                <a href="../CRUD/CRUD_etape.php?action=read&c_id='.$valeur->getCId().'" style="color : white">Etapes</a>
-                                            </button>
+                                            <a href="../CRUD/CRUD_etape.php?action=read&c_id='.$valeur->getCId().'" style="color : white">
+                                                <button type="button" class="btn btn-primary etapes-btn">
+                                                    Etapes
+                                                </button>
+                                            </a>
                                         </td>
                                         
                                         <td class="td_buttons_actions">
                                             <a href="?action=update&c_id='.$valeur->getCId().'">
-                                            <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                                                <button type="button" class="btn btn-warning etapes-btn">Editer</button>
+                                            </a>
+                                        </td>
                                         
                                         <td class="td_buttons_actions">
                                             <a href="?action=delete&c_id='.$valeur->getCId().'">
