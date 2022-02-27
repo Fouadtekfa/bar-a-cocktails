@@ -24,11 +24,11 @@ class vueEtapes {
         return $corps;
     }
 
-    public function getHTMLUpdate(array  $etape) : string {
+    public function getHTMLUpdate(array  $etape, string $msg="") : string {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-            '<form id="updateUtensileForm"  method="get">'.
+            '<form id="updateUtensileForm"  method="post" action="./CRUD_etape.php?c_id='.$etape['c_id']['default'].'&e_num='.$etape['e_num']['default'].'">'.
             '<div class="form-group">';
         foreach ($etape as $col => $val) {
             if (is_array($val)) {
@@ -40,6 +40,7 @@ class vueEtapes {
             }
         }
         $corps.='            </div>
+                                <h3>'.$msg.'</h3>
                                     <button type="submit" class="btn btn-primary">Modifier</button>
                                 </form>
                             </div>';
