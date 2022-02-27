@@ -40,11 +40,14 @@ require_once "getDebutHtml.html";
 
 
         <div class="produit commandeContainer" id="commandes">
+            <a class="prin" href="../public/Controlleur/CRUD/CRUD_commande.php?action=read">
+
             <div class="imageContainer imgCommande">
             </div>
             <div class="titleContainer">
                 <h2>Commande</h2>
             </div>
+            </a>
         </div>
 
 

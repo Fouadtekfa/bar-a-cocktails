@@ -115,7 +115,7 @@ if (isset($_GET['action'])) {
 
         case 'modification': {
             $etat.="modification";
-            $nbUtensiles = $myPDO->getCountValue();
+            $nbBoisson = $myPDO->getCountValue();
 
             $idElem = 'b_id';
             $alcool = 0;
