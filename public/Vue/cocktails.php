@@ -4,7 +4,7 @@ namespace bar;
 
 class VueCocktail {
 
-    public function getDebutHTML(): string{
+    public function getDebutHTML($titre = "Cocktails", $lienRetour = "../../"): string{
         $res = '<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -14,11 +14,11 @@ class VueCocktail {
                     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
                     <link rel="stylesheet" href="../../css/style.css">
                     <link rel="stylesheet" href="../../css/cocktails.css">
-                    <title>Cocktail</title>
+                    <title>Cocktails</title>
                 </head>
-                 <h1>Cocktails</h1>
+                 <h1>'.$titre.'</h1>
                     <div class="arrow" id="retour">
-                    <a href="../../"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                    <a href="'.$lienRetour.'"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                     </i>
                     </div>
                 <body>';

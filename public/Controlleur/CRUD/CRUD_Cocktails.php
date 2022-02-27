@@ -35,15 +35,20 @@ if (isset($_GET['action'])){
         case 'read': {
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
-            $contenu.=$vue->getDebutHTML();
+            $title = "Cocktails";
+            $lienRetour = "../../";
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLAll($va);
             break;
         }
         case 'create': {
-            $contenu.=$vue->getDebutHTML();
+            $title = "Ajout un Cocktail";
+            $lienRetour = 'CRUD_Cocktails.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
+            
             
             // == BOISSON CONTENU ==
-                $myPDO_Change->setNomTable('boisson');
+               $myPDO_Change->setNomTable('boisson');
                 $myPDO_Change->initPDOS_selectAll();
                 $boissons =  $myPDO_Change->getAll();
             // ===================
@@ -56,7 +61,9 @@ if (isset($_GET['action'])){
         case 'update':
 
             $cocktail = $myPDO->get('c_id', $_GET['c_id']);
-            $contenu.=$vue->getDebutHTML();
+            $title = "Modifier ". $cocktail->getCNom();
+            $lienRetour = 'CRUD_Cocktails.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
 
             // == BOISSON CONTENU ==
             $myPDO_Change->setNomTable('boisson');
@@ -96,7 +103,7 @@ if (isset($_GET['action'])){
             $_SESSION['etat'] = 'supprimer';
             break;
         }
-        case 'details':
+        case 'details': {
 
             $cocktail = $myPDO->get('c_id', $_GET['c_id']);
             $contenu.=$vue->getDebutHTML();
@@ -119,12 +126,11 @@ if (isset($_GET['action'])){
             $_SESSION['etat'] = 'modification';
 
             break;
-
-
-
+        }
         
     }
 }else if (isset($_SESSION['etat'])) {
+    echo "mm";
     switch ($_SESSION['etat']) {
         case 'creation':
             $etat .= "creation";
