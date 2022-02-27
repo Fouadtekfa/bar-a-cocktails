@@ -16,7 +16,7 @@ try {
 
 
 // Initialisation de notre vue Utensiles
-$vue = new  bar\vueUtensiles();
+$vue = new  bar\vueUstensiles();
 
 // Initialisation de chaines
 $contenu = "";
@@ -32,21 +32,28 @@ if (isset($_GET['action']))
         case 'read': {
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
-            $contenu.=$vue->getDebutHTML();
+
+            $title = "Ustensiles";
+            $lienRetour = "../../";
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLTable($va);
             break;        
         }
 
         case 'insererUtensile': {
-            $contenu.=$vue->getDebutHTML();
+            $title = "Inserer un Ustensile";
+            $lienRetour = 'CRUD_Ustensiles.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;        
         }
 
         case 'modifierUtensile': {
+            $title = "Inserer un Ustensile";
+            $lienRetour = 'CRUD_Ustensiles.php?action=read';
             $utensile = $myPDO->get('u_id', $_GET['u_id']);
-            $contenu.=$vue->getDebutHTML();
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
             'u_id'=>array('type'=>'text','default'=> $utensile->getUId(), 'titre' => 'id'),
             'u_nom'=>array('type'=>'text','default'=>$utensile->getUNom(), 'titre' => 'Nom de l utensile'),
@@ -69,7 +76,9 @@ if (isset($_GET['action']))
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
             $contenu="";
-            $contenu.=$vue->getDebutHTML();
+            $title = "Ustensiles";
+            $lienRetour = "../../";
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLTable($va);
             $_SESSION['etat'] = 'supprimer';
             break;        
@@ -88,8 +97,10 @@ if (isset($_GET['action']))
                     $myPDO->insert($insert);
                     $myPDO->initPDOS_selectAll();
                     $va =  $myPDO->getAll();
-                    $contenu="";
-                    $contenu.=$vue->getDebutHTML();
+                    $contenu="";        
+                    $title = "Ustensiles";
+                    $lienRetour = "../../";
+                    $contenu.=$vue->getDebutHTML($title, $lienRetour);
                     $contenu.= $vue->getHTMLTable($va);
                 } else {
                     $_SESSION['Action'] = 'read' ;
@@ -115,7 +126,9 @@ if (isset($_GET['action']))
                     $myPDO->initPDOS_selectAll();
                     $va =  $myPDO->getAll();
                     $contenu="";
-                    $contenu.=$vue->getDebutHTML();
+                    $title = "Ustensiles";
+                    $lienRetour = "../../";
+                    $contenu.=$vue->getDebutHTML($title, $lienRetour);
                     $contenu.= $vue->getHTMLTable($va);
                 }
                 
@@ -132,7 +145,9 @@ if (isset($_GET['action']))
             case 'supprime' :
                 $myPDO->initPDOS_selectAll();
                 $va =  $myPDO->getAll();
-                $contenu.=$vue->getDebutHTML();
+                $title = "Ustensiles";
+                $lienRetour = "../../";
+                $contenu.=$vue->getDebutHTML($title, $lienRetour);
                 $contenu.= $vue->getHTMLTable($va);
                 break;
 

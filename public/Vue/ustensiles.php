@@ -1,9 +1,9 @@
 <?php
 
 namespace bar;
-class vueUtensiles {
+class vueUstensiles {
 
-    public function getDebutHTML() : string {
+    public function getDebutHTML($title, $lienRetour) : string {
         $corps =    '<!DOCTYPE html>
                         <html lang="en">
                         <head>
@@ -13,11 +13,11 @@ class vueUtensiles {
                             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
                             <link rel="stylesheet" href="../../css/style.css">
                             <link rel="stylesheet" href="../../css/utensiles.css">
-                            <title>Cocktail</title>
+                            <title>'.$title.'</title>
                         </head>
                         <h1>Ustensiles</h1>
                         <div class="arrow" id="retour">
-                        <a href="../../"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                        <a href="'.$lienRetour.'"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
                         </div>                
                     <body>';
@@ -49,6 +49,7 @@ class vueUtensiles {
     }
 
     public function getHTMLTable($va) : string {
+
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
                         <form id="insererUtensileFormButton"  method="post" action="?action=insererUtensile">
@@ -67,7 +68,7 @@ class vueUtensiles {
                             <tbody>';
     
         foreach ($va as $valeur){  
-            if ($valeur instanceof EntiteUtensile) {
+            if ($valeur instanceof EntiteUstensile) {
 
             $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getUId() .'</th>
@@ -90,7 +91,7 @@ class vueUtensiles {
 
     public function getHTMLInsert() : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addUtensileForm"  method="get" action="CRUD_Utensiles.php">
+                    <form id="addUtensileForm"  method="get" action="CRUD_Ustensiles.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">Nom de lutensile</label>
                             <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de lutensile">
