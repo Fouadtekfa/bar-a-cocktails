@@ -3,7 +3,7 @@
 namespace bar;
 class vueEtapes {
 
-    public function getDebutHTML() : string {
+    public function getDebutHTML($cocktail) : string {
         $corps =    '<!DOCTYPE html>
                         <html lang="en">
                         <head>
@@ -15,7 +15,7 @@ class vueEtapes {
                             <link rel="stylesheet" href="../../css/utensiles.css">
                             <title>etapes</title>
                         </head>
-                        <h1>ETAPES</h1>
+                        <h1>ETAPES DU '.$cocktail->getCNom().'</h1>
                         <div class="arrow" id="retour">
                             <a href="CRUD_Cocktails.php?action=read"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
@@ -68,7 +68,6 @@ class vueEtapes {
         foreach ($va as $valeur){
             if ($valeur instanceof EntiteEtape) {
                 $corps.= '          <tr>
-                                    <th scope="row">'. $valeur->getCId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getENum() . '</td>
                                     <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
                                     

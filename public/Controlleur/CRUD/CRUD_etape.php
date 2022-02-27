@@ -10,6 +10,7 @@ include "../../Vue/etapes.php";
 //Initialisation de connexion
 try {
     $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'etape');
+    $myPDO_Change = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd']);
     //echo "CONNEXION!" ;
 }catch (PDOException $e){
     echo "Il y a eu une erreur : " .$e->getMessage() ;
@@ -32,9 +33,11 @@ if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
         case 'read': {
-            $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLTable($va);
+            $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+            $myPDO_Change->setNomTable('cocktail');
+            $cocktail = $myPDO_Change->get('c_id', $_GET['c_id']);
+            $contenu.=$vue->getDebutHTML($cocktail);
+            $contenu.= $vue->getHTMLTable($etapesForCocktail);
             break;
         }
         case 'create': {
@@ -45,9 +48,9 @@ if (isset($_GET['action'])){
         }
 
         default: {
-            $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
-            $contenu.=$vue->getDebutHTML();
-            $contenu.= $vue->getHTMLTable($va);
+            //$va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+            //$contenu.=$vue->getDebutHTML();
+            //$contenu.= $vue->getHTMLTable($va);
             break;
         }
 
