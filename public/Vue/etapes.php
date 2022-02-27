@@ -72,7 +72,7 @@ class vueEtapes {
                                     <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
                                     
                                     <td class="td_buttons_actions">
-                                        <a href="?action=update&c_id='.$valeur->getCId().'">
+                                        <a href="?action=update&c_id='.$valeur->getCId().'&e_num='.$valeur->getENum().'">
                                             <button type="button" class="btn btn-warning etapes-btn">Editer</button>
                                         </a>
                                     </td>

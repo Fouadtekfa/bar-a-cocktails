@@ -3,12 +3,12 @@ session_start();
 
 require_once "../MyPDO.php";
 require_once "../connexion.php";
-require_once "../../Modele/EntiteUtensile.php";
-include "../../Vue/utensiles.php";
+require_once "../../Modele/EntiteUstensile.php";
+include "../../Vue/ustensiles.php";
 
 //Initialisation de connexion
 try {
-    $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'Utensile');
+    $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'ustensile');
     //echo "CONNEXION!" ;
 }catch (PDOException $e){
     echo "Il y a eu une erreur : " .$e->getMessage() ;

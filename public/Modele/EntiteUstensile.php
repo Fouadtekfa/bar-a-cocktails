@@ -1,7 +1,7 @@
 <?php
 namespace bar;
 
-class EntiteUtensile {
+class EntiteUstensile {
 
     protected int $u_id;
     protected string $u_nom;

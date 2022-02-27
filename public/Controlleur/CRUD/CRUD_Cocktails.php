@@ -175,8 +175,6 @@ if (isset($_GET['action'])){
         case 'modification':
         {
             $etat .= "modification";
-            $idElem = 'c_id';
-            //echo $_GET['c_nom'];
 
             // ====== POUR BOISSONS =========
              // Recuperer les boissons (s'il y en a)
@@ -186,27 +184,37 @@ if (isset($_GET['action'])){
                 
                 // Etablir la table de cocktail liaison boisson
                 $myPDO_Change->setNomTable('liencocktailboisson');
-                $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $idElem);
-                for ($i=0; $i < count($nomBoissons); $i++) { 
-                    if($nomBoissons[$i] > 0){
-                        // Si l'element existe dans la table 
-                        $exist = true;
-                        for ($j=0; $j < count($lienCockBoisson); $j++) {
-                            if($boissonsId[$i] == $lienCockBoisson[$j]) $exist = true;
-                            else $exist = false;
-                        } 
+                $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_POST['c_id']);                
 
+                for ($i=0; $i < count($nomBoissons); $i++) { 
+                    
+                    if($nomBoissons[$i] > 0) {
+                        // Si l'element existe dans la table 
+                        $exist = false;
+                        
+                        for ($j=0; $j < count($lienCockBoisson); $j++) {
+                            //echo $boissonsId[$i] .' == '. $lienCockBoisson[$j]->getBId() .'<br>';
+                            if($boissonsId[$i] == $lienCockBoisson[$j]->getBId()) {
+                                $exist = true;
+                                break;
+                            } else {
+                                $exist = false;
+                            } 
+                        } 
+                        
                         if($exist == true ) {
+                            //echo "modifier <br>";
                             $update = array(
                                 "c_id" => $_POST['c_id'],
                                 "b_id" => $boissonsId[$i],
                                 "qteBoisson" => $nomBoissons[$i]
                             );
-                            $myPDO_Change->updateRelation($idElem, $update);
-
+                           $myPDO_Change->updateRelation('c_id', 'b_id', $update);
                         } else {
-                             //   echo 'c_id : ' . $_POST['c_id']. ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
+                            //echo "ajouter <br>";
+                            //   echo 'c_id : ' . $_POST['c_id']. ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
                             //echo '<br>';
+                            //echo $boissonsId[$i]  . '<br>';
                             $insert = array(
                                 "c_id" => $_POST['c_id'],
                                 "b_id" => $boissonsId[$i],
@@ -223,7 +231,6 @@ if (isset($_GET['action'])){
             // ==============================
 
             if (isset( $_POST['c_id']) && isset($_POST['c_nom']) && isset($_POST['c_cat']) && isset($_POST['c_prix'])) {
-
                 $update = array(
                     "c_id" => $_POST['c_id'],
                     "c_nom" => $_POST['c_nom'],
@@ -232,8 +239,7 @@ if (isset($_GET['action'])){
 
                 );
 
-                $myPDO->update($idElem, $update);
-
+                $myPDO->update('c_id', $update);
                 $myPDO->initPDOS_selectAll();
                 $va = $myPDO->getAll();
                 $contenu = "";

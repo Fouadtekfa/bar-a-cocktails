@@ -23,8 +23,10 @@ class MyPDO {
     }
 
     public function initPDOS_selectAllById($nomId, $valeur) {
-        $this->pdos_selectAllById = $this->pdo->prepare('SELECT * FROM '
-            .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur);
+        $query = 'SELECT * FROM '
+        .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur;
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+        //echo "mira" . $query;
     }
 
     public function getAll(): array {
@@ -67,11 +69,29 @@ class MyPDO {
         $this->pdos_select = $this->pdo->prepare($requete);
     }
 
+    public function initPDOS_selectBy2Keys(string $nomColID1 = "id", string $nomColID2): void
+    {
+        $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID1 = :$nomColID1" . " AND $nomColID2 = :$nomColID2";
+       // echo $requete;
+        $this->pdos_select = $this->pdo->prepare($requete);
+    }
+
 
     public function get($key, $val) {
         if (!isset($this->pdos_select))
             $this->initPDOS_select($key);
         $this->getPdosSelect()->bindValue(":".$key,$val);
+        $this->getPdosSelect()->execute();
+        return $this->getPdosSelect()
+            ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
+    }
+
+    // Obtenir un element d'un
+    public function getElement2Keys($key1, $key2, $val1, $val2) {
+        if (!isset($this->pdos_select))
+            $this->initPDOS_selectBy2Keys($key1, $key2);
+        $this->getPdosSelect()->bindValue(":".$key1, $val1);
+        $this->getPdosSelect()->bindValue(":".$key2, $val2);
         $this->getPdosSelect()->execute();
         return $this->getPdosSelect()
             ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
@@ -176,7 +196,6 @@ class MyPDO {
         }
         $query = substr($query, 0, strlen($query) - 2);
         $query .= ')';
-        //echo $query;
         $this->pdos_insert = $this->pdo->prepare($query);
     }
 
@@ -356,9 +375,9 @@ class MyPDO {
      * @param string $id
      * @param array $assoc
      */
-    public function updateRelation(string $id, array $assoc): void {
+    public function updateRelation(string $id, string $id_2, array $assoc): void {
         if (!isset($this->pdos_updateRelation)){
-         $this->initPDOS_updateRelation($id, array_keys($assoc));
+         $this->initPDOS_updateRelation($id, $id_2, array_keys($assoc));
         }
          foreach ($assoc as $key => $value) {
              $this->getPdosUpdateRelation()->bindValue(":".$key, $value);
@@ -377,6 +396,7 @@ class MyPDO {
         }
         $query = substr($query,0, strlen($query)-2);
         $query .= " WHERE ".$nomColId."=:".$nomColId. " AND  ".$nomColId2."=:".$nomColId2;
+       // echo $query;
         $this->pdos_updateRelation =  $this->pdo->prepare($query);
     }
 

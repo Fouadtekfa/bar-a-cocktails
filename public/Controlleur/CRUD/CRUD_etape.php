@@ -49,12 +49,31 @@ if (isset($_GET['action'])){
                 $titre = "Ajout d'une etape pour " . $cocktail->getCNom(); 
                 
                 $lienRetour = 'CRUD_etape.php?action=read&c_id='.$_GET['c_id'];
+                
                 $contenu.=$vue->getDebutHTML($titre, $lienRetour);
                 $contenu.= $vue->getHTMLInsert($cocktail);
                 $_SESSION['etat'] = 'creation';
             break;
         }
 
+        case 'update': {
+            $etape = $myPDO->getElement2Keys('c_id', 'e_num', $_GET['c_id'], $_GET['e_num']);
+            echo '<br>';
+            echo $etape->getEDesc();
+
+            $contenu.=$vue->getDebutHTML();
+            $contenu .= $vue->getHTMLUpdate(array(
+            'c_id'=>array('type'=>'text','default'=> $utensile->getCId(), 'titre' => 'id cocktail'),
+            'e_num'=>array('type'=>'text','default'=> $utensile->getENum(), 'titre' => 'id etape'),
+            'e_desc'=>array('type'=>'text','default'=>$utensile->getEDesc(), 'titre' => 'Nom de l utensile'),
+            ));
+
+            //$contenu.= $vue->getHTMLUpdate($utensile);
+            //$_SESSION['etat'] = 'modification';
+
+        break;
+    }
+        
         default: {
             $etapesForCocktail =  $myPDO->getSpecific('c_id', $_GET['c_id']);
             $myPDO_Change->setNomTable('cocktail');
