@@ -44,13 +44,12 @@ if (isset($_GET['action'])) {
             $_SESSION['etat'] = 'creation';
             break;
         }
-
         case 'modifier':
         {
             $commande = $myPDO->get('com_id', $_GET['com_id']);
             $contenu .= $vue->getDebutHTML();
             $contenu .= $vue->getHTMLUpdate(array(
-                'com_id' => array('balise'=>'input', 'type' => 'text', 'default' => $commande->getBId(), 'titre' => 'id'),
+                'com_id' => array('balise'=>'input', 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
                 'com_numTable' => array('balise'=>'input', 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),
 
 
@@ -82,7 +81,6 @@ if (isset($_GET['action'])) {
         case 'creation': {
             $etat.="creation";
             $insert = "";
-            $alcool = 0;
 
 
             if(isset($_GET['com_numTable'])) {
