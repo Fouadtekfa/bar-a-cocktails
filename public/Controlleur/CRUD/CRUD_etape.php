@@ -69,18 +69,19 @@ if (isset($_GET['action'])){
 
         $etat.="creation";
         $insert = "";
-
+        $max=$myPDO->initPDOS_max(e_num);
+        echo $max;
         if(isset($_GET['e_desc'])) {
             $insert = array(
-
-                "c_id" => "c_id",
-                "e_num" =>"null",
+                "c_id"=>"null",
+                "e_num" =>$max+1,
                 "e_desc" => $_GET['e_desc']
             );
 
 
 
             $myPDO->insert($insert);
+
 /*
             $myPDO->insert($insert);
             $myPDO->initPDOS_selectAll();

@@ -94,7 +94,7 @@ class vueEtapes {
                             <label for="name" class="rowsInformation">ajouter une etape </label>
                             <input type="text" class="form-control" id="name" name="e_desc" placeholder="description de l etape ">
                         </div>
-                        <button type="submit" class="btn btn-primary">Ajout</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
                     </form>
                 </div>';
 
