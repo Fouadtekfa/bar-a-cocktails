@@ -70,12 +70,19 @@ class vueEtapes {
                 $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getCId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getENum() . '</td>
-                                      <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
-                                    <td class="td_buttons_actions"><a href="?action=create&u_id='.$valeur->getCId().'">
-                                    <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                                    <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
+                                    
                                     <td class="td_buttons_actions">
-                                    <a href="?action=suppression&c_id='.$valeur->getCId().'">
-                                    <button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                        <a href="?action=update&c_id='.$valeur->getCId().'">
+                                            <button type="button" class="btn btn-warning etapes-btn">Editer</button>
+                                        </a>
+                                    </td>
+                                    
+                                    <td class="td_buttons_actions">
+                                        <a href="?action=suppression&c_id='.$valeur->getCId().'">
+                                            <button type="button" class="btn btn-danger">Supprimer</button>
+                                        </a>
+                                    </td>
                                 </tr>';
             }
         }

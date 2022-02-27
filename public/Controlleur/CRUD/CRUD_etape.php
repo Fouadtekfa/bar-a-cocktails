@@ -37,14 +37,22 @@ if (isset($_GET['action'])){
             $contenu.= $vue->getHTMLTable($va);
             break;
         }
-        case 'create':
+        case 'create': {
             $contenu.=$vue->getDebutHTML();
             $contenu.= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
+        }
+
+        default: {
+            $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
+            break;
+        }
 
     }
-}else if (isset($_SESSION['etat'])){
+} else if (isset($_SESSION['etat'])){
     
         switch ($_SESSION['etat']) {
             case 'creation': {
