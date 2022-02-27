@@ -157,9 +157,7 @@ class VueCocktail {
                                         <td>'. $valeur->getCCat().'</td>
                                         <td>'. $valeur->getCprix().' €</td>
                                         <td><a href="?action=details&c_id='.$valeur->getCId().'">Voir plus...</a></td>
-                                        <form id="insererUtensileFormButton"  method="post" action="../CRUD/CRUD_etape.php?c_id='.$valeur->getCId().'">
-                                            <td class="td_buttons_actions"><button type="submit" class="btn btn-primary etapes-btn">Etapes</button></td>
-                                        </form>
+                                        <td class="td_buttons_actions"><button type="submit" class="btn btn-primary etapes-btn"><a href="../CRUD/CRUD_etape.php?c_id='.$valeur->getCId().'" style="color : white">Etapes</a></button></td>
                                         <td class="td_buttons_actions"><a href="?action=update&c_id='.$valeur->getCId().'">
                                         <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                         <td class="td_buttons_actions">

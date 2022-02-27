@@ -17,7 +17,7 @@ class vueEtapes {
                         </head>
                         <h1>ETAPES</h1>
                         <div class="arrow" id="retour">
-                            <a href="CRUD_Cocktails.php"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                            <a href="CRUD_Cocktails.php?action=read"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
                         </i>
                         </div>                
                     <body>';
