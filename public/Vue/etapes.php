@@ -15,7 +15,7 @@ class vueEtapes {
                             <link rel="stylesheet" href="../../css/utensiles.css">
                             <title>etapes</title>
                         </head>
-                        <h1>ETEAPES</h1>
+                        <h1>ETAPES</h1>
                         <div class="arrow" id="retour">
                         <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
                         </i>
@@ -24,20 +24,19 @@ class vueEtapes {
         return $corps;
     }
 
-    public function getHTMLUpdate(array  $utensile) : string {
+    public function getHTMLUpdate(array  $etape) : string {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
             '<form id="updateUtensileForm"  method="get">'.
             '<div class="form-group">';
-        foreach ($utensile as $col => $val) {
+        foreach ($etape as $col => $val) {
             if (is_array($val)) {
                 $hide = "";
-                if($col == 'u_id') $hide = 'hidden';
+                if(($col == 'c_id')||($col=='e_num')) $hide = 'hidden';
                 $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
-                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="u_id" name="'.$col.'" placeholder="Nom de lutensile" value="'.$val['default'].'" >';
+                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="e_num" name="'.$col.'" placeholder="" value="'.$val['default'].'" >';
 
-                //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
             }
         }
         $corps.='            </div>
@@ -72,7 +71,7 @@ class vueEtapes {
                                     <th scope="row">'. $valeur->getCId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getENum() . '</td>
                                       <td class="rowsInformation">'. $valeur->getEDesc() . '</td>
-                                    <td class="td_buttons_actions"><a href="?action=modifierUtensile&u_id='.$valeur->getCId().'">
+                                    <td class="td_buttons_actions"><a href="?action=create&u_id='.$valeur->getCId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
                                     <a href="?action=suppression&c_id='.$valeur->getCId().'">
@@ -90,10 +89,10 @@ class vueEtapes {
 
     public function getHTMLInsert() : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addUtensileForm"  method="get" action="CRUD.php">
+                    <form id="addUtensileForm"  method="get" action="./CRUD_etape.php">
                         <div class="form-group">
-                            <label for="name" class="rowsInformation">étape num</label>
-                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de lutensile">
+                            <label for="name" class="rowsInformation">ajouter une etape </label>
+                            <input type="text" class="form-control" id="name" name="e_desc" placeholder="description de l etape ">
                         </div>
                         <button type="submit" class="btn btn-primary">Ajout</button>
                     </form>

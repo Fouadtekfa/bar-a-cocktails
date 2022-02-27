@@ -4,6 +4,7 @@ session_start();
 require_once "../MyPDO.php";
 require_once "../connexion.php";
 require_once "../../Modele/EntiteEtape.php";
+require_once "../../Modele/EntiteCocktail.php";
 include "../../Vue/etapes.php";
 
 //Initialisation de connexion
@@ -24,12 +25,15 @@ $idElem = "";
 $etat="";
 
 if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
+
     $_GET['action'] = 'read';
 }
+
 //echo $_GET['c_id'];
 if (isset($_GET['action'])){
     switch ($_GET['action']) {
         case 'read': {
+          /*
             //echo 'je';
             //$myPDO->initPDOS_selectAll();
             //$va =  $myPDO->getAll();
@@ -37,22 +41,72 @@ if (isset($_GET['action'])){
             //echo  $_GET['c_id'];
             //echo 'id ' .  $_GET['c_id'];
             //echo 'holiq';
-            $va = $myPDO->getById('c_id', $_GET['c_id']);
+            //$va = $myPDO->getById('c_id', $_GET['c_id']);
             //echo 'hhh';
-            $va =  $myPDO->getAllById('c_id', $_GET['c_id']);
-
+           //
+            // $va =  $myPDO->getAllById('c_id', $_GET['c_id']);
+       */
             $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
             $contenu.=$vue->getDebutHTML();
             $contenu.= $vue->getHTMLTable($va);
             break;
         }
 
+        case 'create':
 
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLInsert();
+            $_SESSION['etat'] = 'creation';
 
-
+            break;
 
     }
-}
+    }else if (isset($_SESSION['etat']))
+
+        switch ($_SESSION['etat']) {
+
+        case 'creation': {
+
+        $etat.="creation";
+        $insert = "";
+
+        if(isset($_GET['e_desc'])) {
+            $insert = array(
+
+                "c_id" => "c_id",
+                "e_num" =>"null",
+                "e_desc" => $_GET['e_desc']
+            );
+
+
+
+            $myPDO->insert($insert);
+/*
+            $myPDO->insert($insert);
+            $myPDO->initPDOS_selectAll();
+            $va =  $myPDO->getAll();
+*/          $va =  $myPDO->getSpecific('c_id', $_GET['c_id']);
+            $contenu="";
+            $contenu.=$vue->getDebutHTML();
+            $contenu.= $vue->getHTMLTable($va);
+        } else {
+            $_SESSION['Action'] = 'read' ;
+        }
+
+        $_SESSION['etat'] = 'créé';
+        break;
+    }
+            case 'créé':
+                $va =$myPDO->getSpecific('c_id', $_GET['c_id']);
+                $contenu="";
+                $contenu.=$vue->getDebutHTML();
+                $contenu.= $vue->getHTMLTable($va);
+                break;
+        }
+
+
+
+
 
 echo $contenu;
 require "../../getFinHtml.html";
