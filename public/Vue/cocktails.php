@@ -103,7 +103,7 @@ class VueCocktail {
         return $corps;
     }
 
-    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles) : string {
+    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles, $ingredients) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -146,6 +146,20 @@ class VueCocktail {
                         $corps.='<div class="form-check form-check_Entitiy col-4">   
                                     <label class="form-check-label" for="b_qteBoisson">
                                             '.$value['u_nom'].'
+                                    </label> 
+                                    </div>';
+                    }
+                    
+        $corps.='</div>';
+        // =================== 
+        
+        // ====== Afficher les ingredients ========
+        $corps.='<label for="ustensiles">Ingredients Utilisées</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+                foreach ($ingredients as $key => $value) {
+                        $corps.='<div class="form-check form-check_Entitiy col-12">   
+                                    <label class="form-check-label" for="b_qteBoisson">
+                                            Ingredient : '.$value['i_nom'].' : '.$value['qteIngredient'].'
                                     </label> 
                                     </div>';
                     }

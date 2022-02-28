@@ -131,13 +131,18 @@ if (isset($_GET['action'])){
             $myPDO_Change->setNomTable('liencocktailustensile');
             $lienCockUstensiles =  $myPDO_Change->getUstensilesForOneCocktail( $_GET['c_id']);            
             // ===================
+            
+            // == INGREDIENTS CONTENU ==
+            $myPDO_Change->setNomTable('liencocktailingredient');
+            $ingredients =  $myPDO_Change->getIngredientForOneCocktail( $_GET['c_id']);            
+            // ===================
 
             $contenu.=$vue->getHTMLDetails(array(
                 'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
                 'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
                 "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
-            ), $lienCockBoisson, $lienCockUstensiles);
+            ), $lienCockBoisson, $lienCockUstensiles, $ingredients);
             $_SESSION['etat'] = 'modification';
 
             break;

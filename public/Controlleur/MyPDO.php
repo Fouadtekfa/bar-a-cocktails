@@ -40,6 +40,17 @@ class MyPDO {
     }
 
     /**
+     * Requete Obtenir tous les ingredients d'un cocktail specific
+     */
+    public function initPDOS_IngredientsForOneCocktail($id) {
+        $query= 'SELECT i.i_id, i.i_nom, lci.qteIngredient 
+                from ingredient as i, '.$this->getNomTable().' as lci 
+                WHERE c_id = '.$id.' AND i.i_id = lci.i_id;';
+        //echo $query;
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
      * Requete Obtenir tous les ustensiles avec la table de liaison
      */
     public function initPDOS_UstensilesWithRelationCocktail() {
@@ -97,6 +108,15 @@ class MyPDO {
      */
     public function getUstensilesForOneCocktail($idCocktail) {
         $this->initPDOS_UstensilesForOneCocktail($idCocktail);    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir tous les ustensiles avec la table liaison
+     */
+    public function getIngredientForOneCocktail($idCocktail) {
+        $this->initPDOS_IngredientsForOneCocktail($idCocktail);    
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
