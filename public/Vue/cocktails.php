@@ -212,10 +212,12 @@ class VueCocktail {
                                 <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
                                 <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]">
                                 </div>';
-                            }
-                    
-                            $res.='     </div>
-                                        </div>
+                        }
+                        $res.='</div>';
+                        
+                        
+                        
+                        $res.='</div>
                                         <button type="submit" class="btn btn-primary">Ajout</button>
                                        </form>
                                     </div>';
