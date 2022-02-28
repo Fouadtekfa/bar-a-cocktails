@@ -38,6 +38,15 @@ class MyPDO {
                         WHERE c_id = '.$id.')';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
+    /**
+     * Requete Obtenir tous les verre d'un cocktail specific
+     */
+    public function initPDOS_VerreForOneCocktail($id) {
+        $query= 'SELECT * from verre as v 
+                    WHERE v.v_id IN(SELECT lcv.v_id FROM liencocktailverre as lcv 
+                        WHERE c_id = '.$id.')';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
 
     /**
      * Requete Obtenir tous les ustensiles avec la table de liaison
@@ -97,6 +106,14 @@ class MyPDO {
      */
     public function getUstensilesForOneCocktail($idCocktail) {
         $this->initPDOS_UstensilesForOneCocktail($idCocktail);    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+    /**
+     * Obtenir tous les verres avec la table liaison
+     */
+    public function getVerreForOneCocktail($idCocktail) {
+        $this->initPDOS_VerreForOneCocktail($idCocktail);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }

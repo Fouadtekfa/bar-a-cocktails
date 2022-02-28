@@ -95,7 +95,8 @@ class VueCocktail {
                             <input  type="number" class="form-control" hidden  >
                     </div>';
                 }
-        $corps.='</div>';        
+
+        $corps.='</div>';
         // ============================ 
         $corps.=' <button type="submit" class="btn btn-primary">Modifier</button>
                                     </form>
@@ -103,7 +104,7 @@ class VueCocktail {
         return $corps;
     }
 
-    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles) : string {
+    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles, $verre) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -151,7 +152,20 @@ class VueCocktail {
                     }
                     
         $corps.='</div>';
-        // =================== 
+        // ===================
+        // ====== Afficher verres  ========
+        $corps.='<label for="verre">Verre Utilisées</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        foreach ($verre as $key => $value) {
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                    <label class="form-check-label" for="b_qteBoisson">
+                                            '.$value['v_type'].'
+                                    </label> 
+                                    </div>';
+        }
+
+        $corps.='</div>';
+        // ==================
         $corps.=' </div>';
 
         return $corps;
