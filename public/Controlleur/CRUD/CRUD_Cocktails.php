@@ -79,7 +79,11 @@ if (isset($_GET['action'])){
             $boissons =  $myPDO_Change->getAll();
             $myPDO_Change->setNomTable('liencocktailboisson');
             $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_GET['c_id']);
-
+            // ===================
+            
+            // == BOISSON CONTENU ==
+            $myPDO_Change->setNomTable('liencocktailustensiles');
+            $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail();
             // ===================
 
             $contenu.=$vue->getHTMLUpdate(array(
@@ -87,7 +91,7 @@ if (isset($_GET['action'])){
                 'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
                 "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
-            ), $boissons, $lienCockBoisson);
+            ), $boissons, $lienCockBoisson, $ustensiles);
             $_SESSION['etat'] = 'modification';
 
             break;
@@ -139,7 +143,6 @@ if (isset($_GET['action'])){
         
     }
 }else if (isset($_SESSION['etat'])) {
-    echo "mm";
     switch ($_SESSION['etat']) {
         case 'creation':
             $etat .= "creation";

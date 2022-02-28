@@ -26,7 +26,7 @@ class MyPDO {
         $query = 'SELECT * FROM '
         .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur;
         $this->pdos_selectAllById = $this->pdo->prepare($query);
-        echo "mira" . $query;
+        //echo "mira" . $query;
     }
 
     /**
@@ -36,6 +36,16 @@ class MyPDO {
         $query= 'SELECT * from ustensile as u
                     WHERE u.u_id IN(SELECT lcu.u_id FROM liencocktailustensile as lcu 
                         WHERE c_id = '.$id.')';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
+     * Requete Obtenir tous les ustensiles avec la table de liaison
+     */
+    public function initPDOS_UstensilesWithRelationCocktail() {
+        $query= 'SELECT DISTINCT lcu.c_id, u.u_id, u.u_nom 
+                from  ustensile as u LEFT JOIN liencocktailustensile as lcu on(lcu.u_id = u.u_id)
+                GROUP BY(u.u_nom)';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
@@ -75,6 +85,15 @@ class MyPDO {
 
     /**
      * Obtenir les ustensiles d'un cocktail
+     */
+    public function getAllUstensilesWithRelationCocktail() {
+        $this->initPDOS_UstensilesWithRelationCocktail();    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir tous les ustensiles avec la table liaison
      */
     public function getUstensilesForOneCocktail($idCocktail) {
         $this->initPDOS_UstensilesForOneCocktail($idCocktail);    
