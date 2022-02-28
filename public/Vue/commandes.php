@@ -28,7 +28,7 @@ class vueCommandes {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-            '<form id="updateCommandeForm"  method="get">'.
+            '<form id="updateUtensileForm"  method="get">'.
             '<div class="form-group">';
         foreach ($commandes as $col => $val) {
             if (is_array($val)) {
@@ -51,7 +51,7 @@ class vueCommandes {
     public function getHTMLTable($va) : string {
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
-                        <form id="insererCommandeFormButton"  method="post" action="?action=insererCommande">
+                        <form id="insererCommandeFormButton"  method="post" action="?action=create">
                         <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
                         </form>
                     </div>
@@ -72,10 +72,10 @@ class vueCommandes {
                 $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getComId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getComNumTable() . '</td>
-                                    <td class="td_buttons_actions"><a href="?action=modifierCommande&u_id='.$valeur->getComId().'">
+                                    <td class="td_buttons_actions"><a href="?action=update&com_id='.$valeur->getComId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
-                                    <a href="?action=suppression&u_id='.$valeur->getComId().'">
+                                    <a href="?action=delete&com_id='.$valeur->getComId().'">
                                     <button type="button" class="btn btn-danger">Supprimer</button></a></td>
                                 </tr>';
             }
@@ -90,10 +90,10 @@ class vueCommandes {
 
     public function getHTMLInsert() : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addCommandeForm"  method="get" action="CRUD_Commandes.php">
+                    <form id="addUtensileForm"  method="get" action="./CRUD_commande.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">Numéro commande</label>
-                            <input type="text" class="form-control" id="name" name="nom" placeholder="numéro commande">
+                            <input type="text" class="form-control" id="name" name="com_numTable" placeholder="numéro de la table">
                         </div>
                         <button type="submit" class="btn btn-primary">Ajout</button>
                     </form>
