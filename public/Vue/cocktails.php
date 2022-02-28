@@ -187,7 +187,7 @@ class VueCocktail {
         return $res;
     }
 
-    public function getHTMLInsert($boissons) : string {
+    public function getHTMLInsert($boissons, $ustensiles) : string {
         $res='<div class="insertContainer"  id="insertContainer">
                 <form id="addUtensileForm"  method="post" action="./CRUD_Cocktails.php" >
                     <div class="form-group">
@@ -200,8 +200,9 @@ class VueCocktail {
                             <option value="AD">AD</option>
                         </select>
                         <label for="prix">Prix de Cocktail </label>
-                        <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">
-                        <label for="boissons">Boissons Utilisées</label>
+                        <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">';
+                        // Selection des boissons
+                        $res.='<label for="boissons">Boissons Utilisées</label>
                         <div class="selectionLiaison"> ';
                         foreach($boissons as $boisson){
                         
@@ -210,7 +211,22 @@ class VueCocktail {
                                         '.$boisson->getBNom() .'
                                 </label> <br>
                                 <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
-                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]">
+                                <input type="number" class="form-control quantity" name="checkBoissons[]">
+                                </div>';
+                        }
+                        $res.='</div>';
+
+                        // Selection des ustensiles
+                        $res.= '<label for="ustensiles">Ustensiles utilises</label>
+                        <div class="selectionLiaison"> ';
+                        foreach($ustensiles as $ustensile){
+                        
+                            $res.='<div class="form-check form-check_Entitiy col-4">   
+                                            <input class="form-check-input" type="checkbox" value="'.$ustensile->getUId().'" name="checkUstensilesId[]">
+                                            <label class="form-check-label">
+                                            '.$ustensile->getUNom().'
+                                        </label>
+                                        <input  type="number" class="form-control" hidden  >
                                 </div>';
                         }
                         $res.='</div>';

@@ -5,6 +5,8 @@ require_once "../connexion.php";
 require_once "../../Modele/EntiteCocktail.php";
 require_once "../../Modele/EntiteBoisson.php";
 require_once "../../Modele/EntiteLienCocktailBoisson.php";
+require_once "../../Modele/EntiteUstensile.php";
+require_once "../../Modele/EntiteLienCocktailUstensile.php";
 include "../../Vue/cocktails.php";
 
 
@@ -52,9 +54,15 @@ if (isset($_GET['action'])){
                 $myPDO_Change->initPDOS_selectAll();
                 $boissons =  $myPDO_Change->getAll();
             // ===================
+            
+            // == USTENSILE CONTENU ==
+               $myPDO_Change->setNomTable('ustensile');
+                $myPDO_Change->initPDOS_selectAll();
+                $ustensiles =  $myPDO_Change->getAll();
+            // ===================
 
 
-            $contenu.= $vue->getHTMLInsert($boissons);
+            $contenu.= $vue->getHTMLInsert($boissons, $ustensiles);
             $_SESSION['etat'] = 'creation';
             break;
         }
@@ -144,29 +152,54 @@ if (isset($_GET['action'])){
                 );
 
                 $myPDO->insert($insert);
-                $idMaxCocktails = $myPDO->getIdMax('c_id');
+                $idMaxCocktails = $myPDO->getIdMax('c_id'); // dernier element insere
                 
-                // Recuperer les boissons (s'il y en a)
-                if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
-                    $nomBoissons = $_POST['checkBoissons'];
-                    $boissonsId = $_POST['checkBoissonsId'];
+                // === AJOUT BOISSONS ======
+                    // Recuperer les boissons (s'il y en a)
+                    if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
+                        $nomBoissons = $_POST['checkBoissons'];
+                        $boissonsId = $_POST['checkBoissonsId'];
+                        // Etablir la table de cocktail liaison boisson
+                        $myPDO_Change->setNomTable('liencocktailboisson');
+                        $i = 0;
+
+                        for ($i=0; $i < count($boissonsId); $i++) { 
+                            if($nomBoissons[$i] > 0){
+                                //echo 'c_id : ' . $idMaxCocktails . ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
+                                //echo '<br>';
+                                $insert = array(
+                                    "c_id" => $idMaxCocktails,
+                                    "b_id" => $boissonsId[$i],
+                                    "qteBoisson" => $nomBoissons[$i]
+                                );
+                                $myPDO_Change->insert($insert);
+                            }
+                        }
+
+                    }
+                // ======================
+                    echo "lll";
+                // === AJOUT USTENSILES ======
+                    // Recuperer les ustensiles (s'il y en a)
                     
-                    // Etablir la table de cocktail liaison boisson
-                    $myPDO_Change->setNomTable('liencocktailboisson');
-                    for ($i=0; $i < $idMaxCocktails; $i++) { 
-                        if($nomBoissons[$i] > 0){
-                            //echo 'c_id : ' . $idMaxCocktails . ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
-                            //echo '<br>';
+                    if(isset($_POST['checkUstensilesId'])) {
+                        
+                        $ustensilesIdSelectionnes = $_POST['checkUstensilesId'];
+                        
+                        // Etablir la table de cocktail liaison boisson
+                        $myPDO_Change->setNomTable('liencocktailustensile');
+                        
+                        $i = 0;
+                        foreach($ustensilesIdSelectionnes as $ust) {
                             $insert = array(
                                 "c_id" => $idMaxCocktails,
-                                "b_id" => $boissonsId[$i],
-                                "qteBoisson" => $nomBoissons[$i]
+                                "u_id" => $boissonsId[$i],
                             );
                             $myPDO_Change->insert($insert);
+                            $i++;
                         }
                     }
-
-                }
+                // ======================
        
                 $myPDO->initPDOS_selectAll();
                 $va = $myPDO->getAll();

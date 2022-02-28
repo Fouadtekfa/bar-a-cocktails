@@ -177,8 +177,7 @@ class MyPDO {
      */
     public function insert(array $assoc): void
     {
-        if (!isset($this->pdos_insert))
-            $this->initPDOS_insert(array_keys($assoc));
+        $this->initPDOS_insert(array_keys($assoc));
         foreach ($assoc as $key => $value) {
             $this->getPdosInsert()->bindValue(":" . $key, $value);
         }
