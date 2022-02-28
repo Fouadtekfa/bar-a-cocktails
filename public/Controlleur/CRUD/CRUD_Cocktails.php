@@ -85,10 +85,10 @@ if (isset($_GET['action'])){
             $myPDO_Change->setNomTable('liencocktailustensiles');
             $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail();
             // ===================
-            // == verre CONTENU ==
+            //  verre CONTENU
             $myPDO_Change->setNomTable('liencocktailverre');
             $verre =$myPDO_Change->getAllVerresWithRelationCocktail();
-            // ===================
+
 
             $cocktail = array(
                 'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
@@ -309,8 +309,9 @@ if (isset($_GET['action'])){
 
             // === AJOUT / SUPPRESSION DES Verres ======
             $myPDO_Change->setNomTable('liencocktailverre');
+            $checkL = $_POST['checVerreId'];
+            if(isset($_POST['checVerreId'])) {
 
-            if(isset($_POST['checkUstensilesId'])) {
                 $checkList = $_POST['checVerreId'];
 
                 // SUPPRIMER
@@ -320,7 +321,7 @@ if (isset($_GET['action'])){
 
                 $myPDO_Change->delete($idElem);
 
-                foreach($checkList as $key => $value){
+                foreach($checkL as $key => $value){
                     $idElem = array(
                         "c_id" => $_POST['c_id'],
                         "v_id" => $value
