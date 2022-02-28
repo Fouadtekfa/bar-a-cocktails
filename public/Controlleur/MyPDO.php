@@ -26,7 +26,27 @@ class MyPDO {
         $query = 'SELECT * FROM '
         .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur;
         $this->pdos_selectAllById = $this->pdo->prepare($query);
-        //echo "mira" . $query;
+        echo "mira" . $query;
+    }
+
+    /**
+     * Requete Obtenir tous les ustensiles d'un cocktail specific
+     */
+    public function initPDOS_UstensilesForOneCocktail($id) {
+        $query= 'SELECT * from ustensile as u
+                    WHERE u.u_id IN(SELECT lcu.u_id FROM liencocktailustensile as lcu 
+                        WHERE c_id = '.$id.')';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
+     * Requete pour obtenir tous les boissons d'un cocktail
+     */
+    public function initPDOS_UstensilesForOneBoisson($id) {
+        $query= 'SELECT b.b_id, b.b_nom, lcb.qteBoisson FROM boisson as b, liencocktailboisson as lcb 
+                    WHERE b.b_id = lcb.b_id AND
+                          c_id = '.$id;
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
     public function getAll(): array {
@@ -47,14 +67,28 @@ class MyPDO {
     }
 
     public function getSpecific($nomId, $valeur): array {
-        if (!isset($this->pdos_selectAllById)){
-            $this->initPDOS_selectAllById($nomId, $valeur);
-            
-        }
-        
+        $this->initPDOS_selectAllById($nomId, $valeur);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
+    }
+
+    /**
+     * Obtenir les ustensiles d'un cocktail
+     */
+    public function getUstensilesForOneCocktail($idCocktail) {
+        $this->initPDOS_UstensilesForOneCocktail($idCocktail);    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir les boissons d'un cocktail
+     */
+    public function getBoissonsForOneCocktail($idCocktail) {
+        $this->initPDOS_UstensilesForOneBoisson($idCocktail);    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
     }
 
     public function initPDOS_select(string $nomColID = "id"): void

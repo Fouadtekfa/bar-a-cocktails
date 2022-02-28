@@ -117,12 +117,13 @@ if (isset($_GET['action'])){
             $contenu.=$vue->getDebutHTML();
 
             // == BOISSON CONTENU ==
-            $myPDO_Change->setNomTable('boisson');
-            $myPDO_Change->initPDOS_selectAll();
-            $boissons =  $myPDO_Change->getAll();
             $myPDO_Change->setNomTable('liencocktailboisson');
-            $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_GET['c_id']);
-
+            $lienCockBoisson =  $myPDO_Change->getBoissonsForOneCocktail( $_GET['c_id']);
+            // ===================
+            
+            // == USTENSILES CONTENU ==
+            $myPDO_Change->setNomTable('liencocktailustensile');
+            $lienCockUstensiles =  $myPDO_Change->getUstensilesForOneCocktail( $_GET['c_id']);            
             // ===================
 
             $contenu.=$vue->getHTMLDetails(array(
@@ -130,7 +131,7 @@ if (isset($_GET['action'])){
                 'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
                 "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
-            ), $boissons, $lienCockBoisson);
+            ), $lienCockBoisson, $lienCockUstensiles);
             $_SESSION['etat'] = 'modification';
 
             break;
@@ -178,7 +179,6 @@ if (isset($_GET['action'])){
 
                     }
                 // ======================
-                    echo "lll";
                 // === AJOUT USTENSILES ======
                     // Recuperer les ustensiles (s'il y en a)
                     
