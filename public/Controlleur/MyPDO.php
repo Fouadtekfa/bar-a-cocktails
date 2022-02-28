@@ -57,6 +57,15 @@ class MyPDO {
                 GROUP BY(u.u_nom)';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
+    /**
+     * Requete Obtenir les verres avec la table de liaison
+     */
+    public function initPDOS_VerresWithRelationCocktail() {
+        $query= 'SELECT DISTINCT lcv.c_id, v.v_id, v.v_type 
+                from  verre as v LEFT JOIN liencocktailverre as lcv on(lcv.v_id = v.v_id)
+                GROUP BY(v.v_type)';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
 
     /**
      * Requete pour obtenir tous les boissons d'un cocktail
@@ -97,6 +106,15 @@ class MyPDO {
      */
     public function getAllUstensilesWithRelationCocktail() {
         $this->initPDOS_UstensilesWithRelationCocktail();    
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir les verrs d'un cocktail
+     */
+    public function getAllVerresWithRelationCocktail() {
+        $this->initPDOS_VerresWithRelationCocktail();
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }

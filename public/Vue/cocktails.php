@@ -25,7 +25,7 @@ class VueCocktail {
         return $res;
     }
     
-    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson, $ustensiles) : string {
+    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson, $ustensiles,$verre) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -97,7 +97,24 @@ class VueCocktail {
                 }
 
         $corps.='</div>';
-        // ============================ 
+        // ============================
+        // ==== SECTION verre === //
+        $corps.='<label for="boissons">Verres Utilisées</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        foreach($verre as $key => $value){
+            $checked = '';
+            if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checVerreId[]">
+                                <label class="form-check-label">
+                                '.$value['v_type'].'
+                            </label>
+                            <input  type="number" class="form-control" hidden  >
+                    </div>';
+        }
+
+        $corps.='</div>';
+        // ============================
         $corps.=' <button type="submit" class="btn btn-primary">Modifier</button>
                                     </form>
                                 </div>';

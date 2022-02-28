@@ -85,6 +85,10 @@ if (isset($_GET['action'])){
             $myPDO_Change->setNomTable('liencocktailustensiles');
             $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail();
             // ===================
+            // == verre CONTENU ==
+            $myPDO_Change->setNomTable('liencocktailverre');
+            $verre =$myPDO_Change->getAllVerresWithRelationCocktail();
+            // ===================
 
             $cocktail = array(
                 'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
@@ -93,7 +97,7 @@ if (isset($_GET['action'])){
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
             );
 
-            $contenu.=$vue->getHTMLUpdate($cocktail, $boissons, $lienCockBoisson, $ustensiles);
+            $contenu.=$vue->getHTMLUpdate($cocktail, $boissons, $lienCockBoisson, $ustensiles,$verre);
             $_SESSION['etat'] = 'modification';
 
             break;
@@ -302,6 +306,30 @@ if (isset($_GET['action'])){
                     }
                 // ======================
 
+
+            // === AJOUT / SUPPRESSION DES Verres ======
+            $myPDO_Change->setNomTable('liencocktailverre');
+
+            if(isset($_POST['checkUstensilesId'])) {
+                $checkList = $_POST['checVerreId'];
+
+                // SUPPRIMER
+                $idElem = array(
+                    "c_id" => $_POST['c_id'],
+                );
+
+                $myPDO_Change->delete($idElem);
+
+                foreach($checkList as $key => $value){
+                    $idElem = array(
+                        "c_id" => $_POST['c_id'],
+                        "v_id" => $value
+                    );
+                    $myPDO_Change->insert($idElem);
+                }
+            }
+            // ======================
+
             if (isset( $_POST['c_id']) && isset($_POST['c_nom']) && isset($_POST['c_cat']) && isset($_POST['c_prix'])) {
                 $update = array(
                     "c_id" => $_POST['c_id'],
@@ -318,6 +346,9 @@ if (isset($_GET['action'])){
                 $contenu = "";
                 $contenu .= $vue->getDebutHTML();
                 $contenu .= $vue->getHTMLAll($va);
+
+
+
             }
 
             $_SESSION['etat'] = 'modifie';
