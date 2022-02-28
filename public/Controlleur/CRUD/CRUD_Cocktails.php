@@ -86,12 +86,14 @@ if (isset($_GET['action'])){
             $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail();
             // ===================
 
-            $contenu.=$vue->getHTMLUpdate(array(
+            $cocktail = array(
                 'c_id'=>array('balise'=>'input', 'type'=>'text','default'=> $cocktail->getCId(), 'titre' => 'id'),
                 'c_nom'=>array('balise'=>'input', 'type'=>'text','default'=>$cocktail->getCNom(), 'titre' => 'Nom de cocktail'),
                 "c_cat"=>array('balise'=>'select', 'type'=>'text','default'=>$cocktail->getCCat(), 'titre' => 'cat'),
                 "c_prix"=>array('balise'=>'input', 'type'=>'int','default'=>$cocktail->getCPrix(), 'titre' => 'prix'),
-            ), $boissons, $lienCockBoisson, $ustensiles);
+            );
+
+            $contenu.=$vue->getHTMLUpdate($cocktail, $boissons, $lienCockBoisson, $ustensiles);
             $_SESSION['etat'] = 'modification';
 
             break;
@@ -272,6 +274,30 @@ if (isset($_GET['action'])){
             }
             // ==============================
 
+             // === AJOUT / SUPPRESSION DES USTENSILES ======
+                    // Recuperer les ustensiles (s'il y en a)
+                    $myPDO_Change->setNomTable('liencocktailustensile');
+
+                    if(isset($_POST['checkUstensilesId'])) {
+                        $checkList = $_POST['checkUstensilesId'];
+                        
+                        // SUPPRIMER 
+                        $idElem = array(
+                            "c_id" => $_POST['c_id'],
+                        );
+
+                        $myPDO_Change->delete($idElem);
+                        
+                        foreach($checkList as $key => $value){
+                            $idElem = array(
+                                "c_id" => $_POST['c_id'],
+                                "u_id" => $value
+                            );
+                            $myPDO_Change->insert($idElem);
+                        }
+                    }
+                // ======================
+
             if (isset( $_POST['c_id']) && isset($_POST['c_nom']) && isset($_POST['c_cat']) && isset($_POST['c_prix'])) {
                 $update = array(
                     "c_id" => $_POST['c_id'],
@@ -282,6 +308,7 @@ if (isset($_GET['action'])){
                 );
 
                 $myPDO->update('c_id', $update);
+                
                 $myPDO->initPDOS_selectAll();
                 $va = $myPDO->getAll();
                 $contenu = "";
