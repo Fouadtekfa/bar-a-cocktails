@@ -263,11 +263,11 @@ class MyPDO {
     /**
      * @param array $assoc
      */
-    public function insert(array $assoc): void
-    {
-        $this->initPDOS_insert(array_keys($assoc));
+    public function insert(array $assoc): void {
+        if (! isset($this->pdos_insert))
+            $this->initPDOS_insert(array_keys($assoc));
         foreach ($assoc as $key => $value) {
-            $this->getPdosInsert()->bindValue(":" . $key, $value);
+            $this->getPdosInsert()->bindValue(":".$key, $value);
         }
         $this->getPdosInsert()->execute();
     }
@@ -277,13 +277,15 @@ class MyPDO {
      */
     public function initPDOS_insert(array $colNames): void
     {
-        $query = "INSERT INTO " . $this->nomTable . " VALUES(";
+        $query = "INSERT INTO ".$this->nomTable." VALUES(";
         foreach ($colNames as $colName) {
-            $query .= ":" . $colName . ", ";
+            $query .= "'".$colName."',";
         }
-        $query = substr($query, 0, strlen($query) - 2);
+        $query = substr($query,0, strlen($query)-1);
         $query .= ')';
+        echo $query;
         $this->pdos_insert = $this->pdo->prepare($query);
+        $this->getPdosInsert()->execute();
     }
 
     /**
