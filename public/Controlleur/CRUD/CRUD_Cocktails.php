@@ -6,8 +6,6 @@ require_once "../../Modele/EntiteCocktail.php";
 require_once "../../Modele/EntiteBoisson.php";
 require_once "../../Modele/EntiteLienCocktailBoisson.php";
 require_once "../../Modele/EntiteUstensile.php";
-require_once "../../Modele/EntiteVerre.php";
-require_once "../../Modele/EntiteLienCocktailVerre.php";
 require_once "../../Modele/EntiteLienCocktailUstensile.php";
 include "../../Vue/cocktails.php";
 
@@ -63,14 +61,8 @@ if (isset($_GET['action'])){
                 $ustensiles =  $myPDO_Change->getAll();
             // ===================
 
-            // == Verres CONTENU ==
-            $myPDO_Change->setNomTable('verre');
-            $myPDO_Change->initPDOS_selectAll();
-            $verre =  $myPDO_Change->getAll();
-            // ===================
 
-
-            $contenu.= $vue->getHTMLInsert($boissons, $ustensiles,$verre);
+            $contenu.= $vue->getHTMLInsert($boissons, $ustensiles);
             $_SESSION['etat'] = 'creation';
             break;
         }
@@ -220,27 +212,6 @@ if (isset($_GET['action'])){
                             $i++;
                         }
                     }
-                // ======================
-                // === AJOUT VERRES ======
-
-                if(isset($_POST['checkVerreId'])) {
-
-                    $verreIdSelectionnes = $_POST['checkVerreId'];
-
-                    // Etablir la table de cocktail liaison verre
-                    $myPDO_Change->setNomTable('liencocktailverre');
-                    $verreId = $_POST['checkVerreId'];
-
-                    $i = 0;
-                    foreach($verreIdSelectionnes as $ust) {
-                        $insert = array(
-                            "c_id" => $idMaxCocktails,
-                            "v_id" => $verreId[$i],
-                        );
-                        $myPDO_Change->insert($insert);
-                        $i++;
-                    }
-                }
                 // ======================
        
                 $myPDO->initPDOS_selectAll();

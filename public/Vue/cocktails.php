@@ -246,7 +246,7 @@ class VueCocktail {
         return $res;
     }
 
-    public function getHTMLInsert($boissons, $ustensiles,$verre) : string {
+    public function getHTMLInsert($boissons, $ustensiles) : string {
         $res='<div class="insertContainer"  id="insertContainer">
                 <form id="addUtensileForm"  method="post" action="./CRUD_Cocktails.php" >
                     <div class="form-group">
@@ -289,20 +289,7 @@ class VueCocktail {
                                 </div>';
                         }
                         $res.='</div>';
-        // Selection verres
-        $res.= '<label for="verre">Verres utilises</label>
-                        <div class="selectionLiaison"> ';
-        foreach($verre as $ver){
-
-            $res.='<div class="form-check form-check_Entitiy col-4">   
-                                            <input class="form-check-input" type="checkbox" value="'.$ver->getVId().'" name="checkVerreId[]">
-                                            <label class="form-check-label">
-                                            '.$ver->getVType().'
-                                        </label>
-                                        <input  type="text" class="form-control" hidden  >
-                                </div>';
-        }
-        $res.='</div>';
+                        
                         
                         
                         $res.='</div>
