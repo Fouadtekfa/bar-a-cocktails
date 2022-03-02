@@ -1,6 +1,6 @@
 <?php
 namespace bar;
-class EntiteG07_Ingredient{
+class EntiteIngredient{
     protected int $i_id;
     protected string $i_nom;
     protected string $i_type;

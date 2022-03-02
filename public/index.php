@@ -30,13 +30,11 @@ require_once "getDebutHtml.html";
 
 
         <div class="produit ingredientContainer" id="ingredients">
-        <a href="../public/Controlleur/CRUD/CRUD_Ingredient.php"> 
             <div class="imageContainer imgIngredient">
             </div>
             <div class="titleContainer">
                 <h2>Ingredients</h2>
             </div>
-        </a>        
         </div>
 
 
@@ -67,7 +65,6 @@ require_once "getDebutHtml.html";
 
 
         <div class="produit verreContainer" id="verres">
-        <a href="../public/Controlleur/CRUD/CRUD_Verre.php"> 
             <div class="imageContainer imgVerre">
             </div>
             <div class="titleContainer">
