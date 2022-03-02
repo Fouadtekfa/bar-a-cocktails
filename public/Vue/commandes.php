@@ -28,7 +28,7 @@ class vueCommandes {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
-            '<form id="updateUtensileForm"  method="get">'.
+            '<form id="updateCommandeForm"  method="get">'.
             '<div class="form-group">';
         foreach ($commandes as $col => $val) {
             if (is_array($val)) {

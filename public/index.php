@@ -46,7 +46,7 @@ require_once "getDebutHtml.html";
             <div class="imageContainer imgCommande">
             </div>
             <div class="titleContainer">
-                <h2>Commande</h2>
+                <h2>Commandes</h2>
             </div>
         </a>
     </div>
