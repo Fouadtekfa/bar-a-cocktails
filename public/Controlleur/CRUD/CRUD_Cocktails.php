@@ -350,27 +350,26 @@ if (isset($_GET['action'])){
             // ==============================
 
             // === AJOUT / SUPPRESSION DES USTENSILES ======
-            // Recuperer les ustensiles (s'il y en a)
-            $myPDO_Change->setNomTable('liencocktailustensile');
-
-            if(isset($_POST['checkUstensilesId'])) {
-                $checkList = $_POST['checkUstensilesId'];
+                // Recuperer les ustensiles (s'il y en a)
+                $myPDO_Change->setNomTable('liencocktailustensile');
 
                 // SUPPRIMER
                 $idElem = array(
                     "c_id" => $_POST['c_id'],
                 );
-
                 $myPDO_Change->delete($idElem);
 
-                foreach($checkList as $key => $value){
-                    $idElem = array(
-                        "c_id" => $_POST['c_id'],
-                        "u_id" => $value
-                    );
-                    $myPDO_Change->insert($idElem);
+                if(isset($_POST['checkUstensilesId'])) {
+                    $checkList = $_POST['checkUstensilesId'];
+
+                    foreach($checkList as $key => $value){
+                        $idElem = array(
+                            "c_id" => $_POST['c_id'],
+                            "u_id" => $value
+                        );
+                        $myPDO_Change->insert($idElem);
+                    }
                 }
-            }
             // ======================
 
             // === AJOUT / SUPPRESSION DES INGREDIENTS ======
@@ -410,16 +409,17 @@ if (isset($_GET['action'])){
             // ======================
             // === AJOUT / SUPPRESSION DES Verres ======
             $myPDO_Change->setNomTable('liencocktailverre');
+            // SUPPRIMER
+            $idElem = array(
+                "c_id" => $_POST['c_id'],
+            );
+
+            $myPDO_Change->delete($idElem);
+
             if(isset($_POST['checkVerreId'])) {
 
                 $checkList = $_POST['checkVerreId'];
 
-                // SUPPRIMER
-                $idElem = array(
-                    "c_id" => $_POST['c_id'],
-                );
-
-                $myPDO_Change->delete($idElem);
                 //ajouter
                 foreach($checkList as $key => $value){
                     $idElem = array(
