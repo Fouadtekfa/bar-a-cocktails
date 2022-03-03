@@ -121,7 +121,7 @@ class VueCocktail {
         $corps.='</div>';
         // ============================
         // ==== SECTION verre === //
-        $corps.='<label for="boissons">Verres Utilisées</label>';
+        $corps.='<label for="boissons">Verres Utilisés</label>';
         $corps .= '<div class="selectionLiaison"> ';
         foreach($verre as $key => $value){
             $checked = '';
@@ -191,7 +191,7 @@ class VueCocktail {
         // ===================
 
         // ====== Afficher les ustensiles ========
-        $corps.='<label for="ustensiles">Ustensiles Utilisées</label>';
+        $corps.='<label for="ustensiles">Ustensiles Utilisés</label>';
         $corps .= '<div class="selectionLiaison"> ';
         foreach ($ustensiles as $key => $value) {
             $corps.='<div class="form-check form-check_Entitiy col-4">   
@@ -205,7 +205,7 @@ class VueCocktail {
         // ===================
 
         // ====== Afficher les ingredients ========
-        $corps.='<label for="ustensiles">Ingredients Utilisées</label>';
+        $corps.='<label for="ustensiles">Ingredients Utilisés</label>';
         $corps .= '<div class="selectionLiaison"> ';
         foreach ($ingredients as $key => $value) {
             $corps.='<div class="form-check form-check_Entitiy col-12">   
@@ -218,7 +218,7 @@ class VueCocktail {
         $corps.='</div>';
         // ===================
         // ====== Afficher verres  ========
-        $corps.='<label for="verre">Verre Utilisées</label>';
+        $corps.='<label for="verre">Verre Utilisés</label>';
         $corps .= '<div class="selectionLiaison"> ';
         foreach ($verre as $key => $value) {
             $corps.='<div class="form-check form-check_Entitiy col-4">
@@ -325,7 +325,7 @@ class VueCocktail {
         // ======================================
 
         // ======== SELECTION DES USTENSILES ===========
-        $res.= '<label for="ustensiles">Ustensiles utilises</label>
+        $res.= '<label for="ustensiles">Ustensiles utilisés</label>
                             <div class="selectionLiaison"> ';
         foreach($ustensiles as $ustensile){
 
@@ -341,7 +341,7 @@ class VueCocktail {
         // =======================================
 
         // ======= SELECTION DES INGREDIENTS ======
-        $res.='<label for="ingredients">Ingredients Utilisées</label>
+        $res.='<label for="ingredients">Ingredients Utilisés</label>
                                       <div class="selectionLiaison"> ';
         foreach($ingredients as $ingredient){
             $res.='<div class="form-check form-check_Entitiy col-4">   
@@ -355,7 +355,7 @@ class VueCocktail {
         $res.='</div>';
         // ======================================
         //=========Selection verres=======
-        $res.= '<label for="verre">Verres utilises</label>
+        $res.= '<label for="verre">Verres utilisés</label>
                         <div class="selectionLiaison"> ';
         foreach($verre as $ver){
                       $res.='<div class="form-check form-check_Entitiy col-4">   

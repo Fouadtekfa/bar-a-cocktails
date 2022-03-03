@@ -236,7 +236,7 @@ if (isset($_GET['action'])){
                     foreach($ustensilesIdSelectionnes as $ust) {
                         $insert = array(
                             "c_id" => $idMaxCocktails,
-                            "u_id" => $boissonsId[$i],
+                            "u_id" => $ust,
                         );
                         $myPDO_Change->insert($insert);
                         $i++;
