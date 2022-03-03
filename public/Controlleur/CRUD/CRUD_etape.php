@@ -93,7 +93,7 @@ if (isset($_GET['action'])){
             $titre = "ETAPES DU " . $cocktail->getCNom();
             $lienRetour = "CRUD_Cocktails.php?action=read";
             $contenu.=$vue->getDebutHTML($titre, $lienRetour);
-            $contenu.= $vue->getHTMLTable($etapesForCocktail);
+            $contenu.= $vue->getHTMLTable($etapesForCocktail, $cocktail);
             break;
         }
 
