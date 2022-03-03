@@ -312,22 +312,10 @@ if (isset($_GET['action'])){
                 $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_POST['c_id']);
 
                 for ($i=0; $i < count($nomBoissons); $i++) {
+                    $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'b_id', $_POST['c_id'], $boissonsId[$i]);
 
                     if($nomBoissons[$i] > 0) {
-                        // Si l'element existe dans la table
-                        $exist = false;
-
-                        for ($j=0; $j < count($lienCockBoisson); $j++) {
-                            //echo $boissonsId[$i] .' == '. $lienCockBoisson[$j]->getBId() .'<br>';
-                            if($boissonsId[$i] == $lienCockBoisson[$j]->getBId()) {
-                                $exist = true;
-                                break;
-                            } else {
-                                $exist = false;
-                            }
-                        }
-
-                        if($exist == true ) {
+                        if($liaisonExists) {
                             //echo "modifier <br>";
                             $update = array(
                                 "c_id" => $_POST['c_id'],
@@ -349,6 +337,12 @@ if (isset($_GET['action'])){
                         }
 
 
+                    } else if($liaisonExists > 0) {
+                        $data = array(
+                            "c_id" => $_POST['c_id'],
+                            "b_id" => $boissonsId[$i]
+                        );
+                        $myPDO_Change->delete($data);
                     }
                 }
 
