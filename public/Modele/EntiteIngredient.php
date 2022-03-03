@@ -8,14 +8,14 @@ class EntiteIngredient{
     protected string $i_uniteStockee;
 
     /**
-     * @return int 
+     * @return int
      */
     public function getIId(): int
     {
         return $this->i_id;
     }
 
-     /**
+    /**
      * @param int $i_id
      */
     public function setIId(int $i_id): void
@@ -25,14 +25,14 @@ class EntiteIngredient{
 
 
     /**
-     * @return string 
+     * @return string
      */
     public function getINom(): string
     {
         return $this->i_nom;
     }
 
-     /**
+    /**
      * @param string $i_nom
      */
     public function setINom(string $i_nom): void
@@ -41,15 +41,15 @@ class EntiteIngredient{
     }
 
 
-     /**
-     * @return string 
+    /**
+     * @return string
      */
     public function getIType(): string
     {
         return $this->i_type;
     }
 
-     /**
+    /**
      * @param string $i_type
      */
     public function setIType(string $i_type): void
@@ -58,15 +58,15 @@ class EntiteIngredient{
     }
 
 
-      /**
-     * @return float 
+    /**
+     * @return float
      */
     public function getIQteStockee(): float
     {
         return $this->i_qteStockee;
     }
 
-     /**
+    /**
      * @param float $i_qteStockee
      */
     public function setIQteStockee(float $i_qteStockee): void
@@ -75,22 +75,22 @@ class EntiteIngredient{
     }
 
 
-  /**
-     * @return string 
+    /**
+     * @return string
      */
     public function getIUniteStockee(): string
     {
         return $this->i_uniteStockee;
     }
 
-     /**
+    /**
      * @param string $i_nom
      */
     public function setIUniteStockee(string $i_uniteStockee): void
     {
         $this->i_uniteStockee = $i_uniteStockee;
     }
-  
+
 
 }
 ?>

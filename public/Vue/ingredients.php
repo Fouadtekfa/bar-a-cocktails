@@ -1,61 +1,119 @@
-<?php 
-ini_set('display_errors','on');
-include "connexion.php";
-include "MyPDO.php";
-include "Session.php";
-?>
+<?php
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/cocktails.css">
-    <title>Cocktail</title>
-</head>
-<body>
-    <h1>Ingredients</h1>
-    <div class="arrow" id="retour">
-    <img src="../images/retour.png" alt="retour" class="retour">
-    </i>
-    </div>
-    <div class="tableContainer">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">col1</th>
-                    <th scope="col">col2</th>
-                    <th scope="col">col3</th>
-                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php 
-                    for($i = 0 ; $i <= 5 ; $i++) { ?>
+namespace bar;
+class vueInegredients {
 
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-primary">Ajouter</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-warning">Editer</button></td>
-                            <td class="td_buttons_actions"><button type="button" class="btn btn-danger">Supprimer</button></td>
-                        </tr>
-                    
-                        <?php } ?>
-            </tbody>
-        </table>    
-    </div>
+    public function getDebutHTML($title, $lienRetour) : string {
+        $corps =    '<!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                            <link rel="stylesheet" href="../../css/style.css">
+                            <link rel="stylesheet" href="../../css/utensiles.css">
+                            <title>'.$title.'</title>
+                        </head>
+                        <h1>INGREDIENTS</h1>
+                        <div class="arrow" id="retour">
+                        <a href="'.$lienRetour.'"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                        </i>
+                        </div>                
+                    <body>';
+        return $corps;
+    }
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="../js/ingredients.js"></script>
+    public function getHTMLUpdate(array  $ingredient) : string {
+        $corps = "";
 
-</body>
-</html>
+        $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
+            '<form id="updateUtensileForm"  method="get">'.
+            '<div class="form-group">';
+        foreach ($ingredient as $col => $val) {
+            if (is_array($val)) {
+                $hide = "";
+                if($col == 'i_id') $hide = 'hidden';
+                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="i_id" name="'.$col.'" placeholder="Type de Verre" value="'.$val['default'].'" >';
+
+
+            }
+        }
+        $corps.='            </div>
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                </form>
+                            </div>';
+
+        return $corps;
+    }
+
+    public function getHTMLALL($va) : string {
+
+        $corps = '<div id="informationEntite">
+                    <div class="buttonContainer">
+                        <form id="insererUtensileFormButton"  method="post" action="?action=creat">
+                        <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
+                        </form>
+                    </div>
+                    <div class="tableContainer">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">NOM Ingredient</th>
+                                    <th scope="col">Type Ingredient</th>
+                                    <th scope="col">stocke qte Ingredient</th>
+                                    <th scope="col">stocke unites Ingredient</th>
+                                    <th scope="col" colspan="3" style="text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+
+        foreach ($va as $valeur){
+            if ($valeur instanceof EntiteIngredient) {
+
+                $corps.= '          <tr>
+                                    <th scope="row">'. $valeur->getIId() .'</th>
+                                    <td class="rowsInformation">'. $valeur->getINom() . '</td>
+                                    <td class="rowsInformation">'. $valeur->getIType() . '</td>
+                                    <td class="rowsInformation">'. $valeur->getIQteStockee() . '</td>
+                                    <td class="rowsInformation">'. $valeur->getIUniteStockee() . '</td>
+                                    
+                                    <td class="td_buttons_actions"><a href="?action=update&i_id='.$valeur->getIId().'">
+                                    <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
+                                    <td class="td_buttons_actions">
+                                    <a href="?action=delete&i_id='.$valeur->getIId().'">
+                                    <button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                </tr>';
+            }
+        }
+
+        $corps.= '      </tbody>
+                       </table>    
+                    </div>
+                </div> ';
+        return $corps;
+    }
+
+    public function getHTMLInsert() : string {
+        $corps = '<div class="insertContainer" id="insertContainer">
+                    <form id="addUtensileForm"  method="post" action="CRUD_Ingredient.php">
+                        <div class="form-group">
+                            <label for="name" class="rowsInformation">Nom Ingredient</label>
+                            <input type="text" class="form-control" id="name" name="nom" placeholder="Nome Ingredient">
+                            <label for="name" class="rowsInformation">Type Ingredient</label>
+                            <input type="text" class="form-control" id="name" name="type" placeholder="Type Ingredient">
+                            <label for="name" class="rowsInformation">Quantite stocke</label>
+                            <input type="number" class="form-control" id="name" name="Quantite" placeholder="Quantite Ingredient">
+                            <label for="name" class="rowsInformation">unite</label>
+                            <input type="text" class="form-control" id="name" name="unite" placeholder="ex:/g">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajout</button>
+                    </form>
+                </div>';
+
+        return $corps;
+    }
+
+}

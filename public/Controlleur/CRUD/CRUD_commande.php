@@ -26,7 +26,7 @@ if(!isset($_SESSION['etat']) && !isset($_GET['action'])) {
     $_GET['action'] = 'read';
 }
 
-if (isset($_GET['action'])) {
+if (isset($_GET['action']))
     switch ($_GET['action']) {
         case 'read':
         {
@@ -37,20 +37,21 @@ if (isset($_GET['action'])) {
             break;
         }
 
-        case 'inserer':
+        case 'create':
         {
             $contenu .= $vue->getDebutHTML();
             $contenu .= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
         }
-        case 'modifier':
+        case 'update':
         {
+
             $commande = $myPDO->get('com_id', $_GET['com_id']);
             $contenu .= $vue->getDebutHTML();
             $contenu .= $vue->getHTMLUpdate(array(
-                'com_id' => array('balise'=>'input', 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
-                'com_numTable' => array('balise'=>'input', 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),
+                'com_id' => array( 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
+                'com_numTable' => array( 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),
 
 
             ));
@@ -58,7 +59,7 @@ if (isset($_GET['action'])) {
             $_SESSION['etat'] = 'modification';
             break;
         }
-        case 'suppression':
+        case 'delete':
         {
             $etat.="suppression";
             $idElem = array(
@@ -76,7 +77,7 @@ if (isset($_GET['action'])) {
         }
 
     }
-} else if (isset($_SESSION['etat']))
+else if (isset($_SESSION['etat']))
     switch ($_SESSION['etat']) {
         case 'creation': {
             $etat.="creation";
@@ -85,6 +86,7 @@ if (isset($_GET['action'])) {
 
             if(isset($_GET['com_numTable'])) {
                 $insert = array(
+
                     "com_id" => 'null',
                     "com_numTable" => $_GET['com_numTable']
 
@@ -101,17 +103,14 @@ if (isset($_GET['action'])) {
                 $_SESSION['Action'] = 'read' ;
             }
 
-            $_SESSION['etat'] = 'cree';
+            $_SESSION['etat'] = 'créé';
             break;
         }
 
         case 'modification': {
             $etat.="modification";
-            $nbCommande = $myPDO->getCountValue();
 
             $idElem = 'com_id';
-
-
             if(isset($_GET['com_id']) && isset($_GET['com_numTable']) ) {
                 $update = array(
                     "com_id" => $_GET['com_id'],
@@ -137,7 +136,7 @@ if (isset($_GET['action'])) {
             $_SESSION['etat'] = 'supprime';
             break;
         }
-        case 'cree':
+        case 'créé':
         case 'modifie' :
         case 'supprime' :
             $myPDO->initPDOS_selectAll();
