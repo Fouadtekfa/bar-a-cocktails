@@ -24,7 +24,7 @@ class MyPDO {
 
     public function initPDOS_selectAllById($nomId, $valeur) {
         $query = 'SELECT * FROM '
-        .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur;
+            .$this->nomTable . ' WHERE '. $nomId.' = '. $valeur;
         $this->pdos_selectAllById = $this->pdo->prepare($query);
         //echo "mira" . $query;
     }
@@ -38,13 +38,34 @@ class MyPDO {
                         WHERE c_id = '.$id.')';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
+
+    /**
+     * Requete Obtenir tous les ingredients d'un cocktail specific
+     */
+    public function initPDOS_IngredientsForOneCocktail($id) {
+        $query= 'SELECT i.i_id, i.i_nom, lci.qteIngredient 
+                from ingredient as i, '.$this->getNomTable().' as lci 
+                WHERE c_id = '.$id.' AND i.i_id = lci.i_id;';
+
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
     /**
      * Requete Obtenir tous les verre d'un cocktail specific
      */
     public function initPDOS_VerreForOneCocktail($id) {
-        $query= 'SELECT * from verre as v 
-                    WHERE v.v_id IN(SELECT lcv.v_id FROM liencocktailverre as lcv 
+        $query= 'SELECT * from verre as v
+                    WHERE v.v_id IN(SELECT lcv.v_id FROM liencocktailverre as lcv
                         WHERE c_id = '.$id.')';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+    /**
+     * Requete Obtenir les verres avec la table de liaison
+     */
+    public function initPDOS_VerresWithRelationCocktail() {
+        $query= 'SELECT DISTINCT lcv.c_id, v.v_id, v.v_type
+                from  verre as v LEFT JOIN liencocktailverre as lcv on(lcv.v_id = v.v_id)
+                GROUP BY(v.v_type)';
+
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
@@ -57,13 +78,24 @@ class MyPDO {
                 GROUP BY(u.u_nom)';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
+
     /**
-     * Requete Obtenir les verres avec la table de liaison
+     * Requete Obtenir tous les ingredients avec la table de liaison
      */
-    public function initPDOS_VerresWithRelationCocktail() {
-        $query= 'SELECT DISTINCT lcv.c_id, v.v_id, v.v_type 
-                from  verre as v LEFT JOIN liencocktailverre as lcv on(lcv.v_id = v.v_id)
-                GROUP BY(v.v_type)';
+    public function initPDOS_IngredientsWithRelationCocktail($id) {
+        $query= 'SELECT DISTINCT lci.i_id, i.i_id, i.i_nom , lci.qteIngredient, lci.c_id from ingredient as i 
+                 INNER JOIN '.$this->getNomTable().' as lci on(lci.i_id = i.i_id) WHERE c_id = '.$id.'
+                 UNION
+                 SELECT DISTINCT lci.i_id, i.i_id, i.i_nom , lci.qteIngredient, lci.c_id from ingredient as i 
+                 INNER JOIN '.$this->getNomTable().' as lci on(lci.i_id = i.i_id) 
+                 WHERE c_id != '.$id.' AND
+                 i_nom NOT IN(SELECT i2.i_nom FROM ingredient as i2 INNER JOIN '.$this->getNomTable().' as l 
+                          on(lci.i_id = i2.i_id)  WHERE
+                            c_id = l.c_id and
+                            i.i_id = l.i_id and
+                            c_id = '.$id.' )
+                            group by i_nom;
+                            order by i_nom';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
@@ -77,6 +109,14 @@ class MyPDO {
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
+    /**
+     * Obtenir les verrs d'un cocktail
+     */
+    public function getAllVerresWithRelationCocktail() {
+        $this->initPDOS_VerresWithRelationCocktail();
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
     public function getAll(): array {
         if (!isset($this->pdos_selectAll))
             $this->initPDOS_selectAll();
@@ -93,6 +133,14 @@ class MyPDO {
         return $this->getPdosSelectAll()->fetchAll(PDO::FETCH_CLASS,
             "bar\Entite".ucfirst($this->getNomTable()));
     }
+    /**
+     * Obtenir tous les verres avec la table liaison
+     */
+    public function getVerreForOneCocktail($idCocktail) {
+        $this->initPDOS_VerreForOneCocktail($idCocktail);
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
 
     public function getSpecific($nomId, $valeur): array {
         $this->initPDOS_selectAllById($nomId, $valeur);
@@ -105,16 +153,16 @@ class MyPDO {
      * Obtenir les ustensiles d'un cocktail
      */
     public function getAllUstensilesWithRelationCocktail() {
-        $this->initPDOS_UstensilesWithRelationCocktail();    
+        $this->initPDOS_UstensilesWithRelationCocktail();
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
 
     /**
-     * Obtenir les verrs d'un cocktail
+     * Obtenir les ustensiles d'un cocktail
      */
-    public function getAllVerresWithRelationCocktail() {
-        $this->initPDOS_VerresWithRelationCocktail();
+    public function getAllIngredientsWithRelationCocktails($id) {
+        $this->initPDOS_IngredientsWithRelationCocktail($id);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
@@ -123,15 +171,16 @@ class MyPDO {
      * Obtenir tous les ustensiles avec la table liaison
      */
     public function getUstensilesForOneCocktail($idCocktail) {
-        $this->initPDOS_UstensilesForOneCocktail($idCocktail);    
+        $this->initPDOS_UstensilesForOneCocktail($idCocktail);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
+
     /**
-     * Obtenir tous les verres avec la table liaison
+     * Obtenir tous les ustensiles avec la table liaison
      */
-    public function getVerreForOneCocktail($idCocktail) {
-        $this->initPDOS_VerreForOneCocktail($idCocktail);
+    public function getIngredientForOneCocktail($idCocktail) {
+        $this->initPDOS_IngredientsForOneCocktail($idCocktail);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
@@ -140,7 +189,7 @@ class MyPDO {
      * Obtenir les boissons d'un cocktail
      */
     public function getBoissonsForOneCocktail($idCocktail) {
-        $this->initPDOS_UstensilesForOneBoisson($idCocktail);    
+        $this->initPDOS_UstensilesForOneBoisson($idCocktail);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
@@ -160,8 +209,16 @@ class MyPDO {
     public function initPDOS_selectBy2Keys(string $nomColID1 = "id", string $nomColID2): void
     {
         $requete = "SELECT * FROM ".$this->nomTable ." WHERE $nomColID1 = :$nomColID1" . " AND $nomColID2 = :$nomColID2";
-       // echo $requete;
+        // echo $requete;
         $this->pdos_select = $this->pdo->prepare($requete);
+    }
+
+
+    public function initPDOS_countBy2KeysExists(string $nomColID1 = "id", string $nomColID2, $val1, $val2): void
+    {
+        $query = 'SELECT COUNT(*) FROM '.$this->nomTable .' WHERE '. $nomColID1 .' = '.$val1.' AND '.$nomColID2 .' = '. $val2;
+        $this->pdos_count = $this->pdo->prepare($query);
+        //echo "query : " . $query;
     }
 
 
@@ -176,13 +233,20 @@ class MyPDO {
 
     // Obtenir un element d'un
     public function getElement2Keys($key1, $key2, $val1, $val2) {
-        if (!isset($this->pdos_select))
-            $this->initPDOS_selectBy2Keys($key1, $key2);
+        $this->initPDOS_selectBy2Keys($key1, $key2);
         $this->getPdosSelect()->bindValue(":".$key1, $val1);
         $this->getPdosSelect()->bindValue(":".$key2, $val2);
         $this->getPdosSelect()->execute();
         return $this->getPdosSelect()
             ->fetchObject("bar\Entite".ucfirst($this->getNomTable()));
+    }
+
+    // Sqvoir si un liaison exists
+    public function element2KeysExists($key1, $key2, $val1, $val2) {
+        $this->initPDOS_countBy2KeysExists($key1, $key2, $val1, $val2);
+        $this->pdos_count->execute();
+        $res = $this->pdos_count->fetch(PDO::FETCH_NUM)[0];
+        return $res;
     }
 
     public function getById($key, $val) {
@@ -217,7 +281,10 @@ class MyPDO {
      */
     public function initPDOS_count() {
         $this->pdos_count = $this->pdo->prepare('SELECT COUNT(*) FROM '.$this->nomTable);
-    
+    }
+
+    public function initPDOS_countWhere($key1, $key2, $val1, $val2) {
+        $this->pdos_count = $this->pdo->prepare('SELECT COUNT(*) FROM '.$this->nomTable);
     }
 
     /**
@@ -272,7 +339,7 @@ class MyPDO {
         $this->getPdosInsert()->execute();
     }
 
-     /**
+    /**
      * @param array
      */
     public function initPDOS_insert(array $colNames): void
@@ -429,14 +496,14 @@ class MyPDO {
         return $this;
     }
 
-     /**
+    /**
      * @param string $id
      * @param array $assoc
      */
     public function update(string $id, array $assoc): void {
-       if (!isset($this->pdos_update)){
-        $this->initPDOS_update($id, array_keys($assoc));
-       }
+        if (!isset($this->pdos_update)){
+            $this->initPDOS_update($id, array_keys($assoc));
+        }
         foreach ($assoc as $key => $value) {
             $this->getPdosUpdate()->bindValue(":".$key, $value);
         }
@@ -444,7 +511,7 @@ class MyPDO {
     }
 
 
-      /**
+    /**
      * @param string $nomColId
      * @param array $colNames
      */
@@ -458,21 +525,20 @@ class MyPDO {
         $this->pdos_update =  $this->pdo->prepare($query);
     }
 
-      /**
+    /**
      * @param string $id
      * @param array $assoc
      */
     public function updateRelation(string $id, string $id_2, array $assoc): void {
-        if (!isset($this->pdos_updateRelation)){
-         $this->initPDOS_updateRelation($id, $id_2, array_keys($assoc));
-        }
-         foreach ($assoc as $key => $value) {
-             $this->getPdosUpdateRelation()->bindValue(":".$key, $value);
-         }
-         $this->getPdosUpdateRelation()->execute();
-     }
+        $this->initPDOS_updateRelation($id, $id_2, array_keys($assoc));
 
-       /**
+        foreach ($assoc as $key => $value) {
+            $this->getPdosUpdateRelation()->bindValue(":".$key, $value);
+        }
+        $this->getPdosUpdateRelation()->execute();
+    }
+
+    /**
      * @param string $nomColId
      * @param array $colNames
      */
@@ -483,22 +549,22 @@ class MyPDO {
         }
         $query = substr($query,0, strlen($query)-2);
         $query .= " WHERE ".$nomColId."=:".$nomColId. " AND  ".$nomColId2."=:".$nomColId2;
-       // echo $query;
+        // echo $query;
         $this->pdos_updateRelation =  $this->pdo->prepare($query);
     }
 
-     /**
+    /**
      * @param array $assoc
      */
     public function delete(array $assoc) {
         try {
-            if (! isset($this->pdos_delete)) {
-                $keys = array_keys($assoc);
-                if(count($keys) == 1)
-                    $this->initPDOS_delete($keys[0]);
-                else
-                    $this->initPDOS_deleteFromRelation($keys[0],$keys[1]);
-            }
+            //if (!isset($this->pdos_delete)) {
+            $keys = array_keys($assoc);
+            if(count($keys) == 1)
+                $this->initPDOS_delete($keys[0]);
+            else
+                $this->initPDOS_deleteFromRelation($keys[0],$keys[1]);
+            //}
             foreach ($assoc as $key => $value) {
                 $this->getPdosDelete()->bindValue(":".$key, $value);
             }
@@ -509,7 +575,7 @@ class MyPDO {
     }
 
 
-     /**
+    /**
      * @param string
      */
 
@@ -519,7 +585,7 @@ class MyPDO {
         // echo $statement;
     }
 
-     /**
+    /**
      * @param string
      */
 

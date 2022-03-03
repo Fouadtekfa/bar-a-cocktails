@@ -24,8 +24,8 @@ class VueCocktail {
                 <body>';
         return $res;
     }
-    
-    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson, $ustensiles,$verre) : string {
+
+    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson, $ustensiles, $ingredients,$verre) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -33,7 +33,7 @@ class VueCocktail {
                     <div class="form-group">';
 
         foreach ($cocktaile as $col => $val) {
-        if (is_array($val)) {
+            if (is_array($val)) {
                 $hide = "c_id";
                 if($col == 'c_id') {
                     $idCocktail = $val['default'];
@@ -58,43 +58,65 @@ class VueCocktail {
 
                 }
 
+            }
         }
-        }
-        
+
         // ==== SECTION BOISSONS === //
         $corps.='<label for="boissons">Boissons Utilisées</label>';
         $corps .= '<div class="selectionLiaison"> ';
-                for($i = 0; $i < count($boissons) ; $i++){
-                    $qteBoisson = '';
-                    for($j = 0; $j < count($lienCockBoisson) ; $j++){
-                        if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
-                            $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();    
-                    }
-                    
-                    $corps.='<div class="form-check form-check_Entitiy col-4">   
+        for($i = 0; $i < count($boissons) ; $i++){
+            $qteBoisson = '';
+            for($j = 0; $j < count($lienCockBoisson) ; $j++){
+                if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
+                    $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();
+            }
+
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
                             <label class="form-check-label" for="b_qteBoisson">
                                     '.$boissons[$i]->getBNom() .'
                             </label> <br>
                             <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
                             <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'">
                             </div>';
-                }
-        $corps.='</div>';        
-        // ============================ 
+        }
+        $corps.='</div>';
+        // ============================
+
         // ==== SECTION USTENSILES === //
-        $corps.='<label for="boissons">Ustensiles Utilisées</label>';
+        $corps.='<label for="boissons">Ustensiles Utilisés</label>';
         $corps .= '<div class="selectionLiaison"> ';
-                foreach($ustensiles as $key => $value){
-                        $checked = '';
-                        if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
-                $corps.='<div class="form-check form-check_Entitiy col-4">   
+        foreach($ustensiles as $key => $value){
+            $checked = '';
+            if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
                                 <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['u_id'].'" name="checkUstensilesId[]">
                                 <label class="form-check-label">
                                 '.$value['u_nom'].'
                             </label>
                             <input  type="number" class="form-control" hidden  >
                     </div>';
-                }
+        }
+        $corps.='</div>';
+        // ============================
+
+        // ==== SECTION INGREDIENTS === //
+        $corps.='<label for="ingredients">Ingredients Utilisés</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        $nomsauv = '';
+
+        foreach($ingredients as $key => $value){
+            $quantite = '';
+
+            if($value['c_id'] == $cocktaile['c_id']['default']) $quantite = $value['qteIngredient'];
+
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
+                    <label class="form-check-label" for="b_qteBoisson">
+                             '.$value['i_nom'] .'
+                    </label> <br>
+                    <input  type="number" class="form-control" hidden  name="checkIngredientsId[]" value="'.$value['i_id'].'" >
+                    <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkIngredients[]" value="'.$quantite.'">
+                    </div>';
+        }
 
         $corps.='</div>';
         // ============================
@@ -105,12 +127,23 @@ class VueCocktail {
             $checked = '';
             if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
             $corps.='<div class="form-check form-check_Entitiy col-4">   
-                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checVerreId[]">
+                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checkVerreId[]">
                                 <label class="form-check-label">
                                 '.$value['v_type'].'
                             </label>
                             <input  type="number" class="form-control" hidden  >
                     </div>';
+
+            /* $checked = '';
+
+            $corps.='<div class="form-check form-check_Entitiy col-4">
+                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checkVerreId[]">
+                                <label class="form-check-label">
+                                '.$value['v_type'].'
+                            </label>
+                            <input  type="number" class="form-control" hidden  >
+                    </div>';
+           */
         }
 
         $corps.='</div>';
@@ -121,7 +154,7 @@ class VueCocktail {
         return $corps;
     }
 
-    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles, $verre) : string {
+    public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles, $ingredients,$verre) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -129,55 +162,69 @@ class VueCocktail {
 
         foreach ($cocktaile as $col => $val) {
             if (is_array($val)) {
-                    $hide = "c_id";
-                    if($col == 'c_id') {
-                        $hide = 'hidden';
-                    }
-                    
-                    $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                $hide = "c_id";
+                if($col == 'c_id') {
+                    $hide = 'hidden';
+                }
+
+                $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
                             <input  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" disabled>';
-            }   
+            }
         }
 
-        
+
         // ====== Afficher les boissons ========
-            $corps.='<label for="boissons">Boissons Utilisées</label>';
-            $corps .= '<div class="selectionLiaison"> ';
-                    foreach($boissons as $key => $value){
-                        $qteBoisson =  $value['qteBoisson'];
-                    
-                            $corps.='<div class="form-check form-check_Entitiy col-4">   
+        $corps.='<label for="boissons">Boissons Utilisées</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        foreach($boissons as $key => $value){
+            $qteBoisson =  $value['qteBoisson'];
+
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
                                 <label class="form-check-label" for="b_qteBoisson">
                                         '.$value['b_nom'] .'
                                 </label> <br>
                                 <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" placeholder="'.$qteBoisson.' ml" disabled>
                                 </div>';
-                        
-                    }
-            $corps.='</div>';
-        // =================== 
-       
+
+        }
+        $corps.='</div>';
+        // ===================
+
         // ====== Afficher les ustensiles ========
         $corps.='<label for="ustensiles">Ustensiles Utilisées</label>';
         $corps .= '<div class="selectionLiaison"> ';
-                foreach ($ustensiles as $key => $value) {
-                        $corps.='<div class="form-check form-check_Entitiy col-4">   
+        foreach ($ustensiles as $key => $value) {
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
                                     <label class="form-check-label" for="b_qteBoisson">
                                             '.$value['u_nom'].'
                                     </label> 
                                     </div>';
-                    }
-                    
+        }
+
+        $corps.='</div>';
+        // ===================
+
+        // ====== Afficher les ingredients ========
+        $corps.='<label for="ustensiles">Ingredients Utilisées</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        foreach ($ingredients as $key => $value) {
+            $corps.='<div class="form-check form-check_Entitiy col-12">   
+                                    <label class="form-check-label" for="b_qteBoisson">
+                                            Ingredient : '.$value['i_nom'].' : '.$value['qteIngredient'].' g
+                                    </label> 
+                                    </div>';
+        }
+
         $corps.='</div>';
         // ===================
         // ====== Afficher verres  ========
         $corps.='<label for="verre">Verre Utilisées</label>';
         $corps .= '<div class="selectionLiaison"> ';
         foreach ($verre as $key => $value) {
-            $corps.='<div class="form-check form-check_Entitiy col-4">   
+            $corps.='<div class="form-check form-check_Entitiy col-4">
                                     <label class="form-check-label" for="b_qteBoisson">
                                             '.$value['v_type'].'
-                                    </label> 
+                                    </label>
                                     </div>';
         }
 
@@ -208,8 +255,8 @@ class VueCocktail {
                             </tr>
                             </thead>
                             <tbody>';
-                            foreach ($va as $valeur){
-                                $res.='
+        foreach ($va as $valeur){
+            $res.='
                                     <tr>
                                         <th scope="row">'. $valeur->getCId().' </th>
                                         <td>'.$valeur->getCNom() .'</td>
@@ -237,7 +284,7 @@ class VueCocktail {
                                             </a>
                                         </td>
                                     </tr> ';
-                            }
+        }
         $res .='       </tbody>
                  </table>    
                </div>
@@ -246,7 +293,7 @@ class VueCocktail {
         return $res;
     }
 
-    public function getHTMLInsert($boissons, $ustensiles,$verre) : string {
+    public function getHTMLInsert($boissons, $ustensiles, $ingredients,$verre) : string {
         $res='<div class="insertContainer"  id="insertContainer">
                 <form id="addUtensileForm"  method="post" action="./CRUD_Cocktails.php" >
                     <div class="form-group">
@@ -260,52 +307,69 @@ class VueCocktail {
                         </select>
                         <label for="prix">Prix de Cocktail </label>
                         <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">';
-                        // Selection des boissons
-                        $res.='<label for="boissons">Boissons Utilisées</label>
-                        <div class="selectionLiaison"> ';
-                        foreach($boissons as $boisson){
-                        
-                            $res.='<div class="form-check form-check_Entitiy col-4">   
-                                <label class="form-check-label" for="b_qteBoisson">
-                                        '.$boisson->getBNom() .'
-                                </label> <br>
-                                <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
-                                <input type="number" class="form-control quantity" name="checkBoissons[]">
-                                </div>';
-                        }
-                        $res.='</div>';
 
-                        // Selection des ustensiles
-                        $res.= '<label for="ustensiles">Ustensiles utilises</label>
-                        <div class="selectionLiaison"> ';
-                        foreach($ustensiles as $ustensile){
-                        
-                            $res.='<div class="form-check form-check_Entitiy col-4">   
-                                            <input class="form-check-input" type="checkbox" value="'.$ustensile->getUId().'" name="checkUstensilesId[]">
-                                            <label class="form-check-label">
-                                            '.$ustensile->getUNom().'
-                                        </label>
-                                        <input  type="number" class="form-control" hidden  >
-                                </div>';
-                        }
-                        $res.='</div>';
-        // Selection verres
+        // ======= SELECTION DES BOISSONS ======
+        $res.='<label for="boissons">Boissons Utilisées</label>
+                            <div class="selectionLiaison"> ';
+        foreach($boissons as $boisson){
+
+            $res.='<div class="form-check form-check_Entitiy col-4">   
+                                    <label class="form-check-label" for="b_qteBoisson">
+                                            '.$boisson->getBNom() .'
+                                    </label> <br>
+                                    <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
+                                    <input type="number" class="form-control quantity" name="checkBoissons[]">
+                                    </div>';
+        }
+        $res.='</div>';
+        // ======================================
+
+        // ======== SELECTION DES USTENSILES ===========
+        $res.= '<label for="ustensiles">Ustensiles utilises</label>
+                            <div class="selectionLiaison"> ';
+        foreach($ustensiles as $ustensile){
+
+            $res.='<div class="form-check form-check_Entitiy col-4">   
+                                                <input class="form-check-input" type="checkbox" value="'.$ustensile->getUId().'" name="checkUstensilesId[]">
+                                                <label class="form-check-label">
+                                                '.$ustensile->getUNom().'
+                                            </label>
+                                            <input  type="number" class="form-control" hidden  >
+                                    </div>';
+        }
+        $res.='</div>';
+        // =======================================
+
+        // ======= SELECTION DES INGREDIENTS ======
+        $res.='<label for="ingredients">Ingredients Utilisées</label>
+                                      <div class="selectionLiaison"> ';
+        foreach($ingredients as $ingredient){
+            $res.='<div class="form-check form-check_Entitiy col-4">   
+                                                            <label class="form-check-label" for="b_qteBoisson">
+                                                                '.$ingredient->getINom() .'
+                                                            </label> <br>
+                                                            <input  type="number" class="form-control" hidden  name="checkIngredientsId[]" value="'.$ingredient->getIId().'" >
+                                                            <input type="number" class="form-control quantity" name="checkIngredients[]">
+                                                        </div>';
+        }
+        $res.='</div>';
+        // ======================================
+        //=========Selection verres=======
         $res.= '<label for="verre">Verres utilises</label>
                         <div class="selectionLiaison"> ';
         foreach($verre as $ver){
-
-            $res.='<div class="form-check form-check_Entitiy col-4">   
-                                            <input class="form-check-input" type="checkbox" value="'.$ver->getVId().'" name="checkVerreId[]">
-                                            <label class="form-check-label">
-                                            '.$ver->getVType().'
-                                        </label>
-                                        <input  type="text" class="form-control" hidden  >
-                                </div>';
+                      $res.='<div class="form-check form-check_Entitiy col-4">   
+                                                <input class="form-check-input" type="checkbox" value="'.$ver->getVId().'" name="checkVerreId[]">
+                                                <label class="form-check-label">
+                                                '.$ver->getVType().'
+                                            </label>
+                                            <input  type="number" class="form-control" hidden  >
+                                    </div>';
         }
+
         $res.='</div>';
-                        
-                        
-                        $res.='</div>
+        //=================================
+        $res.='</div>
                                         <button type="submit" class="btn btn-primary">Ajout</button>
                                        </form>
                                     </div>';
