@@ -276,10 +276,10 @@ if (isset($_GET['action'])){
                    // $verreId = $_POST['checkVerreId'];
 
                     $i = 0;
-                    foreach($verreIdSelectionnes as $ust) {
+                    foreach($verreIdSelectionnes as $verre) {
                         $insert = array(
                             "c_id" => $idMaxCocktails,
-                            "v_id" => $boissonsId[$i],
+                            "v_id" => $verre,
                         );
                         $myPDO_Change->insert($insert);
                         $i++;
