@@ -100,25 +100,25 @@ class VueCocktail {
         // ============================
 
         // ==== SECTION INGREDIENTS === //
-        $corps.='<label for="ingredients">Ingredients Utilisés</label>';
-        $corps .= '<div class="selectionLiaison"> ';
-        $nomsauv = '';
+            $corps.='<label for="ingredients">Ingredients Utilisés</label>';
+            $corps .= '<div class="selectionLiaison"> ';
+            $nomsauv = '';
 
-        foreach($ingredients as $key => $value){
-            $quantite = '';
+            foreach($ingredients as $key => $value){
+                $quantite = '';
 
-            if($value['c_id'] == $cocktaile['c_id']['default']) $quantite = $value['qteIngredient'];
+                if($value['c_id'] == $cocktaile['c_id']['default']) $quantite = $value['qteIngredient'];
 
-            $corps.='<div class="form-check form-check_Entitiy col-4">   
-                    <label class="form-check-label" for="b_qteBoisson">
-                             '.$value['i_nom'] .'
-                    </label> <br>
-                    <input  type="number" class="form-control" hidden  name="checkIngredientsId[]" value="'.$value['i_id'].'" >
-                    <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkIngredients[]" value="'.$quantite.'">
-                    </div>';
-        }
+                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                        <label class="form-check-label" for="b_qteBoisson">
+                                '.$value['i_nom'] .'
+                        </label> <br>
+                        <input  type="number" class="form-control" hidden  name="checkIngredientsId[]" value="'.$value['i_id'].'" >
+                        <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkIngredients[]" value="'.$quantite.'">
+                        </div>';
+            }
 
-        $corps.='</div>';
+            $corps.='</div>';
         // ============================
         // ==== SECTION verre === //
         $corps.='<label for="boissons">Verres Utilisés</label>';

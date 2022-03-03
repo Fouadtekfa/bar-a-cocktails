@@ -350,6 +350,7 @@ class MyPDO {
         }
         $query = substr($query, 0, strlen($query) - 2);
         $query .= ')';
+       // echo '<br>'. $query;
         $this->pdos_insert = $this->pdo->prepare($query);
     }
 
@@ -582,7 +583,7 @@ class MyPDO {
     public function initPDOS_delete(string $nomColId = "id"): void {
         $statement = "DELETE FROM ". $this->nomTable." WHERE $nomColId=:".$nomColId;
         $this->pdos_delete = $this->pdo->prepare($statement);
-        // echo $statement;
+        //echo $statement;
     }
 
     /**

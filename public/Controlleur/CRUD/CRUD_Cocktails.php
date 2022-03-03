@@ -410,7 +410,6 @@ if (isset($_GET['action'])){
             // ======================
             // === AJOUT / SUPPRESSION DES Verres ======
             $myPDO_Change->setNomTable('liencocktailverre');
-            $checkL = $_POST['checkVerreId'];
             if(isset($_POST['checkVerreId'])) {
 
                 $checkList = $_POST['checkVerreId'];
@@ -427,6 +426,8 @@ if (isset($_GET['action'])){
                         "c_id" => $_POST['c_id'],
                         "v_id" => $value
                     );
+                   /* echo "<br> c_id :". $_POST['c_id'];
+                    echo "<br> v_id : " . $value;*/
                     $myPDO_Change->insert($idElem);
                 }
             }
