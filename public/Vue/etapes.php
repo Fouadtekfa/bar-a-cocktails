@@ -48,10 +48,10 @@ class vueEtapes {
         return $corps;
     }
 
-    public function getHTMLTable($va) : string {
+    public function getHTMLTable($va, $cocktail) : string {
         $corps = '<div id="informationEntite">
                     <div class="buttonContainer">
-                        <form id="insererUtensileFormButton"  method="post" action="?action=create&c_id='.$va[0]->getCId().'">
+                        <form id="insererUtensileFormButton"  method="post" action="?action=create&c_id='.$cocktail->getCId().'">
                         <button type="submit" class="btn btn-primary" id="btn_ajouter">Ajouter</button>
                         </form>
                     </div>
