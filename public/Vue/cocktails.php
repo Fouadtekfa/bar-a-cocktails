@@ -60,7 +60,7 @@ class VueCocktail {
 
             }
         }
-
+        $corps.='</div>';
         // ==== SECTION BOISSONS === //
         $corps.='<label for="boissons">Boissons Utilisées</label>';
         $corps .= '<div class="selectionLiaison"> ';
@@ -171,7 +171,7 @@ class VueCocktail {
                             <input  type='.$val['type'].' class="form-control" '.$hide.'  name="'.$col.'" value="'.$val['default'].'" disabled>';
             }
         }
-
+        $corps.='</div>';
 
         // ====== Afficher les boissons ========
         $corps.='<label for="boissons">Boissons Utilisées</label>';

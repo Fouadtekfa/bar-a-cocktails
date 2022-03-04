@@ -38,8 +38,9 @@ if (isset($_GET['action'])) {
         }
 
         case 'inserer':
-        {
-            $contenu .= $vue->getDebutHTML();
+        {    $title = "Ajouter une boisson";
+            $lienRetour = 'CRUD_boissons.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
@@ -48,7 +49,9 @@ if (isset($_GET['action'])) {
         case 'modifier':
         {
             $boisson = $myPDO->get('b_id', $_GET['b_id']);
-            $contenu .= $vue->getDebutHTML();
+            $titre = "Modifier ".$boisson->getBNom();
+            $lienRetour = 'CRUD_boissons.php?action=read';
+            $contenu .= $vue->getDebutHTML($titre, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
                 'b_id' => array('balise'=>'input', 'type' => 'text', 'default' => $boisson->getBId(), 'titre' => 'id'),
                 'b_nom' => array('balise'=>'input', 'type' => 'text', 'default' => $boisson->getBNom(), 'titre' => 'Nom de la boisson'),

@@ -39,7 +39,9 @@ if (isset($_GET['action']))
 
         case 'create':
         {
-            $contenu .= $vue->getDebutHTML();
+            $title = "Ajouter une commande";
+            $lienRetour = 'CRUD_commande.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
             break;
@@ -48,7 +50,9 @@ if (isset($_GET['action']))
         {
 
             $commande = $myPDO->get('com_id', $_GET['com_id']);
-            $contenu .= $vue->getDebutHTML();
+            $title = "Modifier la commande de la table numero ".$commande->getComNumTable();
+            $lienRetour = 'CRUD_commande.php?action=read';
+            $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
                 'com_id' => array( 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
                 'com_numTable' => array( 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),

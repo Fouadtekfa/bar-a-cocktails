@@ -3,25 +3,25 @@
 namespace bar;
 class vueBoissons {
 
-    public function getDebutHTML() : string {
-        $corps =    '<!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                            <link rel="stylesheet" href="../../css/style.css">
-                            <link rel="stylesheet" href="../../css/boissons.css">
-                            <title>Cocktail</title>
-                        </head>
-                        <h1>Boissons</h1>
-                        <div class="arrow" id="retour">
-                        <img src="../../images/retour.png" alt="retour" class="retour" onclick="history.back()">
-                        </i>
-                        </div>                
-                    <body>';
-        return $corps;
+    public function getDebutHTML($titre = "Boissons", $lienRetour = "../../"): string{
+        $res = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                    <link rel="stylesheet" href="../../css/style.css">
+                    <link rel="stylesheet" href="../../css/cocktails.css">
+                    <title>Cocktails</title>
+                </head>
+                 <h1>'.$titre.'</h1>
+                    <div class="arrow" id="retour">
+                    <a href="'.$lienRetour.'"><img src="../../images/retour.png" alt="retour" class="retour" ></a>
+                    </i>
+                    </div>
+                <body>';
+        return $res;
     }
 
     public function getHTMLUpdate(array  $boisson) : string {

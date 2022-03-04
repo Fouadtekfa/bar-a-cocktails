@@ -41,7 +41,7 @@ if (isset($_GET['action']))
         }
 
         case 'insererUtensile': {
-            $title = "Inserer un Ustensile";
+            $title = "Ajouter un Ustensile";
             $lienRetour = 'CRUD_Ustensiles.php?action=read';
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLInsert();
@@ -50,9 +50,9 @@ if (isset($_GET['action']))
         }
 
         case 'modifierUtensile': {
-            $title = "Inserer un Ustensile";
-            $lienRetour = 'CRUD_Ustensiles.php?action=read';
             $utensile = $myPDO->get('u_id', $_GET['u_id']);
+            $title = "Modifier l'Ustensile ".$utensile->getUNom() ;
+            $lienRetour = 'CRUD_Ustensiles.php?action=read';
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
             'u_id'=>array('type'=>'text','default'=> $utensile->getUId(), 'titre' => 'id'),

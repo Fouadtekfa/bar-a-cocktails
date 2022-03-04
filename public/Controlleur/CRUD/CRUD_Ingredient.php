@@ -33,7 +33,7 @@ if (isset($_GET['action']))
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
 
-            $title = "ingredient";
+            $title = "Ingredient";
             $lienRetour = "../../";
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLALL($va);
@@ -50,16 +50,16 @@ if (isset($_GET['action']))
         }
 
         case 'update': {
-            $title = "modifier_ingredient";
-            $lienRetour = 'CRUD_Ingredient.php?action=read';
             $ingredient = $myPDO->get('i_id', $_GET['i_id']);
-            $contenu.=$vue->getDebutHTML($title, $lienRetour);
+            $titre = "Modifier l'ingredient ".$ingredient->getINom();
+            $lienRetour = 'CRUD_Ingredient.php?action=read';
+            $contenu.=$vue->getDebutHTML($titre, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
                 'i_id'=>array('type'=>'text','default'=> $ingredient->getIId(), 'titre' => 'id'),
-                'i_nom'=>array('type'=>'text','default'=>$ingredient->getINom(), 'titre' => 'nom '),
-                'i_type'=>array('type'=>'text','default'=>$ingredient->getIType(), 'titre' => 'type'),
+                'i_nom'=>array('type'=>'text','default'=>$ingredient->getINom(), 'titre' => 'Nom '),
+                'i_type'=>array('type'=>'text','default'=>$ingredient->getIType(), 'titre' => 'Type'),
                 'i_qteStockee'=>array('type'=>'number','default'=>$ingredient->getIQteStockee(), 'titre' => 'Quantite'),
-                'i_uniteStockee'=>array('type'=>'text','default'=>$ingredient->getIUniteStockee(), 'titre' => 'unite'),
+                'i_uniteStockee'=>array('type'=>'text','default'=>$ingredient->getIUniteStockee(), 'titre' => 'Unite'),
             ));
 
 
@@ -155,7 +155,7 @@ if (isset($_GET['action']))
         case 'supprime' :
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
-            $title = "ingredient";
+            $title = "Ingredient";
             $lienRetour = "../../";
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLALL($va);

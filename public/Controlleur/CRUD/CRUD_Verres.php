@@ -33,7 +33,7 @@ if (isset($_GET['action']))
             $myPDO->initPDOS_selectAll();
             $va =  $myPDO->getAll();
 
-            $title = "Verre";
+            $title = "Verres";
             $lienRetour = "../../";
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLALL($va);
@@ -42,7 +42,7 @@ if (isset($_GET['action']))
 
         case 'creat': {
             $title = "Ajouter un Verre";
-            $lienRetour = 'CRUD_Verre.php?action=read';
+            $lienRetour = 'CRUD_Verres.php?action=read';
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu.= $vue->getHTMLInsert();
             $_SESSION['etat'] = 'creation';
@@ -50,9 +50,10 @@ if (isset($_GET['action']))
         }
 
         case 'update': {
-            $title = "ajouter un verre";
+
             $lienRetour = 'CRUD_Verres.php?action=read';
             $verre = $myPDO->get('v_id', $_GET['v_id']);
+            $title = "Modifier " .$verre->getVType();
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
             $contenu .= $vue->getHTMLUpdate(array(
                 'v_id'=>array('type'=>'text','default'=> $verre->getVId(), 'titre' => 'id'),
