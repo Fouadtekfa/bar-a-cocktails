@@ -142,9 +142,9 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
                                                           <div class="selectionLiaison"> ';
                             foreach($cocktails as $cocktail){
                                 $corps.='<div class="form-check form-check_Entitiy col-4">   
-                                                                                <label class="form-check-label" for="b_qteBoisson">
+                                                                                <a style="color: black; font-weight: bold;" target="_blank" href="./CRUD_Cocktails.php?action=details&c_id='.$cocktail->getCId().'" for="b_qteBoisson">
                                                                                     '.$cocktail->getCNom() .'
-                                                                                </label> <br>
+                                                                                </a> <br>
                                                                                 <input  type="number" class="form-control" hidden  name="checkCocktailsId[]" value="'.$cocktail->getCId().'" >
                                                                                 <input type="number" class="form-control quantity" name="checkCocktails[]">
                                                                             </div>';
