@@ -347,7 +347,10 @@ class VueCocktail {
         foreach($ingredients as $ingredient){
             $res.='<div class="form-check form-check_Entitiy col-4">   
                                                             <label class="form-check-label" for="b_qteBoisson">
-                                                                '.$ingredient->getINom() .'
+                                                                '.$ingredient->getINom() .' 
+                                                            </label> <br>
+                                                            <label class="form-check-label" for="b_qteBoisson">
+                                                                ('.$ingredient->getIUniteStockee() .')
                                                             </label> <br>
                                                             <input  type="number" class="form-control" hidden  name="checkIngredientsId[]" value="'.$ingredient->getIId().'" >
                                                             <input type="number" class="form-control quantity" name="checkIngredients[]">

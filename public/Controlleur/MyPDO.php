@@ -70,10 +70,15 @@ class MyPDO {
     /**
      * Requete Obtenir les verres avec la table de liaison
      */
-    public function initPDOS_VerresWithRelationCocktail() {
-        $query= 'SELECT DISTINCT lcv.c_id, v.v_id, v.v_type
-                from  verre as v LEFT JOIN liencocktailverre as lcv on(lcv.v_id = v.v_id)
-                GROUP BY(v.v_type)';
+    public function initPDOS_VerresWithRelationCocktail($id) {
+        $query= 'SELECT v.v_id, v.v_type, l1.c_id FROM verre as v left join liencocktailverre as l1 ON(v.v_id = l1.v_id)
+                    INNER JOIN cocktail as c ON(c.c_id = l1.c_id)
+                    WHERE c.c_id = '.$id.'
+                    UNION
+                    SELECT v.v_id, v.v_type, l1.c_id FROM verre as v left join liencocktailverre as l1 ON(v.v_id = l1.v_id)
+                    WHERE v.v_type NOT IN(SELECT v2.v_type FROM verre as v2 INNER join liencocktailverre as l2 ON(v2.v_id = l2.v_id)
+                                        WHERE l2.c_id = '.$id.')
+                    GROUP BY v_type';
 
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
@@ -81,10 +86,18 @@ class MyPDO {
     /**
      * Requete Obtenir tous les ustensiles avec la table de liaison
      */
-    public function initPDOS_UstensilesWithRelationCocktail() {
-        $query= 'SELECT DISTINCT lcu.c_id, u.u_id, u.u_nom 
+    public function initPDOS_UstensilesWithRelationCocktail($id) {
+        /*$query= 'SELECT DISTINCT lcu.c_id, u.u_id, u.u_nom 
                 from  ustensile as u LEFT JOIN liencocktailustensile as lcu on(lcu.u_id = u.u_id)
-                GROUP BY(u.u_nom)';
+                GROUP BY(u.u_nom)';*/
+        $query= 'SELECT u.u_id, u.u_nom, l1.c_id FROM ustensile as u left join liencocktailustensile as l1 ON(u.u_id = l1.u_id)
+                INNER JOIN cocktail as c ON(c.c_id = l1.c_id)
+                WHERE c.c_id = '.$id.'
+                UNION
+                SELECT u.u_id, u.u_nom, l1.c_id FROM ustensile as u left join liencocktailustensile as l1 ON(u.u_id = l1.u_id)
+                WHERE u.u_nom NOT IN(SELECT u2.u_nom FROM ustensile as u2 INNER join liencocktailustensile as l2 ON(u2.u_id = l2.u_id)
+                                    WHERE l2.c_id = '.$id.')
+                GROUP BY u_nom;';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 
@@ -167,8 +180,8 @@ class MyPDO {
     /**
      * Obtenir les verrs d'un cocktail
      */
-    public function getAllVerresWithRelationCocktail() {
-        $this->initPDOS_VerresWithRelationCocktail();
+    public function getAllVerresWithRelationCocktail($id) {
+        $this->initPDOS_VerresWithRelationCocktail($id);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
@@ -207,8 +220,8 @@ class MyPDO {
     /**
      * Obtenir les ustensiles d'un cocktail
      */
-    public function getAllUstensilesWithRelationCocktail() {
-        $this->initPDOS_UstensilesWithRelationCocktail();
+    public function getAllUstensilesWithRelationCocktail($id) {
+        $this->initPDOS_UstensilesWithRelationCocktail($id);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }

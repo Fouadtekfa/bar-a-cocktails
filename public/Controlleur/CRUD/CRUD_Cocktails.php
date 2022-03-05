@@ -99,12 +99,12 @@ if (isset($_GET['action'])){
 
             // == USTENSILES CONTENU ==
             $myPDO_Change->setNomTable('liencocktailustensiles');
-            $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail();
+            $ustensiles =  $myPDO_Change->getAllUstensilesWithRelationCocktail($_GET['c_id']);
             // ===================
 
             //=======VERRES CONTENU===========
             $myPDO_Change->setNomTable('liencocktailverre');
-            $verre=$myPDO_Change->getAllVerresWithRelationCocktail();
+            $verre=$myPDO_Change->getAllVerresWithRelationCocktail($_GET['c_id']);
             //===================
 
             // == INGREDIENT CONTENU ==
