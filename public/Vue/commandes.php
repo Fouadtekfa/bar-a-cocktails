@@ -89,44 +89,45 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
                 </div> ';
         return $corps;
     }
-    public function getHTMLDetails( $boissons)  {
-        $corps= '';
-    foreach($boissons as $key => $value){
-            //echo 'hol';
+    public function getHTMLDetails( $commandes)  {
 
-            echo '<br> id :'.$value['c_id'];
-            echo '<br> nom : '.$value['nom'];
-            echo '<br> prix : '.$value['prix'];
-            echo '<br> qte : '.$value['nb'];
-            echo '<br> id com : '.$value['nb'];
-            echo '<br> table : '.$value['com_numTable'];
-            $corps.='<div class="form-check form-check_Entitiy col-4">
-                                <label class="form-check-label" for="b_qteBoisson">
-                                        '.$value['nom'] .'
-                                </label> <br>
-                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" placeholder="'.$value['prix'].' euros" disabled>
-                                </div>';
+        $res=' 
+                <div id="informationEntite">
+                    <div class="tableContainer">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Nom Cocktail</th>
+                                <th scope="col">Prix Unitaire </th>
+                                <th scope="col">Nombre de Cocktail</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>';
 
+        $somme = 0;
+        foreach($commandes as $key => $value){
+            $totCocktail = $value['prix'] * $value['nb'];
+            $somme+=$totCocktail;
+            $res.=' <tr>
+                                        <th>'. $value['nom'] .' </th>
+                                        <td>'. $value['prix'] .'</td>
+                                        <td>'. $value['nb'].'</td>
+                                         <td> '. $totCocktail .' €</td>                                        
+                                  </tr> ';
         }
-            /*for($i = 0 ; $i <= count($comandeCocktail) ; $i++){
-                echo 'hhh';
-                echo $comandeCocktail[$i]['id'];
-            }*/
-        //echo var_dump($comandeCocktail['id'][0]);
-        //foreach ($comandeCocktail as $col => $va) {
-         //   echo $col;
-        //}
-        //$corps = "";
-        /*$idCocktail = '';
-        $corps .= '<div class="insertContainer" id="insertUpdateContainer">
-                    <div class="form-group">';
-        echo 'jiji';
-        foreach ($comandeComplete as $val) {
-            echo "hollaaa";
-            $corps .= '<label for="name" class="rowsInformation">' . $val['c_nom'] . '</label>
-                      <input  type="text" class="form-control"  name="nom" value="' . $val['c_nom'] . '" disabled>';
-        }*/
-        return $corps .= '</div></div>';
+        $res .='<tr>
+                   <th >Total : </th>
+                   <th ></th>
+                   <th ></th>
+                   <th >'. $somme .' €</th>                                      
+                </tr>
+       </tbody>
+                 </table>    
+               </div>
+            </div>
+        ';
+        return $res .= '</div></div>';
     }
 
     public function getHTMLInsert() : string {
