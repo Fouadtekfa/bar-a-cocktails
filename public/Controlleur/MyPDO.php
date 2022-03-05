@@ -129,6 +129,38 @@ class MyPDO {
     }
 
     /**
+     * Requete Obtenir tous les boissons avec la table de liaison
+     */
+    public function initPDOS_BoissonsWithRelationCocktail($id, $alcool) {
+        $query= 'SELECT DISTINCT b.b_id, b.b_nom, b.b_type, b.b_estAlcoolise, b.b_qteStockee, l1.qteBoisson, l1.c_id from boisson as b
+                        INNER JOIN liencocktailboisson as l1 on(l1.b_id = b.b_id) 
+                        WHERE b.b_estAlcoolise = '.$alcool.' AND
+                        c_id = '.$id.'
+                UNION
+                SELECT DISTINCT b.b_id, b.b_nom, b.b_type, b.b_estAlcoolise, b.b_qteStockee, l1.qteBoisson, l1.c_id
+                    FROM boisson as b
+                    LEFT JOIN liencocktailboisson as l1 on(l1.b_id = b.b_id) 
+                    WHERE b.b_estAlcoolise = '.$alcool.' AND
+                    b.b_nom NOT IN(SELECT b2.b_nom FROM boisson as b2 INNER JOIN
+                                            liencocktailboisson AS l ON(b2.b_id = l.b_id) INNER JOIN cocktail as co
+                                            ON(l.c_id = co.c_id)
+                                            WHERE co.c_id = '.$id.')
+                                        group by b_id
+                UNION
+                SELECT DISTINCT b.b_id, b.b_nom, b.b_type, b.b_estAlcoolise, b.b_qteStockee, l1.qteBoisson, l1.c_id
+                    FROM boisson as b
+                    RIGHT JOIN liencocktailboisson as l1 on(l1.b_id = b.b_id) 
+                    WHERE b.b_estAlcoolise = '.$alcool.' AND
+                    b.b_nom NOT IN(SELECT b2.b_nom FROM boisson as b2 INNER JOIN
+                                            liencocktailboisson AS l ON(b2.b_id = l.b_id) INNER JOIN cocktail as co
+                                            ON(l.c_id = co.c_id)
+                                            WHERE co.c_id = '.$id.')
+                                        group by b_id';
+                                        //echo "<br>". $query ."<br>";
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
      * Requete Obtenir tous les ingredients avec la table de liaison
      */
     public function initPDOS_CocktailsWithRelationCommande($id) {
@@ -227,10 +259,19 @@ class MyPDO {
     }
 
     /**
-     * Obtenir les ustensiles d'un cocktail
+     * Obtenir les ingredients d'un cocktail
      */
     public function getAllIngredientsWithRelationCocktails($id) {
         $this->initPDOS_IngredientsWithRelationCocktail($id);
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir les boissons d'un cocktail
+     */
+    public function getAllBoissonsWithRelationCocktails($id, $alcool) {
+        $this->initPDOS_BoissonsWithRelationCocktail($id, $alcool);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }
@@ -644,7 +685,7 @@ class MyPDO {
         }
         $query = substr($query,0, strlen($query)-2);
         $query .= " WHERE ".$nomColId."=:".$nomColId. " AND  ".$nomColId2."=:".$nomColId2;
-        // echo $query;
+        //echo $query;
         $this->pdos_updateRelation =  $this->pdo->prepare($query);
     }
 

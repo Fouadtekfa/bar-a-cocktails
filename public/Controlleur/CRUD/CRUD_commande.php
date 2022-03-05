@@ -66,8 +66,8 @@ if (isset($_GET['action']))
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
 
             // == COMMANDE CONTENU ==
-            $myPDO_Change->setNomTable('liencocktailcommande');
-            $cocktails =  $myPDO_Change->getAllCocktailsWithRelationCommandes($commande->getComId());
+                $myPDO_Change->setNomTable('liencocktailcommande');
+                $cocktails =  $myPDO_Change->getAllCocktailsWithRelationCommandes($commande->getComId());
             // ===================
 
             $commande = array(

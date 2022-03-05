@@ -25,7 +25,7 @@ class VueCocktail {
         return $res;
     }
 
-    public function getHTMLUpdate(array  $cocktaile, $boissons, $lienCockBoisson, $ustensiles, $ingredients,$verre) : string {
+    public function getHTMLUpdate(array  $cocktaile, $boissonsAlcoolises,  $boissonsNonAlcoolises,  $ustensiles, $ingredients,$verre) : string {
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
@@ -62,24 +62,48 @@ class VueCocktail {
         }
         $corps.='</div>';
         // ==== SECTION BOISSONS === //
-            $corps.='<label for="boissons">Boissons Utilisées</label>';
-            $corps .= '<div class="selectionLiaison"> ';
-            for($i = 0; $i < count($boissons) ; $i++){
-                $qteBoisson = '';
-                for($j = 0; $j < count($lienCockBoisson) ; $j++){
-                    if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
-                        $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();
-                }
+            $corps.= '<label for="boissons">Boissons Utilisés</label>';
+            $corps.= '<div class="selectionLiaison"> 
+                         <h3 style="display: block; width: 100%; text-align: center;">Alcoolisées</h3>';            
+                         foreach($boissonsAlcoolises as $value) {
+                            $style = "red";
+                            if($value['b_estAlcoolise'] == 1 ) {
+                                $quantite = '';
 
-                $corps.='<div class="form-check form-check_Entitiy col-4">   
-                                <label class="form-check-label" for="b_qteBoisson">
-                                        '.$boissons[$i]->getBNom() .'
-                                </label> <br>
-                                <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
-                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'">
-                                </div>';
-            }
-            $corps.='</div>';
+                                if($value['c_id'] == $cocktaile['c_id']['default']) $quantite = $value['qteBoisson'];
+
+                                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                            <label style="color: '.$style.'" class="form-check-label" for="b_qteBoisson">
+                                                    '.$value['b_nom'] .'
+                                            </label> <br>
+                                            <input  type="number" class="form-control" hidden name="checkBoissonsId[]" value="'.$value['b_id'].'" >
+                                            <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$quantite.'">
+                                        </div>';
+                            }
+                        }
+                        $corps.='</div>';
+                        //foreach($boissons as $value){echo "hooooo";}
+            $corps.= '<div class="selectionLiaison"> 
+                         <h3 style="display: block; width: 100%; text-align: center;">Non Alcoolisées</h3>';            
+                         foreach($boissonsNonAlcoolises as $value){
+                             
+                            $style = "black";
+                            if($value['b_estAlcoolise'] == 0 ) {
+                                $quantite = '';
+
+                                if($value['c_id'] == $cocktaile['c_id']['default']) $quantite = $value['qteBoisson'];
+
+                                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                            <label style="color: '.$style.'" class="form-check-label" for="b_qteBoisson">
+                                                    '.$value['b_nom'] .'
+                                            </label> <br>
+                                            <input  type="number" class="form-control" hidden name="checkBoissonsId[]" value="'.$value['b_id'].'" >
+                                            <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$quantite.'">
+                                        </div>';
+                            }
+                        }
+                        $corps.='</div>';
+        
         // ============================
 
         // ==== SECTION USTENSILES === //
@@ -121,32 +145,21 @@ class VueCocktail {
             $corps.='</div>';
         // ============================
         // ==== SECTION verre === //
-        $corps.='<label for="boissons">Verres Utilisés</label>';
-        $corps .= '<div class="selectionLiaison"> ';
-        foreach($verre as $key => $value){
-            $checked = '';
-            if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
-            $corps.='<div class="form-check form-check_Entitiy col-4">   
-                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checkVerreId[]">
-                                <label class="form-check-label">
-                                '.$value['v_type'].'
-                            </label>
-                            <input  type="number" class="form-control" hidden  >
-                    </div>';
+            $corps.='<label for="boissons">Verres Utilisés</label>';
+            $corps .= '<div class="selectionLiaison"> ';
+            foreach($verre as $key => $value){
+                $checked = '';
+                if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
+                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                    <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checkVerreId[]">
+                                    <label class="form-check-label">
+                                    '.$value['v_type'].'
+                                </label>
+                                <input  type="number" class="form-control" hidden  >
+                        </div>';
+            }
 
-            /* $checked = '';
-
-            $corps.='<div class="form-check form-check_Entitiy col-4">
-                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['v_id'].'" name="checkVerreId[]">
-                                <label class="form-check-label">
-                                '.$value['v_type'].'
-                            </label>
-                            <input  type="number" class="form-control" hidden  >
-                    </div>';
-           */
-        }
-
-        $corps.='</div>';
+            $corps.='</div>';
         // ============================
         $corps.=' <button type="submit" class="btn btn-primary">Modifier</button>
                                     </form>
@@ -176,6 +189,7 @@ class VueCocktail {
 
         // ====== Afficher les boissons ========
         $corps.='<label for="boissons">Boissons Utilisées</label>';
+        
         $corps .= '<div class="selectionLiaison"> ';
         foreach($boissons as $key => $value){
             $qteBoisson =  $value['qteBoisson'];
@@ -299,7 +313,7 @@ class VueCocktail {
                 <form id="addUtensileForm"  method="post" action="./CRUD_Cocktails.php" >
                     <div class="form-group">
                         <label for="name">Nom de Cocktail </label>
-                        <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail">
+                        <input type="text" class="form-control" id="name" name="nom" placeholder="Nom de Cocktail" required>
                         <label for="cat">catégorie de Cocktail</label>
                         <select type="text" id="cat" name="cat" class="form-control">
                             <option value="SD">SD</option>
@@ -307,22 +321,41 @@ class VueCocktail {
                             <option value="AD">AD</option>
                         </select>
                         <label for="prix">Prix de Cocktail </label>
-                        <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail">';
+                        <input type="text" class="form-control" id="prix" name="prix" placeholder="Prix de Cocktail" required>';
 
         // ======= SELECTION DES BOISSONS ======
         $res.='<label for="boissons">Boissons Utilisées</label>
-                            <div class="selectionLiaison"> ';
-        foreach($boissons as $boisson){
-
-            $res.='<div class="form-check form-check_Entitiy col-4">   
-                                    <label class="form-check-label" for="b_qteBoisson">
-                                            '.$boisson->getBNom() .'
-                                    </label> <br>
-                                    <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
-                                    <input type="number" class="form-control quantity" name="checkBoissons[]">
-                                    </div>';
-        }
-        $res.='</div>';
+                    <div class="selectionLiaison"> 
+                    <h3 style="display: block; width: 100%; text-align: center;">Alcoolisées</h3>';
+                        foreach($boissons as $boisson){
+                            $style = "black";
+                            if($boisson->getBEstAlcoolise() == 1 ) {
+                                $style = "red";
+                                $res.='<div class="form-check form-check_Entitiy col-4">   
+                                                        <label style="color : '.$style.'" class="form-check-label" for="b_qteBoisson">
+                                                                '.$boisson->getBNom() .'
+                                                        </label> <br>
+                                                        <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
+                                                        <input type="number" class="form-control quantity" name="checkBoissons[]">
+                                        </div>';
+                            }
+                        }
+            $res.='</div>';
+            $res.='<div class="selectionLiaison"> 
+                        <h3 style="display: block; width: 100%; text-align: center;">Non Alcoolisées</h3>';
+                        foreach($boissons as $boisson){
+                            $style = "black";
+                            if($boisson->getBEstAlcoolise() == 0 ) {
+                                $res.='<div class="form-check form-check_Entitiy col-4">   
+                                                        <label style="color : '.$style.'" class="form-check-label" for="b_qteBoisson">
+                                                                '.$boisson->getBNom() .'
+                                                        </label> <br>
+                                                        <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boisson->getBId().'" >
+                                                        <input type="number" class="form-control quantity" name="checkBoissons[]">
+                                        </div>';
+                            }
+                        }
+                    $res.='</div>';
         // ======================================
 
         // ======== SELECTION DES USTENSILES ===========
