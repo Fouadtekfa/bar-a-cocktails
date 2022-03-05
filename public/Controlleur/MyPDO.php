@@ -52,7 +52,7 @@ class MyPDO {
      * Requete Obtenir tous les ingredients d'un cocktail specific
      */
     public function initPDOS_IngredientsForOneCocktail($id) {
-        $query= 'SELECT i.i_id, i.i_nom, lci.qteIngredient 
+        $query= 'SELECT i.i_id, i.i_nom, lci.qteIngredient, i.i_uniteStockee 
                 from ingredient as i, '.$this->getNomTable().' as lci 
                 WHERE c_id = '.$id.' AND i.i_id = lci.i_id;';
 
@@ -92,19 +92,26 @@ class MyPDO {
      * Requete Obtenir tous les ingredients avec la table de liaison
      */
     public function initPDOS_IngredientsWithRelationCocktail($id) {
-        $query= 'SELECT DISTINCT lci.i_id, i.i_id, i.i_nom , lci.qteIngredient, lci.c_id from ingredient as i 
-                 INNER JOIN '.$this->getNomTable().' as lci on(lci.i_id = i.i_id) WHERE c_id = '.$id.'
-                 UNION
-                 SELECT DISTINCT lci.i_id, i.i_id, i.i_nom , lci.qteIngredient, lci.c_id from ingredient as i 
-                 INNER JOIN '.$this->getNomTable().' as lci on(lci.i_id = i.i_id) 
-                 WHERE c_id != '.$id.' AND
-                 i_nom NOT IN(SELECT i2.i_nom FROM ingredient as i2 INNER JOIN '.$this->getNomTable().' as l 
-                          on(lci.i_id = i2.i_id)  WHERE
-                            c_id = l.c_id and
-                            i.i_id = l.i_id and
-                            c_id = '.$id.' )
-                            group by i_nom;
-                            order by i_nom';
+        $query= 'SELECT DISTINCT lci.i_id, i.i_nom , lci.qteIngredient, lci.c_id from ingredient as i
+                                 INNER JOIN liencocktailingredient as lci on(lci.i_id = i.i_id) WHERE c_id = '.$id.'
+                        UNION
+                        SELECT DISTINCT i.i_id,  i.i_nom, lci.qteIngredient, lci.c_id 
+                                FROM ingredient as i
+                                LEFT JOIN liencocktailingredient as lci on(lci.i_id = i.i_id) 
+                                WHERE i.i_nom NOT IN(SELECT i2.i_nom FROM ingredient as i2 INNER JOIN
+                                                     liencocktailingredient AS l ON(i2.i_id = l.i_id) INNER JOIN cocktail as co
+                                                     ON(l.c_id = co.c_id)
+                                                     WHERE co.c_id = '.$id.')
+                                                    group by i_id
+                        UNION
+                        SELECT DISTINCT i.i_id,  i.i_nom, lci.qteIngredient, lci.c_id 
+                                FROM ingredient as i
+                                RIGHT JOIN liencocktailingredient as lci on(lci.i_id = i.i_id) 
+                                WHERE i.i_nom NOT IN(SELECT i2.i_nom FROM ingredient as i2 INNER JOIN
+                                                     liencocktailingredient AS l ON(i2.i_id = l.i_id) INNER JOIN cocktail as co
+                                                     ON(l.c_id = co.c_id)
+                                                     WHERE co.c_id = '.$id.')
+                                                    group by i_id';
         $this->pdos_selectAllById = $this->pdo->prepare($query);
     }
 

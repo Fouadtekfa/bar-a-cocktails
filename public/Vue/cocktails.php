@@ -211,7 +211,7 @@ class VueCocktail {
         foreach ($ingredients as $key => $value) {
             $corps.='<div class="form-check form-check_Entitiy col-12">   
                                     <label class="form-check-label" for="b_qteBoisson">
-                                            Ingredient : '.$value['i_nom'].' : '.$value['qteIngredient'].' g
+                                            '.$value['i_nom'].' : '.$value['qteIngredient'].'  '.$value['i_uniteStockee'].'
                                     </label> 
                                     </div>';
         }
