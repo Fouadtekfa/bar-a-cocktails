@@ -3,11 +3,14 @@ session_start();
 require_once "../MyPDO.php";
 require_once "../connexion.php";
 require_once "../../Modele/EntiteCommande.php";
+require_once "../../Modele/EntiteLienCocktailCommande.php";
+require_once "../../Modele/EntiteCocktail.php";
 include "../../Vue/commandes.php";
 
 //Initialisation de connexion
 try {
     $myPDO = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd'], 'Commande');
+    $myPDO_Change = new MyPDO($_ENV['sgbd'], $_ENV['host'], $_ENV['db'], $_ENV['user'], $_ENV['pwd']);
     //echo "CONNEXION!" ;
 }catch (PDOException $e){
     echo "Il y a eu une erreur : " .$e->getMessage() ;
@@ -53,6 +56,7 @@ if (isset($_GET['action']))
             $title = "Modifier la commande de la table numero ".$commande->getComNumTable();
             $lienRetour = 'CRUD_commande.php?action=read';
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
+
             $contenu .= $vue->getHTMLUpdate(array(
                 'com_id' => array( 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
                 'com_numTable' => array( 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),
@@ -78,6 +82,21 @@ if (isset($_GET['action']))
             $contenu.= $vue->getHTMLTable($va);
             $_SESSION['etat'] = 'supprimer';
             break;
+        }
+        case 'plus':{
+                $commande = $myPDO->get('com_id', $_GET['com_id']);
+                $titre = "la coomande de la table num " . $commande->getComNumTable();;
+                $lienRetour = 'CRUD_commande.php?action=read';
+                $contenu .= $vue->getDebutHTML($titre, $lienRetour);
+
+
+                // == COMMANDES CONTENU ==
+                $myPDO_Change->setNomTable('liencocktailcommande');
+                $lienCockBoisson =  $myPDO_Change->getCocktailForOneCommande($_GET['com_id']);
+                // ===================
+
+                $contenu.=$vue->getHTMLDetails($lienCockBoisson);
+                break;
         }
 
     }

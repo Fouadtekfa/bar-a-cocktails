@@ -28,6 +28,15 @@ class MyPDO {
         $this->pdos_selectAllById = $this->pdo->prepare($query);
         //echo "mira" . $query;
     }
+    public function initPDOS_CocktailForOneCommande($id) {
+       $query = 'SELECT c.c_id as id, c.c_nom, c.c_cat, c.c_prix, 
+                 lcc.nbCocktail, co.com_id, co.com_numTable
+                FROM Cocktail c INNER JOIN '.$this->getNomTable().' lcc ON (c.c_id = lcc.c_id)
+                INNER JOIN commande co ON (co.com_id = Lcc.com_id)
+                WHERE co.com_id = '.$id;
+        //echo $query;
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
 
     /**
      * Requete Obtenir tous les ustensiles d'un cocktail specific
@@ -110,6 +119,18 @@ class MyPDO {
     }
 
     /**
+     * Requete pour obtenir tous les boissons d'un cocktail
+     */
+    public function initPDOS_CocktailForOneCom($id) {
+        echo $this->getNomTable();
+        $query= 'SELECT c.c_id as c_id, c.c_nom as nom, c.c_prix as prix, lcc.nbCocktail as nb, com.com_id as com_id, com.com_numTable as com_numTable
+                FROM Cocktail as c INNER JOIN  '.$this->getNomTable().' as lcc ON (c.c_id = lcc.c_id)
+                INNER JOIN commande AS com ON(com.com_id = lcc.com_id) 
+                WHERE com.com_id = '.$id.';';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
      * Obtenir les verrs d'un cocktail
      */
     public function getAllVerresWithRelationCocktail() {
@@ -177,6 +198,14 @@ class MyPDO {
     }
 
     /**
+     * Obtenir tous les cocktailme avec la table liaison
+     */
+    public function getCocktaileForOnecommande($idCommande) {
+        $this->initPDOS_CocktailForOneCommande($idCommande);
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+    /**
      * Obtenir tous les ustensiles avec la table liaison
      */
     public function getIngredientForOneCocktail($idCocktail) {
@@ -190,6 +219,15 @@ class MyPDO {
      */
     public function getBoissonsForOneCocktail($idCocktail) {
         $this->initPDOS_UstensilesForOneBoisson($idCocktail);
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir les boissons d'un cocktail
+     */
+    public function getCocktailForOneCommande($idCocktail) {
+        $this->initPDOS_CocktailForOneCom($idCocktail);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }

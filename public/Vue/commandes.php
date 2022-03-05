@@ -72,6 +72,8 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
                 $corps.= '          <tr>
                                     <th scope="row">'. $valeur->getComId() .'</th>
                                     <td class="rowsInformation">'. $valeur->getComNumTable() . '</td>
+                                     <td class="td_buttons_actions"><a href="?action=plus&com_id='.$valeur->getComId().'">
+                                    <button type="button" class="btn">Voir la commande</button></a></td> 
                                     <td class="td_buttons_actions"><a href="?action=update&com_id='.$valeur->getComId().'">
                                     <button type="button" class="btn btn-warning etapes-btn">Editer</button></a></td>
                                     <td class="td_buttons_actions">
@@ -86,6 +88,45 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
                     </div>
                 </div> ';
         return $corps;
+    }
+    public function getHTMLDetails( $boissons)  {
+        $corps= '';
+    foreach($boissons as $key => $value){
+            //echo 'hol';
+
+            echo '<br> id :'.$value['c_id'];
+            echo '<br> nom : '.$value['nom'];
+            echo '<br> prix : '.$value['prix'];
+            echo '<br> qte : '.$value['nb'];
+            echo '<br> id com : '.$value['nb'];
+            echo '<br> table : '.$value['com_numTable'];
+            $corps.='<div class="form-check form-check_Entitiy col-4">
+                                <label class="form-check-label" for="b_qteBoisson">
+                                        '.$value['nom'] .'
+                                </label> <br>
+                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" placeholder="'.$value['prix'].' euros" disabled>
+                                </div>';
+
+        }
+            /*for($i = 0 ; $i <= count($comandeCocktail) ; $i++){
+                echo 'hhh';
+                echo $comandeCocktail[$i]['id'];
+            }*/
+        //echo var_dump($comandeCocktail['id'][0]);
+        //foreach ($comandeCocktail as $col => $va) {
+         //   echo $col;
+        //}
+        //$corps = "";
+        /*$idCocktail = '';
+        $corps .= '<div class="insertContainer" id="insertUpdateContainer">
+                    <div class="form-group">';
+        echo 'jiji';
+        foreach ($comandeComplete as $val) {
+            echo "hollaaa";
+            $corps .= '<label for="name" class="rowsInformation">' . $val['c_nom'] . '</label>
+                      <input  type="text" class="form-control"  name="nom" value="' . $val['c_nom'] . '" disabled>';
+        }*/
+        return $corps .= '</div></div>';
     }
 
     public function getHTMLInsert() : string {

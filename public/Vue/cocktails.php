@@ -155,6 +155,7 @@ class VueCocktail {
     }
 
     public function getHTMLDetails(array  $cocktaile, $boissons, $ustensiles, $ingredients,$verre) : string {
+
         $corps = "";
         $idCocktail = '';
         $corps .=  '<div class="insertContainer" id="insertUpdateContainer">
