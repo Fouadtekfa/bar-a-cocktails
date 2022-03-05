@@ -302,51 +302,51 @@ if (isset($_GET['action'])){
             $etat .= "modification";
 
             // ====== POUR BOISSONS =========
-            // Recuperer les boissons (s'il y en a)
-            if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
-                $nomBoissons = $_POST['checkBoissons'];
-                $boissonsId = $_POST['checkBoissonsId'];
+                // Recuperer les boissons (s'il y en a)
+                if(isset($_POST['checkBoissons']) && isset($_POST['checkBoissonsId'])) {
+                    $nomBoissons = $_POST['checkBoissons'];
+                    $boissonsId = $_POST['checkBoissonsId'];
 
-                // Etablir la table de cocktail liaison boisson
-                $myPDO_Change->setNomTable('liencocktailboisson');
-                $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_POST['c_id']);
+                    // Etablir la table de cocktail liaison boisson
+                    $myPDO_Change->setNomTable('liencocktailboisson');
+                    $lienCockBoisson =  $myPDO_Change->getSpecific('c_id', $_POST['c_id']);
 
-                for ($i=0; $i < count($nomBoissons); $i++) {
-                    $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'b_id', $_POST['c_id'], $boissonsId[$i]);
+                    for ($i=0; $i < count($nomBoissons); $i++) {
+                        $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'b_id', $_POST['c_id'], $boissonsId[$i]);
 
-                    if($nomBoissons[$i] > 0) {
-                        if($liaisonExists) {
-                            //echo "modifier <br>";
-                            $update = array(
+                        if($nomBoissons[$i] > 0) {
+                            if($liaisonExists) {
+                                //echo "modifier <br>";
+                                $update = array(
+                                    "c_id" => $_POST['c_id'],
+                                    "b_id" => $boissonsId[$i],
+                                    "qteBoisson" => $nomBoissons[$i]
+                                );
+                                $myPDO_Change->updateRelation('c_id', 'b_id', $update);
+                            } else {
+                                //echo "ajouter <br>";
+                                //   echo 'c_id : ' . $_POST['c_id']. ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
+                                //echo '<br>';
+                                //echo $boissonsId[$i]  . '<br>';
+                                $insert = array(
+                                    "c_id" => $_POST['c_id'],
+                                    "b_id" => $boissonsId[$i],
+                                    "qteBoisson" => $nomBoissons[$i]
+                                );
+                                $myPDO_Change->insert($insert);
+                            }
+
+
+                        } else if($liaisonExists > 0) {
+                            $data = array(
                                 "c_id" => $_POST['c_id'],
-                                "b_id" => $boissonsId[$i],
-                                "qteBoisson" => $nomBoissons[$i]
+                                "b_id" => $boissonsId[$i]
                             );
-                            $myPDO_Change->updateRelation('c_id', 'b_id', $update);
-                        } else {
-                            //echo "ajouter <br>";
-                            //   echo 'c_id : ' . $_POST['c_id']. ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
-                            //echo '<br>';
-                            //echo $boissonsId[$i]  . '<br>';
-                            $insert = array(
-                                "c_id" => $_POST['c_id'],
-                                "b_id" => $boissonsId[$i],
-                                "qteBoisson" => $nomBoissons[$i]
-                            );
-                            $myPDO_Change->insert($insert);
+                            $myPDO_Change->delete($data);
                         }
-
-
-                    } else if($liaisonExists > 0) {
-                        $data = array(
-                            "c_id" => $_POST['c_id'],
-                            "b_id" => $boissonsId[$i]
-                        );
-                        $myPDO_Change->delete($data);
                     }
-                }
 
-            }
+                }
             // ==============================
 
             // === AJOUT / SUPPRESSION DES USTENSILES ======
@@ -373,40 +373,41 @@ if (isset($_GET['action'])){
             // ======================
 
             // === AJOUT / SUPPRESSION DES INGREDIENTS ======
-            $myPDO_Change->setNomTable('liencocktailingredient');
+                $myPDO_Change->setNomTable('liencocktailingredient');
 
-            if(isset($_POST['checkIngredientsId']) && isset($_POST['checkIngredients'])) {
-                $ingIDs = $_POST['checkIngredientsId'];
-                $ingquantity = $_POST['checkIngredients'];
+                if(isset($_POST['checkIngredientsId']) && isset($_POST['checkIngredients'])) {
+                    $ingIDs = $_POST['checkIngredientsId'];
+                    $ingquantity = $_POST['checkIngredients'];
 
-                foreach($ingIDs as $key => $val) {
-                    $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'i_id', $_POST['c_id'], $val);
-                    if($ingquantity[$key] > 0){
-                        $data = array(
-                            "c_id" => $_POST['c_id'],
-                            "i_id" => $val,
-                            "qteIngredient" => $ingquantity[$key]
-                        );
-                        if($liaisonExists > 0) {
-                            //echo "update <br>";
-                            $myPDO_Change->updateRelation('c_id', 'i_id', $data);
-                        } else {
-                            //echo "insert <br>";
-                            $myPDO_Change->insert($data);
-                        }
-
-                    } else {
-                        if($liaisonExists > 0) {
+                    foreach($ingIDs as $key => $val) {
+                        $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'i_id', $_POST['c_id'], $val);
+                        if($ingquantity[$key] > 0){
                             $data = array(
                                 "c_id" => $_POST['c_id'],
-                                "i_id" => $val
+                                "i_id" => $val,
+                                "qteIngredient" => $ingquantity[$key]
                             );
-                            $myPDO_Change->delete($data);
+                            if($liaisonExists > 0) {
+                                //echo "update <br>";
+                                $myPDO_Change->updateRelation('c_id', 'i_id', $data);
+                            } else {
+                                //echo "insert <br>";
+                                $myPDO_Change->insert($data);
+                            }
+
+                        } else {
+                            if($liaisonExists > 0) {
+                                $data = array(
+                                    "c_id" => $_POST['c_id'],
+                                    "i_id" => $val
+                                );
+                                $myPDO_Change->delete($data);
+                            }
                         }
                     }
                 }
-            }
             // ======================
+            
             // === AJOUT / SUPPRESSION DES Verres ======
             $myPDO_Change->setNomTable('liencocktailverre');
             // SUPPRIMER

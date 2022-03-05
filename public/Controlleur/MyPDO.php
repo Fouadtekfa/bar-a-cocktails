@@ -109,6 +109,34 @@ class MyPDO {
     }
 
     /**
+     * Requete Obtenir tous les ingredients avec la table de liaison
+     */
+    public function initPDOS_CocktailsWithRelationCommande($id) {
+        $query= 'SELECT DISTINCT lcc.c_id, c.c_nom , lcc.nbCocktail, lcc.com_id from cocktail as c
+                         INNER JOIN liencocktailcommande as lcc on(lcc.c_id = c.c_id) WHERE com_id = '.$id.'
+                UNION
+                SELECT DISTINCT c.c_id,  c.c_nom, lcc.nbCocktail, lcc.com_id 
+                        FROM cocktail as c 
+                        LEFT JOIN liencocktailcommande as lcc on(lcc.c_id = c.c_id) 
+                        WHERE c.c_nom NOT IN(SELECT c2.c_nom FROM cocktail as c2 INNER JOIN
+                                             liencocktailcommande AS l ON(c2.c_id = l.c_id) INNER JOIN commande as co
+                                             ON(l.com_id = co.com_id)
+                                             WHERE co.com_id = '.$id.')
+                                            group by c_id
+                UNION
+                SELECT DISTINCT c.c_id,  c.c_nom, lcc.nbCocktail, lcc.com_id 
+                                FROM cocktail as c 
+                                RIGHT JOIN liencocktailcommande as lcc on(lcc.c_id = c.c_id) 
+                                WHERE c.c_nom NOT IN(SELECT c2.c_nom FROM cocktail as c2 INNER JOIN
+                                                    liencocktailcommande AS l ON(c2.c_id = l.c_id) INNER JOIN commande as co
+                                                    ON(l.com_id = co.com_id) WHERE
+                                                       co.com_id = '.$id.')
+                                                     group by c_id;
+                        ';
+        $this->pdos_selectAllById = $this->pdo->prepare($query);
+    }
+
+    /**
      * Requete pour obtenir tous les boissons d'un cocktail
      */
     public function initPDOS_UstensilesForOneBoisson($id) {
@@ -183,6 +211,15 @@ class MyPDO {
      */
     public function getAllIngredientsWithRelationCocktails($id) {
         $this->initPDOS_IngredientsWithRelationCocktail($id);
+        $this->getPdosSelectAllById()->execute();
+        return $this->getPdosSelectAllById();
+    }
+
+    /**
+     * Obtenir les cocktails d'une commande
+     */
+    public function getAllCocktailsWithRelationCommandes($id) {
+        $this->initPDOS_CocktailsWithRelationCommande($id);
         $this->getPdosSelectAllById()->execute();
         return $this->getPdosSelectAllById();
     }

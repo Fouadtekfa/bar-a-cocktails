@@ -62,41 +62,41 @@ class VueCocktail {
         }
         $corps.='</div>';
         // ==== SECTION BOISSONS === //
-        $corps.='<label for="boissons">Boissons Utilisées</label>';
-        $corps .= '<div class="selectionLiaison"> ';
-        for($i = 0; $i < count($boissons) ; $i++){
-            $qteBoisson = '';
-            for($j = 0; $j < count($lienCockBoisson) ; $j++){
-                if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
-                    $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();
-            }
+            $corps.='<label for="boissons">Boissons Utilisées</label>';
+            $corps .= '<div class="selectionLiaison"> ';
+            for($i = 0; $i < count($boissons) ; $i++){
+                $qteBoisson = '';
+                for($j = 0; $j < count($lienCockBoisson) ; $j++){
+                    if($boissons[$i]->getBId() == $lienCockBoisson[$j]->getBId())
+                        $qteBoisson =  $lienCockBoisson[$j]->getQteBoisson();
+                }
 
-            $corps.='<div class="form-check form-check_Entitiy col-4">   
-                            <label class="form-check-label" for="b_qteBoisson">
-                                    '.$boissons[$i]->getBNom() .'
-                            </label> <br>
-                            <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
-                            <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'">
-                            </div>';
-        }
-        $corps.='</div>';
+                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                <label class="form-check-label" for="b_qteBoisson">
+                                        '.$boissons[$i]->getBNom() .'
+                                </label> <br>
+                                <input  type="number" class="form-control" hidden  name="checkBoissonsId[]" value="'.$boissons[$i]->getBId().'" >
+                                <input type="number" class="form-control quantity" id="b_qteBoisson" name="checkBoissons[]" value="'.$qteBoisson.'">
+                                </div>';
+            }
+            $corps.='</div>';
         // ============================
 
         // ==== SECTION USTENSILES === //
-        $corps.='<label for="boissons">Ustensiles Utilisés</label>';
-        $corps .= '<div class="selectionLiaison"> ';
-        foreach($ustensiles as $key => $value){
-            $checked = '';
-            if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
-            $corps.='<div class="form-check form-check_Entitiy col-4">   
-                                <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['u_id'].'" name="checkUstensilesId[]">
-                                <label class="form-check-label">
-                                '.$value['u_nom'].'
-                            </label>
-                            <input  type="number" class="form-control" hidden  >
-                    </div>';
-        }
-        $corps.='</div>';
+            $corps.='<label for="boissons">Ustensiles Utilisés</label>';
+            $corps .= '<div class="selectionLiaison"> ';
+            foreach($ustensiles as $key => $value){
+                $checked = '';
+                if($value['c_id'] == $cocktaile['c_id']['default']) $checked = 'checked';
+                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                    <input class="form-check-input" type="checkbox" '.$checked.' value="'.$value['u_id'].'" name="checkUstensilesId[]">
+                                    <label class="form-check-label">
+                                    '.$value['u_nom'].'
+                                </label>
+                                <input  type="number" class="form-control" hidden  >
+                        </div>';
+            }
+            $corps.='</div>';
         // ============================
 
         // ==== SECTION INGREDIENTS === //

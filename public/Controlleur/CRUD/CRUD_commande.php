@@ -65,12 +65,17 @@ if (isset($_GET['action']))
             $lienRetour = 'CRUD_commande.php?action=read';
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
 
-            $contenu .= $vue->getHTMLUpdate(array(
+            // == COMMANDE CONTENU ==
+            $myPDO_Change->setNomTable('liencocktailcommande');
+            $cocktails =  $myPDO_Change->getAllCocktailsWithRelationCommandes($commande->getComId());
+            // ===================
+
+            $commande = array(
                 'com_id' => array( 'type' => 'text', 'default' => $commande->getComId(), 'titre' => 'id'),
-                'com_numTable' => array( 'type' => 'text', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table'),
+                'com_numTable' => array( 'type' => 'number', 'default' => $commande->getComNumTable(), 'titre' => 'Numero table')
+            );
 
-
-            ));
+            $contenu .= $vue->getHTMLUpdate($commande, $cocktails);
 
             $_SESSION['etat'] = 'modification';
             break;
@@ -172,6 +177,44 @@ else if (isset($_SESSION['etat']))
 
         case 'modification': {
             $etat.="modification";
+
+            // === AJOUT / SUPPRESSION DES COCKTAILS ======
+                $myPDO_Change->setNomTable('liencocktailcommande');
+                echo "afuers";
+                if(isset($_GET['checkCocktailsId']) && isset($_GET['checkCocktails'])) {
+                    echo "entro";
+                    $cocktailsIDs = $_GET['checkCocktailsId'];
+                    $cocktailsQuantity = $_GET['checkCocktails'];
+
+                    foreach($cocktailsIDs as $key => $val) {
+                        $liaisonExists = $myPDO_Change->element2KeysExists('com_id', 'c_id', $_GET['com_id'], $val);
+                        if($cocktailsQuantity[$key] > 0){
+                            $data = array(
+                                "c_id" => $val,
+                                "com_id" => $_GET['com_id'],
+                                "nbCocktail" => $cocktailsQuantity[$key]
+                            );
+                            
+                            if($liaisonExists > 0) {
+                                //echo "update <br>";
+                                $myPDO_Change->updateRelation('com_id', 'c_id', $data);
+                            } else {
+                                //echo "insert <br>";
+                                $myPDO_Change->insert($data);
+                            }
+
+                        } else {
+                            if($liaisonExists > 0) {
+                                $data = array(
+                                    "c_id" => $val,
+                                    "com_id" => $_GET['com_id']
+                                );
+                                $myPDO_Change->delete($data);
+                            }
+                        }
+                    }
+                }
+            // ======================
 
             $idElem = 'com_id';
             if(isset($_GET['com_id']) && isset($_GET['com_numTable']) ) {

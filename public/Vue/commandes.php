@@ -24,7 +24,7 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
     return $res;
 }
 
-    public function getHTMLUpdate(array  $commandes) : string {
+    public function getHTMLUpdate(array  $commandes, $cocktails) : string {
         $corps = "";
 
         $corps .=    '<div class="insertContainer" id="insertUpdateContainer">'.
@@ -34,13 +34,34 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
             if (is_array($val)) {
                 $hide = "";
                 if($col == 'com_id') $hide = 'hidden';
-                $corps.='       <label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
-                                        <input type='.$val['type'].' class="form-control" '.$hide.'  id="com_id" name="'.$col.'" placeholder="numéro commande" value="'.$val['default'].'" >';
+                $corps.='<label for="name" class="rowsInformation" '.$hide.'>'.$val['titre'].'</label>
+                         <input type='.$val['type'].' class="form-control" '.$hide.'  id="com_id" name="'.$col.'" placeholder="numéro commande" value="'.$val['default'].'" >';
 
-                //<input type="text" class="form-control" id="u_nom" name="u_nom" placeholder="Nom de lutensile" value="'.$val['default'].'">
             }
         }
-        $corps.='            </div>
+        // ==== SECTION commandes === //
+        $corps.='<label for="commandes">Cocktails Utilisés</label>';
+        $corps .= '<div class="selectionLiaison"> ';
+        $nomsauv = '';
+
+        foreach($cocktails as $key => $value){
+            $quantite = '';
+
+            if($value['com_id'] == $commandes['com_id']['default']) $quantite = $value['nbCocktail'];
+
+            $corps.='<div class="form-check form-check_Entitiy col-4">   
+                    <label class="form-check-label" for="nbCocktail">
+                            '.$value['c_nom'] .'
+                    </label> <br>
+                    <input  type="number" class="form-control" hidden  name="checkCocktailsId[]" value="'.$value['c_id'].'" >
+                    <input type="number" class="form-control quantity" id="nbCocktail" name="checkCocktails[]" value="'.$quantite.'">
+                    </div>';
+        }
+
+        $corps.='</div>';
+    // ============================
+
+        $corps.='</div>
                                     <button type="submit" class="btn btn-primary">Modifier</button>
                                 </form>
                             </div>';
