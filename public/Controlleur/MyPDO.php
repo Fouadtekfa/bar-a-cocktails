@@ -387,7 +387,7 @@ class MyPDO {
         }
         $query = substr($query, 0, strlen($query) - 2);
         $query .= ')';
-       // echo '<br>'. $query;
+       //echo '<br>'. $query;
         $this->pdos_insert = $this->pdo->prepare($query);
     }
 

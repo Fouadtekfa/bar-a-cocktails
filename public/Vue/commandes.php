@@ -130,13 +130,30 @@ public function getDebutHTML($titre = "Commandes", $lienRetour = "../../"): stri
         return $res .= '</div></div>';
     }
 
-    public function getHTMLInsert() : string {
+    public function getHTMLInsert($cocktails) : string {
         $corps = '<div class="insertContainer" id="insertContainer">
-                    <form id="addUtensileForm"  method="get" action="./CRUD_commande.php">
+                    <form id="addUtensileForm"  method="post" action="./CRUD_commande.php">
                         <div class="form-group">
                             <label for="name" class="rowsInformation">Numéro commande</label>
-                            <input type="text" class="form-control" id="name" name="com_numTable" placeholder="numéro de la table">
-                        </div>
+                            <input type="number" class="form-control" id="name" name="com_numTable" placeholder="numéro de la table">';
+
+                            // ======= SELECTION DES Coktails ======
+                            $corps.='<label for="ingredients">Ingredients Utilisés</label>
+                                                          <div class="selectionLiaison"> ';
+                            foreach($cocktails as $cocktail){
+                                $corps.='<div class="form-check form-check_Entitiy col-4">   
+                                                                                <label class="form-check-label" for="b_qteBoisson">
+                                                                                    '.$cocktail->getCNom() .'
+                                                                                </label> <br>
+                                                                                <input  type="number" class="form-control" hidden  name="checkCocktailsId[]" value="'.$cocktail->getCId().'" >
+                                                                                <input type="number" class="form-control quantity" name="checkCocktails[]">
+                                                                            </div>';
+                            }
+                            $corps.='</div>';
+                            // ======================================
+
+
+        $corps.='</div>
                         <button type="submit" class="btn btn-primary">Ajout</button>
                     </form>
                 </div>';

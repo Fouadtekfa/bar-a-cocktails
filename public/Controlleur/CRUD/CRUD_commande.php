@@ -44,8 +44,16 @@ if (isset($_GET['action']))
         {
             $title = "Ajouter une commande";
             $lienRetour = 'CRUD_commande.php?action=read';
+
+            // == INGREDIENT CONTENU ==
+            $myPDO_Change->setNomTable('cocktail');
+            $myPDO_Change->initPDOS_selectAll();
+            $cocktails =  $myPDO_Change->getAll();
+            // ===================
+
+
             $contenu.=$vue->getDebutHTML($title, $lienRetour);
-            $contenu .= $vue->getHTMLInsert();
+            $contenu .= $vue->getHTMLInsert($cocktails);
             $_SESSION['etat'] = 'creation';
             break;
         }
@@ -107,16 +115,48 @@ else if (isset($_SESSION['etat']))
             $insert = "";
 
 
-            if(isset($_GET['com_numTable'])) {
+            if(isset($_POST['com_numTable'])) {
                 $insert = array(
 
                     "com_id" => 'null',
-                    "com_numTable" => $_GET['com_numTable']
+                    "com_numTable" => $_POST['com_numTable']
 
 
                 );
 
                 $myPDO->insert($insert);
+                $idMaxCommande = $myPDO->getIdMax('com_id'); // dernier element insere
+
+                // === AJOUT INGREDIENTS ======
+                    // Etablir la table de cocktail liaison ingredients
+                    $myPDO_Change->setNomTable('liencocktailcommande');
+
+                    if(isset($_POST['checkCocktailsId']) && isset($_POST['checkCocktails'])) {
+                        echo "hhhh";
+                        $cockIDs = $_POST['checkCocktailsId'];
+                        $cocktailsquantity = $_POST['checkCocktails'];
+                        foreach($cockIDs as $key => $val) {
+                            if($cocktailsquantity[$key] > 0){
+                               echo "nnnn";
+                               /* echo 'insertions : ';
+                                echo 'idCommande : '. $idMaxCommande;
+                                echo 'c_id: ' .$val;
+                                echo 'nbCocktail : ' .$cocktailsquantity[$key];
+                                */
+                                $insert = array(
+                                    "c_id" => $val,
+                                    "com_id" => $idMaxCommande,
+                                    "nbCocktail" => $cocktailsquantity[$key]
+                                );
+                                $myPDO_Change->insert($insert);
+                            }
+                        }
+
+                    }
+                // ======================
+
+
+
                 $myPDO->initPDOS_selectAll();
                 $va =  $myPDO->getAll();
                 $contenu="";
