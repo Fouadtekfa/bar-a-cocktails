@@ -206,8 +206,7 @@ if (isset($_GET['action'])){
 
                     for ($i=0; $i < count($boissonsId); $i++) {
                         if($nomBoissons[$i] > 0){
-                            //echo 'c_id : ' . $idMaxCocktails . ' b_id : ' .  $boissonsId[$i] . ' quantite :'. $nomBoissons[$i];
-                            //echo '<br>';
+
                             $insert = array(
                                 "c_id" => $idMaxCocktails,
                                 "b_id" => $boissonsId[$i],
@@ -307,7 +306,6 @@ if (isset($_GET['action'])){
                 $quantity = $_POST['checkBoissons'];
 
                 foreach($IDs as $key => $val) {
-                   // echo "<br> Value : ". $val . "<br>";
                     $liaisonExists = $myPDO_Change->element2KeysExists('c_id', 'b_id', $_POST['c_id'], $val);
                         if($quantity[$key] > 0){
                             $data = array(
@@ -316,10 +314,8 @@ if (isset($_GET['action'])){
                                 "qteBoisson" => $quantity[$key]
                             );
                             if($liaisonExists > 0) {
-                                //echo "update <br>";
                                 $myPDO_Change->updateRelation('c_id', 'b_id', $data);
                             } else {
-                                //echo "insert <br>";
                                 $myPDO_Change->insert($data);
                             }
 
@@ -375,10 +371,8 @@ if (isset($_GET['action'])){
                                 "qteIngredient" => $ingquantity[$key]
                             );
                             if($liaisonExists > 0) {
-                                //echo "update <br>";
                                 $myPDO_Change->updateRelation('c_id', 'i_id', $data);
                             } else {
-                                //echo "insert <br>";
                                 $myPDO_Change->insert($data);
                             }
 
@@ -414,8 +408,6 @@ if (isset($_GET['action'])){
                             "c_id" => $_POST['c_id'],
                             "v_id" => $value
                         );
-                    /* echo "<br> c_id :". $_POST['c_id'];
-                        echo "<br> v_id : " . $value;*/
                         $myPDO_Change->insert($idElem);
                     }
                 }

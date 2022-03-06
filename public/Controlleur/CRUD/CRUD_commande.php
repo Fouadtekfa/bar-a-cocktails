@@ -137,17 +137,11 @@ else if (isset($_SESSION['etat']))
                     $myPDO_Change->setNomTable('liencocktailcommande');
 
                     if(isset($_POST['checkCocktailsId']) && isset($_POST['checkCocktails'])) {
-                        echo "hhhh";
+
                         $cockIDs = $_POST['checkCocktailsId'];
                         $cocktailsquantity = $_POST['checkCocktails'];
                         foreach($cockIDs as $key => $val) {
                             if($cocktailsquantity[$key] > 0){
-                               echo "nnnn";
-                               /* echo 'insertions : ';
-                                echo 'idCommande : '. $idMaxCommande;
-                                echo 'c_id: ' .$val;
-                                echo 'nbCocktail : ' .$cocktailsquantity[$key];
-                                */
                                 $insert = array(
                                     "c_id" => $val,
                                     "com_id" => $idMaxCommande,
@@ -180,9 +174,9 @@ else if (isset($_SESSION['etat']))
 
             // === AJOUT / SUPPRESSION DES COCKTAILS ======
                 $myPDO_Change->setNomTable('liencocktailcommande');
-                echo "afuers";
+
                 if(isset($_GET['checkCocktailsId']) && isset($_GET['checkCocktails'])) {
-                    echo "entro";
+
                     $cocktailsIDs = $_GET['checkCocktailsId'];
                     $cocktailsQuantity = $_GET['checkCocktails'];
 
@@ -196,10 +190,8 @@ else if (isset($_SESSION['etat']))
                             );
                             
                             if($liaisonExists > 0) {
-                                //echo "update <br>";
                                 $myPDO_Change->updateRelation('com_id', 'c_id', $data);
                             } else {
-                                //echo "insert <br>";
                                 $myPDO_Change->insert($data);
                             }
 
