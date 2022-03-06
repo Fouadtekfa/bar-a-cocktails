@@ -36,13 +36,13 @@ require_once "getDebutHtml.html";
             <div class="titleContainer">
                 <h2>Ingredients</h2>
             </div>
+        </a>
     </div>
 
 
 
     <div class="produit commandeContainer" id="commandes">
         <a class="prin" href="../public/Controlleur/CRUD/CRUD_commande.php?action=read">
-
             <div class="imageContainer imgCommande">
             </div>
             <div class="titleContainer">

@@ -10,7 +10,8 @@ h1 {
 
 body {
     background: rgba(233, 177, 72, 0.603);
-    background-image: url('../images/background.jpg');
+    /*background-image: url('../images/background.jpg');*/
+    background-color: rgba(43, 43, 43, 0.76);
     background-repeat: no-repeat;
     background-size: cover;
     color: aliceblue;
@@ -26,7 +27,7 @@ body {
 .produit {
     width: 30%;
     height: 200px;
-    background-color: rgba(151, 151, 151, 0.349);
+    background-color: rgba(255, 255, 255, 0.493);
     margin-bottom: 50px;
     border-radius: 50px;
     border: 2px solid black;
@@ -45,8 +46,12 @@ body {
 .imageContainer, .titleContainer {
     display: flex;
     align-items: center;
-    width: 40%;
-    justify-content: flex-end;
+    width: 70%;
+    justify-content: center;
+}
+.produit a{
+    text-decoration: none;
+    color: black;
 }
 
 .imageMenu {
